@@ -1,0 +1,175 @@
+.tasks {
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    background: none;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-grow: 3;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+    h1 {
+        color: #1F3C88;
+        padding: 0;
+        margin: 0;
+        font-family: inherit;
+        font-size: 24px;
+        font-weight: bold;
+        width: fit-content;
+    }
+    h2 {
+        color: #5893D4;
+        padding: 0;
+        margin: 0;
+        font-family: inherit;
+        font-size: 20px;
+        font-weight: normal;
+        width: fit-content;
+    }
+}
+
+.tasks-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    align-content: flex-start;
+    gap: 10px;
+    padding: 10px;
+}
+
+.task {
+    border: none;
+    width: 90%;
+    height: fit-content;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    border-radius: 5px;
+    border-bottom: solid 1.5px #1F3C88;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(124, 114, 255, 0.1), 0 8px 16px rgba(0.1, 0, 0, 0.1);
+    &:hover {
+        .task-buttons {
+            opacity: 1;
+        }
+    }
+    h1 {
+        color: #1F3C88;
+        font-weight: 400;
+        font-size: 20px;
+        text-align: right;
+        margin: 2px 4px 0 4px;
+    }
+    .task-top {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .collaborators {
+            position: absolute;
+            bottom: 0;
+            left: 3px;
+            border: none;
+            display: flex;
+            flex-direction: row;
+            gap: 6px;
+            padding: 6px;
+            padding-right: 20px;
+            .collaborator {
+                border: none;
+                padding: 6px;
+                display: flex;
+                flex-direction: row;
+                .comma {
+                    opacity: 0;
+                }
+                &:not(:last-child) {
+                    .comma {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+    .task-buttons {
+        position: absolute;
+        top: 54px;
+        right: 20%;
+        opacity: 0;
+        transition: opacity 0.3s;
+        .delete-button {
+            background: none;
+            padding: 0;
+            svg {
+                fill: #7a0000;
+                &:hover {
+                    fill: #f70000;
+                    cursor: pointer;
+                }
+            }
+        }
+        .edit-button {
+            background: none;
+            padding: 0;
+            svg {
+                fill: #058432;
+                &:hover {
+                    fill: #36e047;
+                    cursor: pointer;
+                }
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+    .task-status {
+        display: flex;
+        align-items: center;
+        padding: 3px;
+        gap: 5px;
+        flex-direction: row;
+    }
+    .image-container {
+        width: inherit;
+    }
+}
+  
+
+.task h1 {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    font-size: 16px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.task h2 {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    font-size: 14px;
+}
+
+.task h3 {
+    margin-block-start: 2px;
+    margin-block-end: 0;
+    font-size: 14px;
+    color: crimson;
+}
+
+.task h4 {
+    margin-block-start: 2px;
+    margin-block-end: 0;
+    font-size: 14px;
+    color: rgb(20, 220, 107);
+}
+
+.task p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}

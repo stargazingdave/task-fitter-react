@@ -1,0 +1,126 @@
+.contacts {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background: #ffffff;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: center;
+    align-items: right;
+    flex-direction: column;
+    width: 235px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    border: 1px solid #EEEDED;
+    .contact {
+        border: none;
+        width: auto;
+        height: fit-content;
+        overflow: hidden;
+        position: relative;
+        background: #fff;
+        border-bottom: solid 1.5px #1F3C88;
+        &:hover {
+            .buttons {
+            opacity: 1;
+            }
+        }
+        h1 {
+            color: rgb(1, 72, 186);
+            font-weight: 400;
+            font-size: 20px;
+            text-align: right;
+            margin: 2px 4px 0 4px;
+        }
+        .buttons {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            opacity: 0;
+            transition: opacity 0.3s;
+            .delete-button {
+                background: none;
+                padding: 0;
+                svg {
+                    fill: #8F384D;
+                    &:hover {
+                        fill: #f70000;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .edit-button {
+                background: none;
+                padding: 0;
+                svg {
+                    fill: #058432;
+                    &:hover {
+                        fill: #36e047;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .tasks-button {
+                background: none;
+                padding: 0;
+                svg {
+                    fill: #5893D4;
+                    &:hover {
+                        fill: #1F3C88;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .edit-contact-form {
+            display: flex;
+            flex-direction: column;
+            label {
+                display: flex;
+                flex-direction: column;
+            }
+            .buttons {
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+            }
+        }
+    }
+}
+
+
+
+.contact-tasks {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #ffffff;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+  border-radius: 8px;
+  box-sizing: border-box;
+  border: 1px solid #5893D4;
+}
+
+.create-contact {
+    button {
+        background: #CEDDEF;
+        color: #1F3C88;
+        &:hover {
+            background: #5893D4;
+            cursor: pointer;
+        }
+    }
+}
+
+.create-contact-form {
+  display: flex;
+  flex-direction: column;
+}
+

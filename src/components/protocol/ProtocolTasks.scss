@@ -1,0 +1,47 @@
+.p-tasks {
+    .p-tasks-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    display: flex;
+    background: #EEEDED;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    position: relative;
+    margin: 10px;
+    margin-right: 0;
+    border: 2px solid #5C6E91;
+    border-right: 1px solid #5C6E91;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    overflow: hidden;
+
+    .p-task {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        justify-content: center;
+        align-items: center;
+        &:not(:last-child)
+        {
+            border-bottom: 2px solid #5C6E91;
+        }
+        .task-title {
+            padding: 10px;
+        }
+        .task-collaborators {
+            padding: 10px;
+        }
+        .set-deadline {
+            padding: 10px;
+        }
+        .task-status {
+            padding: 10px;
+        }
+    }
+}

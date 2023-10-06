@@ -1,0 +1,30 @@
+.edit-project-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0;
+    /* border: 2px solid black; */
+    /* background: #747474; */
+    flex-wrap: wrap;
+    justify-content: space-around;
+    font-size: 14px;
+    width: fit-content;
+    .buttons {
+        display: flex;
+        justify-content: space-around;
+        button {
+            background: none;
+            border: none;
+        }
+        .save-button {
+            svg {
+                fill: #00B8A9;
+            }
+        }
+        .cancel-button {
+            svg {
+                fill: #F6416C;
+            }
+        }
+    }
+}

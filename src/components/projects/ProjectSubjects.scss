@@ -1,0 +1,131 @@
+.tasks-area {
+    display: flex;
+    width: 100%;
+    border-left: none;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 8px;
+    border-radius: 4px;
+    background: #EEEDED;
+    box-shadow: none;
+    .tasks-header {
+        position: relative;
+        color: #1F3C88;
+        margin: 4px;
+        font-family: inherit;
+        font-size: 30px;
+        font-weight: bold;
+        width: 100%;
+        text-align: center;
+        h1 {
+            color: #1F3C88;
+            padding: 0;
+            margin: 0;
+            font-family: inherit;
+            font-size: 24px;
+            font-weight: bold;
+            width: fit-content;
+            position: absolute;
+            top: 2px;
+            left: calc(50% - 25px);
+        }
+        .create-subject {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            width: fit-content;
+            button {
+                margin: 0;
+            }
+            .form {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                gap: 8px;
+                label {
+                    font-family: inherit;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+.subject {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    box-shadow: none;
+    border-top: 2px solid white;
+    &:hover {
+        .buttons {
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+    }
+    h1 {
+        padding: 10px;
+        font-family: inherit;
+        font-size: 20px;
+        text-wrap: wrap;
+        text-align: center;
+        color: #070D59;
+    }
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        opacity: 0;
+        transition: opacity 0.3s;
+        justify-content: center;
+        gap: 6px;
+        .delete-button {
+            background: none;
+            width: fit-content;
+            padding: 0;
+            margin: 0;
+            margin-right: 14px;
+            svg {
+                fill: #7a0000;
+                &:hover {
+                    fill: #f70000;
+                    cursor: pointer;
+                }
+            }
+        }
+        .edit-button {
+            background: none;
+            width: fit-content;
+            padding: 0;
+            margin: 0;
+            svg {
+                fill: #058432;
+                &:hover {
+                    fill: #36e047;
+                    cursor: pointer;
+                }
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        .new-task-button {
+            background: none;
+            width: fit-content;
+            padding: 0;
+            margin: 0;
+            margin-left: 14px;
+            svg {
+                fill: #5893D4;
+                &:hover {
+                    fill: #1F3C88;
+                }
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}

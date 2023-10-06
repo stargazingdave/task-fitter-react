@@ -1,0 +1,78 @@
+.create-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 10px;
+    background: white;
+    width: 90%;
+    border-radius: 4px;
+    .text-box {
+        display: flex;
+        flex-direction: column;
+    }
+    .set-deadline {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        gap: 3px;
+    }
+    .collaborators-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        width: fit-content;
+        .collaborators-selection {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            justify-items: center;
+            flex-grow: 1;
+            button {
+                height: fit-content;
+                background: none;
+                svg {
+                    fill: #5893D4;
+                }
+                &:hover {
+                    background: none;
+                    svg {
+                        fill: #1F3C88;
+                    }
+                }
+            }
+        }
+    }
+    .collaborators {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        h1 {
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: normal;
+            &:hover {
+                color: #8F384D;
+            }
+        }
+        .contact {
+            background: none;
+            border: none;
+            width: fit-content;
+            height: fit-content;
+            &:not(:last-child) {
+                padding-left: 6px;
+                border-left: 1px solid #1F3C88;
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+    .confirmation-buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}

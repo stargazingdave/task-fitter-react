@@ -1,0 +1,144 @@
+.sub-projects-container {
+    background: #EEEDED;
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+    box-sizing: border-box;
+    gap: 10px;
+    padding: 10px;
+    margin: 8px;
+    border-radius: 4px;
+    h1 {
+        color: #1c14d2;
+        margin: 4px;
+        font-family: sans-serif;
+        font-size: 26px;
+        font-weight: normal;
+    }
+    .sub-projects {
+        display: flex;
+        gap: 25px;
+        padding: 10px;
+        flex-wrap: wrap;
+        justify-content: right;
+        .sub-project-tile {
+            inline-size: 150px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            gap: 10px;
+            background: #e4e4e4;
+            border: 1px solid #9b9b9b;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+            width: 230px;
+            height: 50px;
+            flex-grow: 0;
+            position: relative;
+            
+            align-items: center;
+            border-radius: 8px;
+            box-sizing: border-box;
+            transition: transform 0.35s;
+            button {
+                opacity: 0;
+                transition: opacity 0.35s;
+                cursor: pointer;
+            }
+            &:hover {
+                transform: scale(1.03);
+                background: #ffffff;
+                button {
+                    opacity: 1;
+                }
+            }
+            h1 {
+    
+                color: #000079;
+                font-weight: 400;
+                font-size: 20px;
+                text-align: right;
+            }
+            .sub-project-details {
+                display: flex;
+                flex-direction: column;
+                width: 200px;
+            }
+            .open-button {
+                position: absolute;
+                left: 16px;
+                bottom: calc(50% - 13px);
+                background: none;
+                width: fit-content;
+                height: fit-content;
+                margin: 0;
+                padding: 0;
+                opacity: 1;
+                svg {
+                    fill: #5893D4;
+                    &:hover {
+                        fill: #1F3C88;
+                    }
+                }
+            }
+            .delete-button {
+                position: absolute;
+                left: 90px;
+                bottom: calc(50% - 13px);
+                background: none;
+                width: fit-content;
+                height: fit-content;
+                margin: 0;
+                padding: 0;
+                svg {
+                    fill: #8F384D;
+                    &:hover {
+                        fill: #ca1010;
+                    }
+                }
+            }
+            .edit-button {
+                position: absolute;
+                left: 58px;
+                bottom: calc(50% - 13px);
+                background: none;
+                width: fit-content;
+                height: fit-content;
+                margin: 0;
+                padding: 0;
+                svg {
+                    fill: #00c445;
+                    &:hover {
+                        fill: #1fff6d;
+                    }
+                }
+            }
+        }
+    }
+    .create-sub-project {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

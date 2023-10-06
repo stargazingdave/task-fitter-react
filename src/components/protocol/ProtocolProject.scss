@@ -1,0 +1,203 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    overflow: visible;
+    border-bottom: 2px solid black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .form-tasks {
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+        align-items: center;
+        .new-subject-button {
+            background: #CEDDEF;
+            border: none;
+            color: 1F3C88;
+            padding: 5px 8px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px;
+            margin-right: 20px;
+            border-radius: 3px;
+            width: fit-content;
+            &:hover {
+                background: #5893D4;
+                cursor: pointer;
+            }
+        }
+        .new-subproject-button {
+            background: #CEDDEF;
+            border: none;
+            color: 1F3C88;
+            padding: 5px 8px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px;
+            margin-right: 20px;
+            border-radius: 3px;
+            width: fit-content;
+            &:hover {
+                background: #5893D4;
+                cursor: pointer;
+            }
+        }
+    }
+    .form-sub-project {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        gap: 4px;
+        h1 {
+            margin: 0;
+            padding-right: 20px;
+            width: fit-content;
+            height: fit-content;
+            font-size: 26px;
+            font-family: inherit;
+            text-align: center;
+        }
+        .sub-project {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            &:hover {
+                .buttons {
+                    opacity: 1;
+                    transition: 0.3s;
+                }
+            }
+            .buttons {
+                width: fit-content;
+                padding-right: 20px;
+                opacity: 0;
+                transition: 0.3s;
+                .delete-subproject-button {
+                    border: none;
+                    width: fit-content;
+                    &:hover {
+                        background: none;
+                        cursor: pointer;
+                    }
+                    background: none;
+                    svg {
+                        fill: #7a0000;
+                        &:hover {
+                            fill: #f70000;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .edit-subproject-button {
+                    border: none;
+                    width: fit-content;
+                    &:hover {
+                        background: none;
+                        cursor: pointer;
+                    }
+                    background: none;
+                    svg {
+                        fill: #058432;
+                        &:hover {
+                            fill: #36e047;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+    }
+}
+
+
+.p-subject {
+    display: flex;
+    flex-direction: row;
+    overflow: visible;
+    justify-items: stretch;
+    .subject-title {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #EEEDED;
+        border-top-right-radius: 20px;
+        border-bottom-right-radius: 20px;
+        margin: 10px;
+        margin-left: 0;
+        border: 2px solid #5C6E91;
+        border-left: none;
+        position: relative;
+        width: 180px;
+        &:hover {
+            .buttons {
+                opacity: 1;
+                transition: 0.3s;
+            }
+        }
+        h1 {
+            font-size: 20px;
+            color: #5C6E91;
+            padding-right: 0;
+        }
+        .buttons {
+            position: absolute;
+            bottom: 5px;
+            opacity: 0;
+            transition: 0.3s;
+            .delete-button {
+                background: none;
+                border: none;
+                width: fit-content;
+                svg {
+                    fill: #7a0000;
+                    &:hover {
+                        fill: #f70000;
+                    }
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .edit-button {
+                background: none;
+                border: none;
+                width: fit-content;
+                svg {
+                    fill: #058432;
+                    &:hover {
+                        fill: #36e047;
+                    }
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .new-task-button {
+                background: none;
+                border: none;
+                width: fit-content;
+                svg {
+                    fill: #5893D4;
+                    &:hover {
+                        fill: #1F3C88;
+                    }
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
+

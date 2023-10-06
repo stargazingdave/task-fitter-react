@@ -1,0 +1,53 @@
+.edit-task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 10px;
+    .text-box {
+        display: flex;
+        flex-direction: column;
+    
+    }
+    .set-deadline {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+        gap: 3px;
+    }
+    .collaborators-selection {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        justify-items: center;
+        width: fit-content;
+        button {
+            height: fit-content;;
+        }
+        .collaborators {
+            display: flex;
+            flex-direction: row;
+            gap: 6px;
+            h1 {
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: normal;
+                &:hover {
+                    color: #F6416C;
+                }
+            }
+            .contact {
+                background: none;
+                border: none;
+                width: fit-content;
+                height: fit-content;
+                &:not(:last-child) {
+                    padding-left: 6px;
+                    border-left: 1px solid #1F3C88;
+                }
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

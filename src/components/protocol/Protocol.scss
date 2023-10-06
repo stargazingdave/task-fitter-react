@@ -1,0 +1,19 @@
+.protocol-container {
+    width: 100%;
+    h1 {
+        color: #1F3C88;
+        padding-right: 20px;
+    }
+    .buttons {
+        display: flex;
+        justify-content: center;
+        .save-button {
+            background: none;
+            color: #1F3C88;
+        }
+    }
+}
+
+.form {
+    overflow: hidden;
+}
