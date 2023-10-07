@@ -123,7 +123,8 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                                             status: false,
                                             deadline: new Date().toString(),
                                             user_id: props.user.uid,
-                                            collaborators: []
+                                            collaborators: [],
+                                            project_id: props.project.id
                                         })}>
                                             <MdAddTask size={24}/>
                                     </button>

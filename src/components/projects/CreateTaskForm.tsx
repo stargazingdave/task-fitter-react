@@ -7,7 +7,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select, { GroupBase } from 'react-select'
 import makeAnimated from 'react-select/animated';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { uploadImage } from "../../utils";
 
 const animatedComponents = makeAnimated();
@@ -20,6 +19,7 @@ type CreateTaskFormProps = {
     onCancel: () => void;
     db: Firestore;
     contacts: DocumentData[];
+    project: DocumentData;
 }
 
 
@@ -38,7 +38,8 @@ const addTask = async (props: CreateTaskFormProps,
             status: false,
             deadline: taskDeadline.toString(),
             user_id: props.user.uid,
-            collaborators: taskCollaborators
+            collaborators: taskCollaborators,
+            project_id: props.project.id
         })
         .then (docRef => {
             uploadImage(docRef.id, image, props.tasksCollection);

@@ -17,6 +17,7 @@ type ProtocolTasksProps = {
 
 export const ProtocolTasks = (props: ProtocolTasksProps) => {
     const db = getFirestore();
+    
 
 
     useEffect(() => {
@@ -33,7 +34,6 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
     if (status === 'loading') {
         return <p>טוען משימות...</p>;
     }
-
     return <div className="p-tasks">
         <div className="p-tasks-container">
             {tasks?.map(task => (
@@ -43,7 +43,9 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                                     user={props.user}
                                     db={db} 
                                     addSaveAction={props.addSaveAction} />
-                    {task.image && <img src={task.image} alt="תמונה"  style={{scale: "90%", height: "200px", width: "fit-content"}} />}
+                    {
+                        task.image && <img src={task.image} style={{scale: "90%", height: "200px", width: "fit-content"}} />
+                    }
                     {
                         task.image && 
                         <button 

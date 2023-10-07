@@ -57,7 +57,8 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                 createTaskSelected={props.createTaskSelected} 
                                 onTaskCreate={(createTaskSelected) => {props.setCreateTaskSubjectId('')}} 
                                 onCancel={() => props.setCreateTaskSubjectId('')} 
-                                contacts={props.contacts} />
+                                contacts={props.contacts}
+                                project={props.projectStack[props.projectStack.length - 1]} />
             : <></>}
         <div className="tasks-container">
             {tasks?.sort((x, y) => {

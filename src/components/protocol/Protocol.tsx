@@ -39,32 +39,6 @@ const save = () => {
     this solution sucks
  */
 
-const fixImages = () => {
-
-    //const image = document.getElementById('qeqe');
-    //const canvas = document.getElementById('canvas');
-    // @ts-ignore
-    //const ctx = canvas?.getContext("2d");
-    //ctx.drawImage(image, 0, 0);
-    document.querySelectorAll('img').forEach(image => {
-        if (image.id === 'qeqe') {
-            return;
-        }
-        const canvas = document.createElement('canvas');
-        // @ts-ignore
-        canvas.crossOrigin = "anonymous";
-        const ctx = canvas?.getContext("2d");
-        // @ts-ignore
-        image.parentElement.appendChild(canvas);
-        ctx?.drawImage(image, 0, 0);
-        image.parentElement?.removeChild(image);
-        
-        //debugger; 
-        //image.crossOrigin = 'Anonymous';
-        //image.src += ' ';
-    });
-
-};
 const sendMail = (projectName: string, contactMail: string, taskList: string, contactName: string) => {
 
     const linkToProtocolProject = document.getElementById("protocol-project");
@@ -92,13 +66,13 @@ const sendMail = (projectName: string, contactMail: string, taskList: string, co
                 document.getElementById('qeqe').src = base64;
                 debugger;
                 //@ts-ignore
-                // emailjs.send("task-fitter", "template_kqmklat", {
-                //     //attachment: base64,
-                //     project_name: projectName,
-                //     contact_mail: contactMail,
-                //     contact_name: contactName,
-                //     task_list: taskList
-                // }, "vtVkQrnc2d67CfVRb");
+                emailjs.send("task-fitter", "template_kqmklat", {
+                    attachment: base64,
+                    project_name: projectName,
+                    contact_mail: contactMail,
+                    contact_name: contactName,
+                    task_list: taskList
+                }, "vtVkQrnc2d67CfVRb");
             }
         );
     }
@@ -123,7 +97,6 @@ export const Protocol = (props: ProtocolProps) => {
 
     return <div className='protocol-container'>
         <h1>פרוטוקול פרויקט: {project.project_name}</h1>
-        <img src="" id="qeqe" />
         <ProtocolProject user={props.user}
             project={project}
             db={db}
@@ -136,8 +109,13 @@ export const Protocol = (props: ProtocolProps) => {
                 className='save-button' >
                 <FiSave size={"60px"} />
             </button>
-            <button onClick={() => fixImages()}>תיקון תמונות</button>
-            <button onClick={() => sendMail(project.project_name, "mail@tevel.info", "taskList", "contactName")}>שליחה</button>
+            <button onClick={() => sendMail(project.project_name, "davidportal91@gmail.com", "taskList", "contactName")}>שליחה</button>
+            <a 
+                className="protocol-link" 
+                target="_blank" 
+                href={"/protocol-preview/" + id}>
+                    תצוגה מקדימה
+            </a>
         </div>
     </div>
 }

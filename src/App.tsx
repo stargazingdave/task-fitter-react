@@ -20,6 +20,7 @@ import { MainPage } from './components/MainPage';
 import { Protocol } from './components/protocol/Protocol';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Router, Routes, } from "react-router-dom";
+import { ProtocolAttachment } from './components/protocol/mail/ProtocolAttachment';
 
 
 
@@ -48,6 +49,7 @@ function App() {
                 <Routes>
                     <Route index element={<MainPage user={user} />} />
                     <Route path="protocol/:id" element={<Protocol protocolOpen={true} user={user} />} />
+                    <Route path="protocol-preview/:id" element={<ProtocolAttachment user={user} protocolOpen onClose={() => {}} />} />
                 </Routes>
             </BrowserRouter>
         </FirestoreProvider>
