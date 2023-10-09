@@ -44,11 +44,12 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
     props.addSaveAction(props.task.id, () => {
         const date = new Date();
         const docRef = doc(props.tasksCollection, props.task.id);
-    
+        
         updateDoc(docRef, {
             task: taskTitle,
             update_time: date.toString(),
-            deadline: taskDeadline.toString()
+            deadline: taskDeadline.toString(),
+            collaborators: taskCollaborators
         });
         if (image) {
             props.task.image && deleteImage(props.task.id);
