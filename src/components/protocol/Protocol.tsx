@@ -109,7 +109,6 @@ export const Protocol = (props: ProtocolProps) => {
                 className='save-button' >
                 <FiSave size={"60px"} />
             </button>
-            <button onClick={() => sendMail(project.project_name, "davidportal91@gmail.com", "taskList", "contactName")}>שליחה</button>
             <a 
                 className="protocol-link" 
                 target="_blank" 
