@@ -102,14 +102,12 @@ export const Protocol = (props: ProtocolProps) => {
             db={db}
             path={'projects/' + project.id}
             addSaveAction={addSaveAction} />
-
         <div className="buttons">
             <button onClick={save}
                 type='submit'
                 className='save-button' >
                 <FiSave size={"60px"} />
             </button>
-            <button onClick={() => sendMail(project.project_name, "davidportal91@gmail.com", "taskList", "contactName")}>שליחה</button>
             <a 
                 className="protocol-link" 
                 target="_blank" 

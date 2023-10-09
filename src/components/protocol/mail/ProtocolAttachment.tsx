@@ -4,8 +4,6 @@ import '.././Protocol.scss';
 import { DocumentData, Firestore, collection, collectionGroup, doc, query, where } from 'firebase/firestore';
 import { useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
 import { User } from 'firebase/auth';
-import { ProtocolProject } from '../ProtocolProject';
-import { FiSave } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { ProtocolProjectAttachment } from './ProtocolProjectAttachment';
