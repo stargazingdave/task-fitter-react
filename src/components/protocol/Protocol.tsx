@@ -26,6 +26,7 @@ const save = () => {
     Object.keys(actions).forEach(taskId => {
         actions[taskId]();
     })
+    alert("כל המשימות עודכנו בפרויקט");
 }
 
 /*
@@ -109,7 +110,7 @@ export const Protocol = (props: ProtocolProps) => {
                 <FiSave size={"60px"} />
             </button>
             <a 
-                className="protocol-link" 
+                className="preview-link" 
                 target="_blank" 
                 href={"/protocol-preview/" + id}>
                     תצוגה מקדימה

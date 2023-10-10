@@ -10,6 +10,29 @@
         .save-button {
             background: none;
             color: #1F3C88;
+            border: none;
+            &:hover {
+                cursor: pointer;
+                color: #070D59;
+            }
+        }
+        .preview-link {
+            width: fit-content;
+            height: fit-content;
+            padding: 10px;
+            padding-bottom: 6px;
+            padding-top: 6px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #1F3C88;
+            background: #FFDE7D;
+            font-weight: bold;
+            margin: 8px;
+            &:hover {
+                color: #070D59;
+                background: #fdcf45;
+                cursor: pointer;
+            }
         }
     }
 }
