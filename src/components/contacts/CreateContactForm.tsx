@@ -47,31 +47,34 @@ export const CreateContactForm = (props: CreateContactFormProps) => {
         <>
         <label>
             שם:
-            <input
+        </label>
+        <input
             value={contactName}
             onChange={e => setContactName(e.target.value)}
             type="string"
             />
-        </label>
         <label>
             תפקיד:
-            <input
+        </label>
+        <input
             value={contactRole}
             onChange={e => setContactRole(e.target.value)}
             type="string"
             />
-        </label>
         <label>
             כתובת אימייל:
-            <input
+        </label>
+        <input
             value={contactEmail}
             onChange={e => setContactEmail(e.target.value)}
             type="string"
             />
-        </label>
-        <button onClick={() => {addContact(props, contactName, contactRole, contactEmail)}}>
-            שמור
+        <div className="buttons">
+            <button onClick={() => {addContact(props, contactName, contactRole, contactEmail)}}>
+                שמור
             </button>
+            <button onClick={() => props.onContactCreate(props.createContactFlag)}>ביטול</button>
+        </div>
         </>
         )
 }

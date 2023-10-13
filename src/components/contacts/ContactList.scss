@@ -85,9 +85,19 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: space-around;
+                opacity: 1;
             }
         }
     }
+    .create-contact-form {
+        display: flex;
+        flex-direction: column;
+        .buttons {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+        }
+      }
 }
 
 
@@ -119,8 +129,5 @@
     }
 }
 
-.create-contact-form {
-  display: flex;
-  flex-direction: column;
-}
+
 

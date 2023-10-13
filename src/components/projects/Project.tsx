@@ -1,4 +1,4 @@
-import { DocumentData, collection } from "firebase/firestore";
+import { DocumentData, collection, orderBy, query, where } from "firebase/firestore";
 import "./Project.scss"
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
 import { User } from "firebase/auth";
@@ -8,6 +8,7 @@ import { ProjectSubjects } from "./ProjectSubjects";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { EditProjectForm } from "./EditProjectForm";
+import { useState } from "react";
 
 type ProjectProps = {
     onProjectSelected: (projectStack: DocumentData[]) => void;
@@ -22,14 +23,17 @@ type ProjectProps = {
 
 
 export const Project = (props: ProjectProps) => {
+    const [isAscending, setIsAscending] = useState(true);
     const path = getProjectsPath(props.projectStack);
     const parentPath = getProjectsPath(props.projectStack.slice(0, props.projectStack.length - 1));
     const db = useFirestore();
     const projectsCollection = collection(db, path);
     const contactsCollection = collection(db, 'contacts');
+    const contactsQuery = query(contactsCollection,
+        where("user_id", "==", props.user.uid || 0),
+        orderBy('name', isAscending ? 'asc' : 'desc'));
     const parentCollection = collection(db, parentPath);
-    const { status: projectsStatus, data: projects } = useFirestoreCollectionData(projectsCollection, { idField: 'id',});
-    const { status: contactsStatus, data: contacts } = useFirestoreCollectionData(contactsCollection, { idField: 'id',});
+    const { status: contactsStatus, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
 
     const updateProject = (project: DocumentData) => {
         props.setEditProject({} as DocumentData);
@@ -42,9 +46,6 @@ export const Project = (props: ProjectProps) => {
     }
 
     // check the loading status
-    if (projectsStatus === 'loading') {
-        return <p>טוען פרויקטים...</p>;
-    }
     if (contactsStatus === 'loading') {
         return <p>טוען אנשי קשר...</p>;
     }

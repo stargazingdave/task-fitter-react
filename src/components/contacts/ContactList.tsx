@@ -26,7 +26,7 @@ export const ContactList = (props: ContactListProps) => {
     //const dbRef = doc(useFirestore(), 'projects', 'KgZALPsAYOxhD9KS1dqg');
     const db = useFirestore();
     const contactsCollection = collection(db, 'contacts');
-    const [isAscending, setIsAscending] = useState(false);
+    const [isAscending, setIsAscending] = useState(true);
     const [editContact, setEditContact] = useState({} as DocumentData);
     const [createContactFlag, setCreateContactFlag] = useState(false);
     const [contactSelected, setContactSelected] = useState({} as DocumentData);
@@ -41,7 +41,7 @@ export const ContactList = (props: ContactListProps) => {
         return <p>טוען אנשי קשר...</p>;
         }
 
-    
+    console.log('list: ', contacts);
     
     return <div className="contacts">
             <h1>אנשי קשר</h1>
@@ -96,7 +96,6 @@ export const ContactList = (props: ContactListProps) => {
                                     user={props.user} 
                                     createContactFlag={createContactFlag} 
                                     onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>
-                <button onClick={() => setCreateContactFlag(!createContactFlag)}>ביטול</button>
                 </div>
             : <button onClick={() => setCreateContactFlag(!createContactFlag)}>איש קשר חדש</button>}
             

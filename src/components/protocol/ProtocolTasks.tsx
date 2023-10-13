@@ -36,7 +36,7 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
     }
     return <div className="p-tasks">
         <div className="p-tasks-container">
-            {tasks?.map(task => (
+            {tasks?.sort((task1, task2) => {return Date.parse(task1.deadline) - Date.parse(task2.deadline)}).map(task => (
                 <div className="p-task" key={task.id}>
                     <ProtocolTask   task={task}
                                     tasksCollection={props.tasksCollection}

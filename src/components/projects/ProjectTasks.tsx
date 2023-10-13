@@ -32,7 +32,7 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
     const db = getFirestore();
 
     const storage = getStorage();
-    
+    console.log("props: ", props.contacts);
     
 
     

@@ -66,6 +66,8 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
     const [image, setImage] = useState<File | null>(null);
     let contacts = props.contacts.map((contact) => ({value: contact.id, label: contact.name}));
 
+    console.log('task: ', contacts);
+
     
 
 

@@ -54,7 +54,6 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
     const [image, setImage] = useState<File | null>(null);
 
     const contactsCollection = collection(props.db, "contacts");
-    const { status, data: contacts } = useFirestoreCollectionData(contactsCollection, { idField: 'id',});
 
     return (
         <>
@@ -86,7 +85,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                     </label>
                     <select ref={selectContactRef}
                             style={{width: "100%"}}>            
-                        {contacts?.map(contact => (
+                        {props.contacts?.map(contact => (
                             <option key={contact.id} className="contact" value={contact.id}>{contact.name}</option>
                         ))}
                     </select>

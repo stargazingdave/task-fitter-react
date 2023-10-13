@@ -44,37 +44,37 @@ export const EditContactForm = (props: EditContactFormProps) => {
 
     return (
         <>
-        <label>
-            שם:
+            <label>
+                שם:
+            </label>
             <input
-            value={contactName}
-            onChange={e => setContactName(e.target.value)}
-            type="string"
-            />
-        </label>
-        <label>
-            תפקיד:
+                value={contactName}
+                onChange={e => setContactName(e.target.value)}
+                type="string"
+                />
+            <label>
+                תפקיד:
+            </label>
             <input
-            value={contactRole}
-            onChange={e => setContactRole(e.target.value)}
-            type="string"
-            />
-        </label>
-        <label>
-            כתובת אימייל:
+                value={contactRole}
+                onChange={e => setContactRole(e.target.value)}
+                type="string"
+                />
+            <label>
+                כתובת אימייל:
+            </label>
             <input
-            value={contactEmail}
-            onChange={e => setContactEmail(e.target.value)}
-            type="string"
-            />
-        </label>
-        <div className="buttons">
-            <button 
-                onClick={() => {updateContact(props, contactName, contactRole, contactEmail)}}>
-                    שמור
-            </button>
-            <button onClick={() => props.setEditContact({})}>ביטול</button>
-        </div>
+                value={contactEmail}
+                onChange={e => setContactEmail(e.target.value)}
+                type="string"
+                />
+            <div className="buttons">
+                <button 
+                    onClick={() => {updateContact(props, contactName, contactRole, contactEmail)}}>
+                        שמור
+                </button>
+                <button onClick={() => props.setEditContact({})}>ביטול</button>
+            </div>
         </>
     )
 }
