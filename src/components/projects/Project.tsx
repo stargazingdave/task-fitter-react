@@ -24,10 +24,8 @@ type ProjectProps = {
 
 export const Project = (props: ProjectProps) => {
     const [isAscending, setIsAscending] = useState(true);
-    const path = getProjectsPath(props.projectStack);
     const parentPath = getProjectsPath(props.projectStack.slice(0, props.projectStack.length - 1));
     const db = useFirestore();
-    const projectsCollection = collection(db, path);
     const contactsCollection = collection(db, 'contacts');
     const contactsQuery = query(contactsCollection,
         where("user_id", "==", props.user.uid || 0),
@@ -107,7 +105,7 @@ export const Project = (props: ProjectProps) => {
                     </div>
                     <button 
                             className="exit-button" 
-                            title="יציאה" 
+                            title="יציאה מהפרויקט לדף הבית" 
                             onClick={() => props.onProjectSelected([] as DocumentData[])}>
                                 <AiOutlineClose size={25} />
                         </button>

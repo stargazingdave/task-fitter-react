@@ -51,12 +51,13 @@ export const ContactList = (props: ContactListProps) => {
                             <h1 title={contact.role}>{contact.name}</h1>
                         </div>
                         <div className='buttons'>
-                        <button className='edit-button' onClick={() => {
+                        <button title='עריכת איש קשר' className='edit-button' onClick={() => {
                                 setEditContact(contact);
                             }}>
                                 <BiEditAlt size={20} />
                         </button>
                         <button 
+                            title='מחיקת איש קשר'
                             className='delete-button' 
                             onClick={() => {
                                 setContactDeletePopup(contact);
@@ -64,7 +65,7 @@ export const ContactList = (props: ContactListProps) => {
                                 <FaHammer size={20} />
                         </button>
                         <Popup modal={true} trigger={
-                            <button className='tasks-button'>
+                            <button title='רשימת משימות של איש הקשר' className='tasks-button'>
                                 <FaTasks  size={20} />
                         </button>} position="right center">
                             <ContactTasks contact={contact} user={props.user} />

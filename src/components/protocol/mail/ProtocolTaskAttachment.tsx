@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, Firestore, collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { CollectionReference, DocumentData, Firestore, collection, deleteDoc, doc, query, updateDoc, where } from "firebase/firestore";
 import { useRef, useState } from "react";
 import '.././ProtocolTask.scss'
 import { Checkbox } from "../../general/Checkbox";
@@ -27,10 +27,10 @@ type ProtocolTaskAttachmentProps = {
 
 
 export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
-    const [deleteTask, setDeleteTask] = useState({} as DocumentData);
-    const [image, setImage] = useState<File | null>(null);
     const contactsCollection = collection(props.db, "contacts");
-    const { status, data: contacts } = useFirestoreCollectionData(contactsCollection, { idField: 'id',});
+    const contactsQuery = query(contactsCollection,
+        where("user_id", "==", props.user.uid || 0));
+    const { status, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
     const selectContactRef = useRef<HTMLSelectElement>(null);
 
 

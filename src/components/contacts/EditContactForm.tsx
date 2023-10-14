@@ -17,7 +17,9 @@ const updateContact = async (props: EditContactFormProps,
                     contactName: string, 
                     contactRole: string,
                     contactEmail: string) => {
-        const temp = query(props.contactsCollection, where("name", "==", contactName));
+        const temp = query(props.contactsCollection, 
+            where("user_id", "==", props.user.uid || 0), 
+            where("name", "==", contactName));
         const querySnapshot = await getDocs(temp);
         if (contactName == '') {
             alert('לא ניתן ליצור איש קשר ללא שם');

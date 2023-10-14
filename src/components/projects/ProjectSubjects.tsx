@@ -98,6 +98,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                         editSubject?.id != subject.id
                         ? <>
                             <button 
+                                title='מחיקת הנושא'
                                 className='delete-button'
                                 onClick={() => setSubjectDeletePopup(subject)}>
                                     <FaHammer size={20}/>
@@ -140,6 +141,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                         </div>
                     }
                     <button 
+                        title='עריכת הנושא'
                         className='edit-button'
                         onClick={() => {
                             setEditSubject(subject);
@@ -150,6 +152,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                     {createTaskSubjectId == subject.id
                     ? <></>
                     : <button
+                        title='משימה חדשה'
                         className='new-task-button' 
                         onClick={() => setCreateTaskSubjectId(subject.id)}>
                         <MdAddTask size={20}/>    

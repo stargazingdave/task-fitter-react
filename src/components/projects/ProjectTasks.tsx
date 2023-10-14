@@ -86,11 +86,12 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                         {
                             editTask?.id != task.id &&
                             <div className="task-buttons">
-                                <button className='edit-button' 
+                                <button title='עריכת המשימה' className='edit-button' 
                                                 onClick={() => setEditTask(task)}>
                                     <BiEditAlt size={25}/>
                                 </button>
                                 <button 
+                                    title='מחיקת המשימה'
                                     className='delete-button' 
                                     onClick={() => {
                                         setTaskDeletePopup(task);

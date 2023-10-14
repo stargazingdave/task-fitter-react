@@ -104,12 +104,15 @@ export const Protocol = (props: ProtocolProps) => {
             path={'projects/' + project.id}
             addSaveAction={addSaveAction} />
         <div className="buttons">
-            <button onClick={save}
+            <button 
+                title='שמירת כל השינויים בפרויקט'
+                onClick={save}
                 type='submit'
                 className='save-button' >
                 <FiSave size={"60px"} />
             </button>
             <a 
+                title='תצוגה מקדימה של הפרוטוקול לפני שליחה'
                 className="preview-link" 
                 target="_blank" 
                 href={"/protocol-preview/" + id}>

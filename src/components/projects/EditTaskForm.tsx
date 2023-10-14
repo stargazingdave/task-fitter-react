@@ -53,7 +53,6 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
     const [taskDeadline, setTaskDeadline] = useState(new Date(Date.parse(props.task.deadline)));
     const [image, setImage] = useState<File | null>(null);
 
-    const contactsCollection = collection(props.db, "contacts");
 
     return (
         <>

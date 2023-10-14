@@ -85,18 +85,13 @@ export const Projects = (props: ProjectsProps) =>  {
                             {
                                 props.editProject?.id != project.id
                                 ? <>
-                                    <button className='open-button' onClick={() => {
+                                    <button title='פתיחת הפרויקט' className='open-button' onClick={() => {
                                                                 props.onProjectSelected([...props.projectStack, project]);
                                                             }}>
                                         <BsFillBuildingsFill size={50}/>
                                     </button>
-                                    <button className='delete-button' onClick={() => {
-                                                                const path = 'projects/'; 
-                                                                //deleteDoc(doc(db, path, project.id));
-                                                            }}>
-                                        <FaHammer size={25}/>
-                                    </button>
                                     <button 
+                                        title='מחיקת הפרויקט'
                                         className='delete-button' 
                                         onClick={() => setProjectDeletePopup(project.id)} >
                                         <FaHammer size={25}/>
@@ -119,7 +114,7 @@ export const Projects = (props: ProjectsProps) =>  {
                                                 </div>
                                             </div>
                                     </Popup>
-                                    <button className='edit-button' onClick={() => {
+                                    <button title='עריכת שם ומנהל הפרויקט' className='edit-button' onClick={() => {
                                                                 props.setEditProject(project);
                                                             }}>
                                         <GiLargePaintBrush size={25}/>

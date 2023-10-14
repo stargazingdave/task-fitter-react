@@ -67,7 +67,9 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
     const projectTasksQuery = query(tasksCollection, where('project_id', '==', id));
     const {status: tasksStatus, data: projectTasks} = useFirestoreCollectionData(projectTasksQuery, { idField: 'id', });
     const contactsCollection = collection(db, 'contacts');
-    const {status: contactsStatus, data: contacts} = useFirestoreCollectionData(contactsCollection, { idField: 'id', });
+    const contactsQuery = query(contactsCollection,
+        where("user_id", "==", props.user.uid || 0));
+    const {status: contactsStatus, data: contacts} = useFirestoreCollectionData(contactsQuery, { idField: 'id', });
     if (contactsStatus === 'loading') {
         return <p>טוען פרוטוקול...</p>;
     }

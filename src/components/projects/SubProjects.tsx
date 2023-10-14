@@ -72,6 +72,7 @@ export const SubProjects = (props: SubProjectsProps) =>  {
                     <BsFillBuildingsFill size={26}/>
             </button>
             <button 
+                title='מחיקת תת הפרויקט'
                 className='delete-button' 
                 onClick={() => setProjectDeletePopup(project.id)} >
                 <FaHammer size={22}/>
@@ -95,7 +96,7 @@ export const SubProjects = (props: SubProjectsProps) =>  {
             </Popup>
             <button 
                 className='edit-button' 
-                title='עריכה'
+                title='עריכת שם ומנהל תת הפרויקט'
                 onClick={() => {
                     setEditSubProject(project);
                 }}>

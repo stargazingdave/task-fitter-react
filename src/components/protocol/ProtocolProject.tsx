@@ -179,11 +179,11 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                         <h1>{project.project_name}</h1>
                         <div className="buttons">
                             <button 
-                                className="delete-subproject-button" onClick={() => deleteDoc(doc(subProjectCollection, project.id))}>
+                                title='מחיקת הפרויקט' className="delete-subproject-button" onClick={() => deleteDoc(doc(subProjectCollection, project.id))}>
                                 <FaHammer size="24" />
                             </button>
                             <button 
-                                className="edit-subproject-button" onClick={() => setEditProject(project)}>
+                                title='עריכת שם ומנהל הפרויקט'className="edit-subproject-button" onClick={() => setEditProject(project)}>
                                 <BiEditAlt size="24" />
                             </button>
                         </div>
