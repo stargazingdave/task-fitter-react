@@ -37,7 +37,6 @@ type SubProjectsProps = {
 
 export const SubProjects = (props: SubProjectsProps) =>  {
   const path = getProjectsPath(props.projectStack);
-  const tasksPath = getTasksPath(props.projectStack);
   const db = useFirestore();
   const projectsCollection = collection(db, path);
   const [isAscending, setIsAscending] = useState(false);

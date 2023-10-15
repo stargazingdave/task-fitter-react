@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, deleteDoc, doc, getFirestore, updateDoc } from "firebase/firestore";
+import { CollectionReference, DocumentData, deleteDoc, doc, getFirestore, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 import { getStorage, ref, deleteObject, StorageReference } from "firebase/storage";
@@ -38,10 +38,11 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
     
     const [editTask, setEditTask] = useState({} as DocumentData);
     const [taskDeletePopup, setTaskDeletePopup] = useState({} as DocumentData);
-    
+    const tasksQuery = query(props.tasksCollection,
+        where("user_id", "==", props.user.uid || 0));
 
 
-    const { status, data: tasks } = useFirestoreCollectionData(props.tasksCollection, { idField: 'id',});
+    const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
     
 
     if (status === 'loading') {

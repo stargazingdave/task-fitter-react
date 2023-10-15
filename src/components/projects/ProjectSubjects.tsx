@@ -4,7 +4,7 @@ import './ProjectSubjects.scss';
 
 
 // Import the functions you need from the SDKs you need
-import { DocumentData, addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { DocumentData, addDoc, collection, deleteDoc, doc, query, updateDoc, where } from 'firebase/firestore';
 import { useFirestore, useFirestoreCollectionData} from 'reactfire';
 import { User } from 'firebase/auth';
 import { getProjectsPath, getSubjectsPath } from '../../utils';
@@ -33,12 +33,14 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
     const subjectsPath = getSubjectsPath(props.projectStack);
     const db = useFirestore();
     const subjectsCollection = collection(db, subjectsPath);
+    const subjectsQuery = query(subjectsCollection,
+        where("user_id", "==", props.user.uid || 0));
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
     const [createTaskSubjectId, setCreateTaskSubjectId] = useState('');
     const [editSubject, setEditSubject] = useState({} as DocumentData);
     const [subjectName, setSubjectName] = useState('');
     const [subjectDeletePopup, setSubjectDeletePopup] = useState({} as DocumentData);
-    const { status, data: subjects } = useFirestoreCollectionData(subjectsCollection, { idField: 'id',});
+    const { status, data: subjects } = useFirestoreCollectionData(subjectsQuery, { idField: 'id',});
     
     // check the loading status
     if (status === 'loading') {
@@ -72,7 +74,8 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                             }
                             addDoc(collection(db, subjectsPath), {
                                 title: subjectName || '',
-                                creation_time: new Date().toString()
+                                creation_time: new Date().toString(),
+                                user_id: props.user.uid
                             });
                             setSubjectName('');
                             setCreateSubjectFlag(!createSubjectFlag);

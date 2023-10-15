@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { DocumentData, Firestore, addDoc, collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { DocumentData, Firestore, addDoc, collection, deleteDoc, doc, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { useFirestoreCollectionData } from "reactfire";
 import './ProtocolProject.scss'
 import { ProtocolTasks } from "./ProtocolTasks";
@@ -22,16 +22,20 @@ type ProtocolProjectProps = {
 }
 
 export const ProtocolProject = (props: ProtocolProjectProps) => {
-    const subProjectCollection = collection(props.db, props.path, 'projects');
+    const subProjectsCollection = collection(props.db, props.path, 'projects');
+    const subProjectsQuery = query(subProjectsCollection,
+        where("user_id", "==", props.user.uid || 0));
     const projectSubjectsCollection = collection(props.db, props.path, 'subjects');
+    const projectSubjectsQuery = query(projectSubjectsCollection,
+        where("user_id", "==", props.user.uid || 0));
     const [editProject, setEditProject] = useState({} as DocumentData);
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
     const [createSubProject, setCreateSubProject] = useState(false);
     const [deleteSubject, setDeleteSubject] = useState({} as DocumentData);
     const [editSubject, setEditSubject] = useState({} as DocumentData);
     const [subjectName, setSubjectName] = useState('');
-    const { status: statusP, data: projects } = useFirestoreCollectionData(subProjectCollection, { idField: 'id',});
-    const { status: statusS, data: subjects } = useFirestoreCollectionData(projectSubjectsCollection, { idField: 'id',});
+    const { status: statusP, data: projects } = useFirestoreCollectionData(subProjectsQuery, { idField: 'id',});
+    const { status: statusS, data: subjects } = useFirestoreCollectionData(projectSubjectsQuery, { idField: 'id',});
     // check the loading status
     if (statusP === 'loading') {
         return <p>טוען פרויקטים...</p>;
@@ -91,7 +95,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                     onProjectCreate={(createSubProject) => {
                         setCreateSubProject(false)
                     }}
-                    projectsCollection={subProjectCollection}
+                    projectsCollection={subProjectsCollection}
                     user={props.user} />
             }
             {
@@ -179,7 +183,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                         <h1>{project.project_name}</h1>
                         <div className="buttons">
                             <button 
-                                title='מחיקת הפרויקט' className="delete-subproject-button" onClick={() => deleteDoc(doc(subProjectCollection, project.id))}>
+                                title='מחיקת הפרויקט' className="delete-subproject-button" onClick={() => deleteDoc(doc(subProjectsCollection, project.id))}>
                                 <FaHammer size="24" />
                             </button>
                             <button 
@@ -192,7 +196,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                             <EditProjectForm 
                                 db={props.db} 
                                 editProject={editProject} 
-                                projectsCollection={subProjectCollection}
+                                projectsCollection={subProjectsCollection}
                                 setEditProject={(editProject) => setEditProject(editProject)}
                                 user={props.user} />
                         }
