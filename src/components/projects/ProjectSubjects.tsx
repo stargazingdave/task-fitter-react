@@ -152,23 +152,15 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                         }}>
                             <BiEditAlt size={20}/>
                     </button>
-                    {createTaskSubjectId == subject.id
-                    ? <></>
-                    : <button
-                        title='משימה חדשה'
-                        className='new-task-button' 
-                        onClick={() => setCreateTaskSubjectId(subject.id)}>
-                        <MdAddTask size={20}/>    
-                    </button>}
                     </div>
                     
                     </div>
-                    <ProjectTasks   projectStack={props.projectStack}
-                                    user={props.user}
-                                    tasksCollection={collection(db, getSubjectsPath(props.projectStack), subject.id, 'tasks')} 
-                                    contacts={props.contacts} 
-                                    createTaskSelected={createTaskSubjectId == subject.id} 
-                                    setCreateTaskSubjectId={(createTaskSubjectId: string) => setCreateTaskSubjectId(createTaskSubjectId)} />
+                    <ProjectTasks
+                        projectStack={props.projectStack}
+                        user={props.user}
+                        tasksCollection={collection(db, getSubjectsPath(props.projectStack), subject.id, 'tasks')} 
+                        contacts={props.contacts} 
+                        />
                 </div>
             ))}
             {

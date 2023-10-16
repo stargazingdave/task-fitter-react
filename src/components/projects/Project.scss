@@ -126,13 +126,6 @@
             font-weight: normal;
             width: fit-content;
         }
-        button{
-            color: #1F3C88;
-            background: #CEDDEF;
-            &:hover {
-                color: #070D59;
-            }
-        }
         .sub-projects {
             display: flex;
             flex-direction: column;

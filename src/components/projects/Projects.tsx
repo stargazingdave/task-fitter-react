@@ -105,7 +105,7 @@ export const Projects = (props: ProjectsProps) =>  {
                                                 <div className='buttons'>
                                                     <button onClick={() => {
                                                             const path = 'projects/'; 
-                                                            deleteDoc(doc(db, path, project.id));
+                                                            deleteDoc(doc(db, path, projectDeletePopup));
                                                             setProjectDeletePopup('');
                                                         }}>
                                                             מחיקה לתמיד

@@ -21,8 +21,6 @@ type ProjectTasksProps = {
     user: User;
     tasksCollection: CollectionReference;
     contacts: DocumentData[];
-    createTaskSelected: boolean;
-    setCreateTaskSubjectId: (createTaskSubjectId: string) => void;
 }
 
 
@@ -32,10 +30,9 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
     const db = getFirestore();
 
     const storage = getStorage();
-    console.log("props: ", props.contacts);
     
 
-    
+    const [newTask, setNewTask] = useState(false);
     const [editTask, setEditTask] = useState({} as DocumentData);
     const [taskDeletePopup, setTaskDeletePopup] = useState({} as DocumentData);
     const tasksQuery = query(props.tasksCollection,
@@ -51,16 +48,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
 
     
     return <div className="tasks">
-        {props.createTaskSelected
-            ? <CreateTaskForm tasksCollection={props.tasksCollection} 
-                                db={db}
-                                user={props.user} 
-                                createTaskSelected={props.createTaskSelected} 
-                                onTaskCreate={(createTaskSelected) => {props.setCreateTaskSubjectId('')}} 
-                                onCancel={() => props.setCreateTaskSubjectId('')} 
-                                contacts={props.contacts}
-                                project={props.projectStack[props.projectStack.length - 1]} />
-            : <></>}
         <div className="tasks-container">
             {tasks?.sort((x, y) => {
                 if (Date.parse(x.deadline) > Date.parse(y.deadline)) {
@@ -125,6 +112,20 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                     }
                 </div>
             ))}
+            {
+                newTask
+                ? <CreateTaskForm tasksCollection={props.tasksCollection} 
+                                    db={db}
+                                    user={props.user} 
+                                    createTaskSelected={newTask} 
+                                    onTaskCreate={() => setNewTask(false)} 
+                                    onCancel={() => setNewTask(false)} 
+                                    contacts={props.contacts}
+                                    project={props.projectStack[props.projectStack.length - 1]} />
+                : <button className="new-task-button" onClick={() => setNewTask(true)}>
+                    משימה חדשה
+                </button>
+            }
             {
                 taskDeletePopup?.id &&
                 <Popup 

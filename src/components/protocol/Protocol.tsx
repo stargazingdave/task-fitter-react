@@ -40,51 +40,11 @@ const save = () => {
     this solution sucks
  */
 
-const sendMail = (projectName: string, contactMail: string, taskList: string, contactName: string) => {
-
-    const linkToProtocolProject = document.getElementById("protocol-project");
-
-    //const protocolCanvas = document.getElementById("my-pic");
-    // if (myPic) {
-    //     const canvas = document.createElement('canvas');
-    //     // @ts-ignore
-    //     canvas.width = myPic.width;
-    //     // @ts-ignore
-    //     canvas.height = myPic.height;
-    //     const ctx = canvas.getContext('2d');
-    //     // @ts-ignore
-    //     ctx.drawImage(myPic, 0, 0);
-    // //}
-    if (linkToProtocolProject) {
-
-
-        // @ts-ignore
-        html2canvas(linkToProtocolProject, { scale: 1 }).then(
-            (canvas) => {
-                let base64 = canvas.toDataURL();
-                debugger;
-                //@ts-ignore
-                document.getElementById('qeqe').src = base64;
-                debugger;
-                //@ts-ignore
-                emailjs.send("task-fitter", "template_kqmklat", {
-                    attachment: base64,
-                    project_name: projectName,
-                    contact_mail: contactMail,
-                    contact_name: contactName,
-                    task_list: taskList
-                }, "vtVkQrnc2d67CfVRb");
-            }
-        );
-    }
-
-
-}
 
 export const Protocol = (props: ProtocolProps) => {
     const db = useFirestore();
 
-    let { id } = useParams();
+    let { id } = useParams(); //extract from URL id="..."
 
     const { status, data: project } = useFirestoreDocData(doc(db, 'projects', id || ''), { idField: 'id', });
 

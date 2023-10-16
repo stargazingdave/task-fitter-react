@@ -3,6 +3,19 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+        .new-task-button {
+            background: none;
+            border: 2px dashed #5C6E91;
+            width: 850px;
+            height: 96px;
+            font-size: 30px;
+            font-family: inherit;
+            margin: 10px;
+            &:hover {
+                cursor: pointer;
+                background-color: #ffffff77;
+            }
+        }
     }
     display: flex;
     background: #EEEDED;

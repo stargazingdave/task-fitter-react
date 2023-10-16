@@ -119,19 +119,6 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                                         onClick={() => setEditSubject(subject)}>
                                             <BiEditAlt size={24}/>
                                     </button>
-                                    <button 
-                                        className="new-task-button"
-                                        title="משימה חדשה"
-                                        onClick={() => addDoc(collection(props.db, props.path, 'subjects', subject.id, 'tasks'), {
-                                            task: "",
-                                            status: false,
-                                            deadline: new Date().toString(),
-                                            user_id: props.user.uid,
-                                            collaborators: [],
-                                            project_id: props.project.id
-                                        })}>
-                                            <MdAddTask size={24}/>
-                                    </button>
                                 </div>
                                 : <div>
                                     <div className="edit-subject-form">
@@ -171,7 +158,8 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                         <ProtocolTasks   
                             user={props.user}
                             tasksCollection={collection(props.db, props.path, 'subjects', subject.id, 'tasks')}
-                            addSaveAction={props.addSaveAction} />
+                            addSaveAction={props.addSaveAction}
+                            project={props.project} />
                     </div>
                 ))
             }
