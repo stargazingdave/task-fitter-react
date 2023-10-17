@@ -94,7 +94,7 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                     <select 
                         className="title-input" 
                         ref={selectContactRef}
-                        style={{    width: "100%" }}  >
+                        style={{width: "100%"}}  >
                             {contacts?.map(contact => (
                                 <option key={contact.id} className="contact" value={contact.id}>{contact.name}</option>
                             ))}

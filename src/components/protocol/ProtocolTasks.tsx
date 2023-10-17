@@ -46,7 +46,7 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                                     db={db} 
                                     addSaveAction={props.addSaveAction} />
                     {
-                        task.image && <img src={task.image} style={{scale: "90%", height: "200px", width: "fit-content"}} />
+                        task.image && <img src={task.image} style={{maxHeight: "200px"}} />
                     }
                     {
                         task.image && 
