@@ -32,14 +32,18 @@
     border-right: 1px solid #5C6E91;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
-    overflow: hidden;
+    overflow: visible;
 
     .p-task {
         display: flex;
         flex-direction: column;
-        overflow: hidden;
+        overflow: visible;
         justify-content: center;
         align-items: center;
+        &:focus-within {
+            background: #ffffff;
+            transition: 0.35s;
+        }
         &:not(:last-child)
         {
             border-bottom: 2px solid #5C6E91;

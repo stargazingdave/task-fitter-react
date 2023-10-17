@@ -65,11 +65,14 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                             <h2>{new Date(Date.parse(task.deadline)).toLocaleDateString("he-IL")}</h2>
                         </div>
                         <div className="collaborators">
-                            {task.collaborators?.map((collaborator: string) => (
-                            <div key={collaborator} className="collaborator">
-                                <p>{props.contacts.find((contact) => contact.id == collaborator)?.name}</p><p className="comma">, </p>
-                            </div>
-                            ))}
+                            {
+                                editTask?.id != task.id &&
+                                task.collaborators?.map((collaborator: string) => (
+                                    <div key={collaborator} className="collaborator">
+                                        <p>{props.contacts.find((contact) => contact.id == collaborator)?.name}</p><p className="comma">, </p>
+                                    </div>
+                                ))
+                            }
                         </div>
                         {
                             editTask?.id != task.id &&
@@ -102,13 +105,13 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                     }
                     {
                         editTask?.id == task.id &&
-                        <EditTaskForm editTask={editTask} 
-                                        tasksCollection={props.tasksCollection} 
-                                        user={props.user} 
-                                        setEditTask={setEditTask} 
-                                        db={db} 
-                                        task={task} 
-                                        contacts={props.contacts} /> 
+                        <EditTaskForm 
+                            tasksCollection={props.tasksCollection} 
+                            user={props.user} 
+                            setEditTask={setEditTask} 
+                            db={db} 
+                            task={editTask} 
+                            contacts={props.contacts} /> 
                     }
                 </div>
             ))}

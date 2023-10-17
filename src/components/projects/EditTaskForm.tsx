@@ -1,14 +1,15 @@
 import { User } from "firebase/auth";
 import { CollectionReference, DocumentData, Firestore, collection, deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
 import { useRef, useState } from "react";
-import "./EditTaskForm.scss"
+import "./EditTaskForm.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { deleteImage, uploadImage } from "../../utils";
+import Select, { GroupBase } from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 
 type EditTaskFormProps = {
-    editTask: DocumentData;
     tasksCollection: CollectionReference;
     user: User;
     setEditTask: (editProject: DocumentData) => void;
@@ -16,19 +17,19 @@ type EditTaskFormProps = {
     task: DocumentData;
     contacts: DocumentData[];
 }
-  
 
-const deleteCollaborator = (taskCollaborators: string[], collaborator: string, index: number) => {
-    let temp = [...taskCollaborators];
-    temp.splice(index, 1);
-    return temp;
-}
+const animatedComponents = makeAnimated();
+
 
 const updateTask = (props: EditTaskFormProps, 
     taskTitle: string, 
     taskDeadline: Date,
     taskCollaborators: string[],
     image: File | null) => {
+        if (taskTitle == '') {
+            alert('יש למלא את תיאור המשימה');
+            return;
+        }
         const date = new Date();
         updateDoc(doc(props.tasksCollection, props.task.id), {
             task: taskTitle,
@@ -44,12 +45,17 @@ const updateTask = (props: EditTaskFormProps,
 
 
 export const EditTaskForm = (props: EditTaskFormProps) => {
-    
-    const selectContactRef = useRef<HTMLSelectElement>(null);
+    let contacts = props.contacts.map((contact) => ({value: contact.id, label: contact.name}));
+
+    const selectContactRef = useRef<any>(null);
+    const [selectedOptions, setSelectedOptions] = useState(props.contacts
+        .filter((contact) => props.task.collaborators.includes(contact.id))
+        .map((collaborator) => ({value: collaborator.id, label: collaborator.name})));
     const [taskTitle, setTaskTitle] = useState(props.task.task);
-    const [taskCollaborators, setTaskCollaborators] = useState(props.editTask.collaborators);
+    const [taskCollaborators, setTaskCollaborators] = useState(props.task.collaborators);
     const [taskDeadline, setTaskDeadline] = useState(new Date(Date.parse(props.task.deadline)));
     const [image, setImage] = useState<File | null>(null);
+    
 
 
     return (
@@ -80,68 +86,56 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                     <label>
                         משתתפים:
                     </label>
-                    <select ref={selectContactRef}
-                            style={{width: "100%"}}>            
-                        {props.contacts?.map(contact => (
-                            <option key={contact.id} className="contact" value={contact.id}>{contact.name}</option>
-                        ))}
-                    </select>
-                    <button onClick={() => {
-                        if (selectContactRef?.current && !taskCollaborators.includes(selectContactRef.current.value)) {
-                            setTaskCollaborators([...taskCollaborators, selectContactRef.current.value]);
-                        }
-                    }}>
-                        הוספה
-                    </button>
-                    <div className="collaborators">
-                        {taskCollaborators?.map((collaborator: string, index: number) => (
-                            <div key={collaborator} className="contact">
-                                <h1 onClick={() => setTaskCollaborators(deleteCollaborator(taskCollaborators, collaborator, index))} title="מחיקה">{
-                                props.contacts.find((contact) => contact.id == collaborator)?.name}</h1>
-                            </div>
-                        ))}
-                    </div>
-                    <div className="image-select">
-                        {
-                            props.task.image && 
-                            <button 
-                                className="delete-image-button" 
-                                onClick={() => {
-                                    deleteImage(props.task.id);
-                                    updateDoc(doc(props.tasksCollection, props.task.id), {
-                                        image: deleteField()
-                                })}} >
-                                    מחיקת תמונה
-                            </button>
-                        }
-                        <label htmlFor="image-upload">בחירת תמונה</label>
-                        <input 
-                            className="image-upload"
-                            id="image-upload"
-                            type="file" 
-                            accept="image/jpeg"
-                            onChange={e => {
-                                let files: FileList | null;
-                                e.target.files
-                                ? files = e.target.files
-                                : files = null;
-                                let tempImage = {} as File;
-                                files && (tempImage = files[0]);
-                                tempImage && setImage(tempImage);
-                            }} />
-                    </div>
+                    <Select 
+                        ref={selectContactRef}
+                        options={contacts} 
+                        closeMenuOnSelect={false}
+                        components={animatedComponents}
+                        isMulti
+                        defaultValue={selectedOptions}
+                    />
                 </div>
-                <button onClick={() => {
-                    if (taskTitle == '') {
-                        alert('יש למלא את תיאור המשימה');
-                        return;
+                <div className="image-select">
+                    <label htmlFor="image-upload">בחירת תמונה:</label>
+                    <br></br>
+                    {
+                        props.task.image && 
+                        <button 
+                            className="delete-image-button" 
+                            onClick={() => {
+                                deleteImage(props.task.id);
+                                updateDoc(doc(props.tasksCollection, props.task.id), {
+                                    image: deleteField()
+                            })}} >
+                                מחיקת תמונה
+                        </button>
                     }
-                    updateTask(props, taskTitle, taskDeadline, taskCollaborators, image);
-                    props.setEditTask({} as DocumentData);
-                }}>
-                    שמירת שינויים
-                </button>
-                <button onClick={() => props.setEditTask({} as DocumentData)}>ביטול</button>
+                    <input 
+                        className="image-upload"
+                        id="image-upload"
+                        type="file" 
+                        accept="image/jpeg"
+                        onChange={e => {
+                            let files: FileList | null;
+                            e.target.files
+                            ? files = e.target.files
+                            : files = null;
+                            let tempImage = {} as File;
+                            files && (tempImage = files[0]);
+                            tempImage && setImage(tempImage);
+                        }} />
+                </div>
+                <div className="buttons">
+                    <button onClick={() => {
+                        const comp = selectContactRef.current;
+                        const taskCollaboratorsNew = comp.getValue().map((value) => value.value);
+                        updateTask(props, taskTitle, taskDeadline, taskCollaboratorsNew, image);
+                        props.setEditTask({} as DocumentData);
+                    }}>
+                        שמירת שינויים
+                    </button>
+                    <button onClick={() => props.setEditTask({} as DocumentData)}>ביטול</button>
+                </div>
             </div>
         </>
     )

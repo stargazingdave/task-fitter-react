@@ -47,20 +47,11 @@ const addTask = async (props: CreateTaskFormProps,
         props.onTaskCreate(props.createTaskSelected);
 }
 
-    
-const deleteCollaborator = (taskCollaborators: string[], collaborator: string, index: number) => {
-    let temp = [...taskCollaborators];
-    temp.splice(index, 1);
-    return temp;
-}
-
-
 
 export const CreateTaskForm = (props: CreateTaskFormProps) => {
 
     const selectContactRef = useRef<any>(null);
     const [taskTitle, setTaskTitle] = useState('');
-    const [taskCollaborators, setTaskCollaborators] = useState([] as string[]);
     const [selectedOptions, setSelectedOptions] = useState();
     const [taskDeadline, setTaskDeadline] = useState(new Date());
     const [image, setImage] = useState<File | null>(null);
@@ -109,20 +100,12 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
                         defaultValue={selectedOptions}
                     />
                 </div>
-                <div className="collaborators">
-                    {taskCollaborators?.map((collaborator: string, index: number) => (
-                        <div key={collaborator} className="contact">
-                            <h1 onClick={() => setTaskCollaborators(deleteCollaborator(taskCollaborators, collaborator, index))} title="מחיקה">{
-                                //@ts-ignore
-                            props.contacts.find(
-                                (contact: DocumentData) => contact ? contact.id == collaborator : false)
-                            .name}</h1>
-                        </div>
-                    ))}
-                </div>
             </div>
             <div>
-                <label htmlFor="image-upload">בחירת תמונה</label>
+                <label htmlFor="image-upload">
+                    בחירת תמונה:
+                </label>
+                <br></br>
                 <input 
                     className="image-upload"
                     id="image-upload"

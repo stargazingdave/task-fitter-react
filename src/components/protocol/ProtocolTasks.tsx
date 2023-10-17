@@ -1,6 +1,6 @@
 import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, addDoc, deleteField, doc, getDocs, getFirestore, query, updateDoc, where } from "firebase/firestore";
-import { useEffect } from "react";
+import { CollectionReference, DocumentData, addDoc, collection, deleteField, doc, getDocs, getFirestore, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { useEffect, useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 
 import './ProtocolTasks.scss'
@@ -17,9 +17,14 @@ type ProtocolTasksProps = {
 
 
 export const ProtocolTasks = (props: ProtocolTasksProps) => {
+    const [isAscending, setIsAscending] = useState(true);
     const db = getFirestore();
     const tasksQuery = query(props.tasksCollection, where("user_id", "==", props.user.uid || 0));
-
+    const contactsCollection = collection(db, 'contacts');
+    const contactsQuery = query(contactsCollection,
+        where("user_id", "==", props.user.uid || 0),
+        orderBy('name', isAscending ? 'asc' : 'desc'));
+    const { status: contactsStatus, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
 
     useEffect(() => {
         async function getToken() {
@@ -31,20 +36,26 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
     }, [])
 
     
-    const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
+    const { status: tasksStatus, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
     
-    if (status === 'loading') {
+    if (tasksStatus === 'loading') {
+        return <p>טוען משימות...</p>;
+    }
+    if (contactsStatus === 'loading') {
         return <p>טוען משימות...</p>;
     }
     return <div className="p-tasks">
         <div className="p-tasks-container">
             {tasks?.sort((task1, task2) => {return Date.parse(task1.deadline) - Date.parse(task2.deadline)}).map(task => (
                 <div className="p-task" key={task.id}>
-                    <ProtocolTask   task={task}
-                                    tasksCollection={props.tasksCollection}
-                                    user={props.user}
-                                    db={db} 
-                                    addSaveAction={props.addSaveAction} />
+                    <ProtocolTask   
+                        task={task}
+                        tasksCollection={props.tasksCollection}
+                        user={props.user}
+                        db={db} 
+                        addSaveAction={props.addSaveAction} 
+                        contacts={contacts}
+                    />
                     {
                         task.image && <img src={task.image} style={{maxHeight: "200px"}} />
                     }

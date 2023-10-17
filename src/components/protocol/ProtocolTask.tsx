@@ -3,10 +3,9 @@ import { CollectionReference, DocumentData, Firestore, collection, deleteDoc, do
 import { useRef, useState } from "react";
 import './ProtocolTask.scss'
 import { Checkbox } from "../general/Checkbox";
-import { useFirestoreCollectionData } from "reactfire";
-import { AiOutlinePlus } from 'react-icons/ai';
 import DatePicker from "react-datepicker";
-
+import Select, { GroupBase } from 'react-select';
+import makeAnimated from 'react-select/animated';
 import "react-datepicker/dist/react-datepicker.css";
 import { FaHammer } from "react-icons/fa";
 import Popup from "reactjs-popup";
@@ -20,30 +19,27 @@ type ProtocolTaskProps = {
     user: User;
     db: Firestore;
     addSaveAction: (taskId: string, action: () => void) => void;
+    contacts: DocumentData[];
 }
   
-
+const animatedComponents = makeAnimated();
 
 
 
 export const ProtocolTask = (props: ProtocolTaskProps) => {
+    let contacts = props.contacts.map((contact) => ({value: contact.id, label: contact.name}));
     const [taskTitle, setTaskTitle] = useState(props.task.task);
     const [isAscending, setIsAscending] = useState(true);
     const [taskDeadline, setTaskDeadline] = useState(new Date(Date.parse(props.task.deadline)));
     const [taskCollaborators, setTaskCollaborators] = useState(props.task.collaborators);
+    const [selectedOptions, setSelectedOptions] = useState(props.contacts
+        .filter((contact) => props.task.collaborators.includes(contact.id))
+        .map((collaborator) => ({value: collaborator.id, label: collaborator.name})));
     const [deleteTask, setDeleteTask] = useState({} as DocumentData);
     const [image, setImage] = useState<File | null>(null);
-    const contactsCollection = collection(props.db, "contacts");
-    const contactsQuery = query(contactsCollection,
-        where("user_id", "==", props.user.uid || 0),
-        orderBy('name', isAscending ? 'asc' : 'desc'));
-    const { status, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
-    const selectContactRef = useRef<HTMLSelectElement>(null);
+    const selectContactRef = useRef<any>(null);
 
 
-    if (status === 'loading') {
-        return <p>טוען אנשי קשר...</p>;
-    }
 
     props.addSaveAction(props.task.id, () => {
         const date = new Date();
@@ -60,13 +56,6 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
             uploadImage(props.task.id, image, props.tasksCollection);
         }
     })
-
-    const deleteCollaborator = (taskCollaborators: string[], collaborator: string, index: number) => {
-        let temp = [...taskCollaborators];
-        temp.splice(index, 1);
-        return temp;
-    }
-
     
     return (
         <>
@@ -89,36 +78,29 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                                 overflow-wrap="anywhere"
                                 overflow-y="scroll" />
                 </div>
-                <div className="task-collaborators" >
-                    <label htmlFor="title-input" >משתתפים: </label>
-                    <select 
-                        className="title-input" 
+                <div className="collaborators-selection">
+                    <label>
+                        משתתפים:
+                    </label>
+                    <Select 
+                        styles={{
+                            control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                borderColor: state.isFocused ? 'blue' : 'grey',
+                            }),
+                            multiValue: (baseStyles, state) => ({
+                                ...baseStyles,
+                                fontSize: 14,
+                                width: "fit-content",
+                            }),
+                        }}
                         ref={selectContactRef}
-                        style={{width: "100%"}}  >
-                            {contacts?.map(contact => (
-                                <option key={contact.id} className="contact" value={contact.id}>{contact.name}</option>
-                            ))}
-                    </select>
-                    <button onClick={() => {
-                        if (selectContactRef?.current && !taskCollaborators.includes(selectContactRef.current.value)) {
-                            setTaskCollaborators([...taskCollaborators, selectContactRef.current.value]);
-                        }
-                    }}>
-                        <AiOutlinePlus />
-                    </button>
-                    <div className="collaborators-list">
-                        {taskCollaborators?.map((collaborator: string, index: number) => (
-                            <div key={collaborator} className="contact">
-                                <h1 
-                                    title="מחיקה"
-                                    onClick={() => {
-                                            setTaskCollaborators(deleteCollaborator(taskCollaborators, collaborator, index));
-                                        }} >
-                                    {contacts.find((contact) => contact.id == collaborator)?.name}
-                                </h1>
-                            </div>
-                        ))}
-                    </div>
+                        options={contacts} 
+                        closeMenuOnSelect={false}
+                        components={animatedComponents}
+                        isMulti
+                        defaultValue={selectedOptions}
+                    />
                 </div>
                 <div className="set-deadline">
                     <label>
