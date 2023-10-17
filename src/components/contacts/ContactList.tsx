@@ -29,7 +29,6 @@ export const ContactList = (props: ContactListProps) => {
     const [isAscending, setIsAscending] = useState(true);
     const [editContact, setEditContact] = useState({} as DocumentData);
     const [createContactFlag, setCreateContactFlag] = useState(false);
-    const [contactSelected, setContactSelected] = useState({} as DocumentData);
     const [contactDeletePopup, setContactDeletePopup] = useState({} as DocumentData);
     const contactsQuery = query(contactsCollection,
                                 where("user_id", "==", props.user.uid || 0),

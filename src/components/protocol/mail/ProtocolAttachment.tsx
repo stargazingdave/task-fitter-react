@@ -1,7 +1,7 @@
 import '.././Protocol.scss';
 
 // Import the functions you need from the SDKs you need
-import { DocumentData, Firestore, collection, collectionGroup, doc, query, where } from 'firebase/firestore';
+import { DocumentData, collection, collectionGroup, doc, query, where } from 'firebase/firestore';
 import { useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
 import { User } from 'firebase/auth';
 import { useParams } from 'react-router-dom';
@@ -42,7 +42,6 @@ const sendMail = async (project: DocumentData, tasks: DocumentData[], contacts: 
     
 
     Object.values(collaborators).forEach((instance) => {
-        debugger
         //@ts-ignore
         emailjs.send("task-fitter", "template_kqmklat", {
             attachment: base64,
@@ -62,42 +61,48 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
     
     let { id } = useParams();
 
-    const { status, data: project } = useFirestoreDocData(doc(db, 'projects', id || ''), { idField: 'id', });
+    const { status: projectStatus, data: project } = useFirestoreDocData(doc(db, 'projects', id || ''), { idField: 'id', });
+    
     const tasksCollection = collectionGroup(db, 'tasks');
-    const projectTasksQuery = query(tasksCollection, where('project_id', '==', id));
+    const projectTasksQuery = query(tasksCollection, 
+        where("user_id", "==", props.user.uid || 0),
+        where('project_id', '==', id));
     const {status: tasksStatus, data: projectTasks} = useFirestoreCollectionData(projectTasksQuery, { idField: 'id', });
+    
     const contactsCollection = collection(db, 'contacts');
     const contactsQuery = query(contactsCollection,
         where("user_id", "==", props.user.uid || 0));
     const {status: contactsStatus, data: contacts} = useFirestoreCollectionData(contactsQuery, { idField: 'id', });
+    
+    if (projectStatus === 'loading') {
+        return <p>טוען פרוטוקול...</p>;
+    }
     if (contactsStatus === 'loading') {
         return <p>טוען פרוטוקול...</p>;
     }
-    if (status === 'loading') {
+    if (tasksStatus === 'loading') {
         return <p>טוען פרוטוקול...</p>;
     }
+    
     if (!project) {
         return <p>פרויקט לא קיים</p>
     }
 
-    if (tasksStatus === 'loading') {
-        return <p>טוען משימות...</p>;
-    }
-   
-
-    
-
     return <div className='protocol-container'>
         <div  id="protocol-project">
             <h1>פרוטוקול פרויקט: {project.project_name}</h1>
-            <ProtocolProjectAttachment user={props.user}
+            <ProtocolProjectAttachment 
+                user={props.user}
                 project={project}
                 db={db}
                 path={'projects/' + project.id}
-                addSaveAction={addSaveAction} />
+                addSaveAction={addSaveAction} 
+            />
         </div>
         <div className="buttons">
-            <button onClick={() => sendMail(project, projectTasks, contacts)}>שליחה</button>
+            <button onClick={() => sendMail(project, projectTasks, contacts)}>
+                שליחה
+            </button>
         </div>
     </div>
 }

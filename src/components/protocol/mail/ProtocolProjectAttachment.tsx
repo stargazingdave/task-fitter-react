@@ -1,17 +1,8 @@
 import { User } from "firebase/auth";
-import { DocumentData, Firestore, addDoc, collection, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { DocumentData, Firestore, addDoc, collection, deleteDoc, doc, query, updateDoc, where } from "firebase/firestore";
 import { useFirestoreCollectionData } from "reactfire";
 import '.././ProtocolProject.scss'
 import { ProtocolTasksAttachment } from "./ProtocolTasksAttachment";
-import { useState } from "react";
-import { CreateProjectForm } from "../../projects/CreateProjectForm";
-import Popup from "reactjs-popup";
-import { ProtocolConfirmationBox } from ".././ProtocolConfirmationBox";
-import { FaHammer } from "react-icons/fa";
-import { BiEditAlt } from "react-icons/bi";
-import { EditProjectForm } from "../../projects/EditProjectForm";
-import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { MdAddTask } from "react-icons/md";
 
 type ProtocolProjectAttachmentProps = {
     user: User;
@@ -23,10 +14,13 @@ type ProtocolProjectAttachmentProps = {
 
 export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps) => {
     const subProjectCollection = collection(props.db, props.path, 'projects');
+    const subProjectsQuery = query(subProjectCollection,
+        where("user_id", "==", props.user.uid || 0));
     const projectSubjectsCollection = collection(props.db, props.path, 'subjects');
-    const [editProject, setEditProject] = useState({} as DocumentData);
-    const { status: statusP, data: projects } = useFirestoreCollectionData(subProjectCollection, { idField: 'id',});
-    const { status: statusS, data: subjects } = useFirestoreCollectionData(projectSubjectsCollection, { idField: 'id',});
+    const subjectsQuery = query(projectSubjectsCollection,
+        where("user_id", "==", props.user.uid || 0));
+    const { status: statusP, data: projects } = useFirestoreCollectionData(subProjectsQuery, { idField: 'id',});
+    const { status: statusS, data: subjects } = useFirestoreCollectionData(subjectsQuery, { idField: 'id',});
     // check the loading status
     if (statusP === 'loading') {
         return <p>טוען פרויקטים...</p>;
@@ -58,15 +52,6 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
                 projects.map(project => ( 
                     <div className="sub-project" key={project.id}>
                         <h1>{project.project_name}</h1>
-                        {
-                            editProject?.id &&
-                            <EditProjectForm 
-                                db={props.db} 
-                                editProject={editProject} 
-                                projectsCollection={subProjectCollection}
-                                setEditProject={(editProject) => setEditProject(editProject)}
-                                user={props.user} />
-                        }
                         <ProtocolProjectAttachment    
                             user={props.user}
                             project={project}

@@ -11,7 +11,6 @@ import { FaHammer } from "react-icons/fa";
 import { BiEditAlt } from "react-icons/bi";
 import { EditProjectForm } from "../projects/EditProjectForm";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { MdAddTask } from "react-icons/md";
 
 type ProtocolProjectProps = {
     user: User;

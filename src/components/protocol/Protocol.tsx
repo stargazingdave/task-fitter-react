@@ -1,13 +1,11 @@
 import './Protocol.scss';
 
-// Import the functions you need from the SDKs you need
 import { doc } from 'firebase/firestore';
 import { useFirestore, useFirestoreDocData } from 'reactfire';
 import { User } from 'firebase/auth';
 import { ProtocolProject } from './ProtocolProject';
 import { FiSave } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
-import html2canvas from 'html2canvas';
 
 
 type ProtocolProps = {
@@ -28,18 +26,6 @@ const save = () => {
     })
     alert("כל המשימות עודכנו בפרויקט");
 }
-
-/*
-   method1: html2canvas
-    images don't work
-    some css properties broken
-
-   method2: capture screen
-    captures only only visible area
-    so we tried to zoom out, but the quality isn't good enough to see details 
-    this solution sucks
- */
-
 
 export const Protocol = (props: ProtocolProps) => {
     const db = useFirestore();

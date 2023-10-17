@@ -7,15 +7,13 @@ import './ProjectSubjects.scss';
 import { DocumentData, addDoc, collection, deleteDoc, doc, query, updateDoc, where } from 'firebase/firestore';
 import { useFirestore, useFirestoreCollectionData} from 'reactfire';
 import { User } from 'firebase/auth';
-import { getProjectsPath, getSubjectsPath } from '../../utils';
+import { getSubjectsPath } from '../../utils';
 import { ProjectTasks } from './ProjectTasks';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Popup from 'reactjs-popup';
 import { ConfirmationBox } from '../general/ConfirmationBox';
 import { FaHammer } from 'react-icons/fa';
 import { BiEditAlt } from 'react-icons/bi';
-import { CreateTaskForm } from './CreateTaskForm';
-import { MdAddTask } from 'react-icons/md';
 
 
 type ProjectSubjectsProps = {

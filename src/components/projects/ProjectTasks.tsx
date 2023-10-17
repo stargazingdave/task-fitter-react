@@ -2,7 +2,7 @@ import { User } from "firebase/auth";
 import { CollectionReference, DocumentData, deleteDoc, doc, getFirestore, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
-import { getStorage, ref, deleteObject, StorageReference } from "firebase/storage";
+import { getStorage, ref, deleteObject } from "firebase/storage";
 
 
 import './ProjectTasks.scss'

@@ -3,7 +3,7 @@ import { DocumentData, collectionGroup, getDocs, getFirestore, orderBy, query, w
 import { useEffect, useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 
-import './ContactTasks.css'
+import './ContactTasks.scss'
 
 
 type ContactTasksProps = {

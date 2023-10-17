@@ -5,7 +5,7 @@ import { BsFillBuildingsFill } from 'react-icons/bs';
 import './Projects.scss';
 import { EditProjectForm } from './EditProjectForm';
 
-import { DocumentData, addDoc, collection, deleteDoc, doc, orderBy, query, updateDoc, where } from 'firebase/firestore';
+import { DocumentData, collection, deleteDoc, doc, orderBy, query, where } from 'firebase/firestore';
 import { useFirestore, useFirestoreCollectionData} from 'reactfire';
 import { User } from 'firebase/auth';
 import { CreateProjectForm } from './CreateProjectForm';

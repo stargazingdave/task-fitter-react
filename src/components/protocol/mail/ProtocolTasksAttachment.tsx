@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { CollectionReference, getFirestore } from "firebase/firestore";
+import { CollectionReference, getFirestore, query, where } from "firebase/firestore";
 import { useFirestoreCollectionData } from "reactfire";
 
 import '.././ProtocolTasks.scss'
@@ -15,7 +15,9 @@ type ProtocolTasksAttachmentProps = {
 
 export const ProtocolTasksAttachment = (props: ProtocolTasksAttachmentProps) => {
     const db = getFirestore();
-    const { status, data: tasks } = useFirestoreCollectionData(props.tasksCollection, { idField: 'id',});
+    const tasksQuery = query(props.tasksCollection,
+        where("user_id", "==", props.user.uid || 0));
+    const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
     
     if (status === 'loading') {
         return <p>טוען משימות...</p>;

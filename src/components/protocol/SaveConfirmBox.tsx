@@ -11,8 +11,12 @@ export const SaveConfirmBox = (props: SaveConfirmBoxProps) => {
 
     return (
         <div className="confirm-box">
-            <button onClick={() => props.onConfirm(props.trigger, props.confirm)} >אישור</button>
-            <button onClick={() => props.onCancel(props.trigger, props.confirm)} >ביטול</button>
+            <button onClick={() => props.onConfirm(props.trigger, props.confirm)} >
+                אישור
+            </button>
+            <button onClick={() => props.onCancel(props.trigger, props.confirm)} >
+                ביטול
+            </button>
         </div>
     )
 }

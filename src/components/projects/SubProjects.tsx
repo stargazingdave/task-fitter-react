@@ -10,7 +10,7 @@ import { DocumentData, collection, deleteDoc, doc, orderBy, query, where } from 
 import { useFirestore, useFirestoreCollectionData } from 'reactfire';
 import { User } from 'firebase/auth';
 import { CreateProjectForm } from './CreateProjectForm';
-import { getProjectsPath, getTasksPath } from '../../utils';
+import { getProjectsPath } from '../../utils';
 import { BsFillBuildingsFill } from 'react-icons/bs';
 import { FaHammer } from 'react-icons/fa';
 import Popup from 'reactjs-popup';

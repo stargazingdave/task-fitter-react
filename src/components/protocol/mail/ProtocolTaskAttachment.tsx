@@ -1,17 +1,9 @@
 import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, Firestore, collection, deleteDoc, doc, query, updateDoc, where } from "firebase/firestore";
-import { useRef, useState } from "react";
+import { CollectionReference, DocumentData, Firestore, collection, query, where } from "firebase/firestore";
 import '.././ProtocolTask.scss'
-import { Checkbox } from "../../general/Checkbox";
 import { useFirestoreCollectionData } from "reactfire";
-import { AiOutlinePlus } from 'react-icons/ai';
-import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { FaHammer } from "react-icons/fa";
-import Popup from "reactjs-popup";
-import { ProtocolConfirmationBox } from ".././ProtocolConfirmationBox";
-import { deleteImage, uploadImage } from "../../../utils";
 
 
 type ProtocolTaskAttachmentProps = {
@@ -31,18 +23,10 @@ export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
     const contactsQuery = query(contactsCollection,
         where("user_id", "==", props.user.uid || 0));
     const { status, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
-    const selectContactRef = useRef<HTMLSelectElement>(null);
 
 
     if (status === 'loading') {
         return <p>טוען אנשי קשר...</p>;
-    }
-
-
-    const deleteCollaborator = (taskCollaborators: string[], collaborator: string, index: number) => {
-        let temp = [...taskCollaborators];
-        temp.splice(index, 1);
-        return temp;
     }
 
     

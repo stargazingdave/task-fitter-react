@@ -4,8 +4,6 @@ import { useRef, useState } from "react";
 import "./EditTaskForm.scss"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useFirestoreCollectionData } from "reactfire";
-import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { deleteImage, uploadImage } from "../../utils";
 
 
