@@ -14,6 +14,7 @@ import { getProjectsPath } from '../../utils';
 import { BsFillBuildingsFill } from 'react-icons/bs';
 import { FaHammer } from 'react-icons/fa';
 import Popup from 'reactjs-popup';
+import { MdDeleteForever } from 'react-icons/md';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -74,7 +75,7 @@ export const SubProjects = (props: SubProjectsProps) =>  {
                 title='מחיקת תת הפרויקט'
                 className='delete-button' 
                 onClick={() => setProjectDeletePopup(project.id)} >
-                <FaHammer size={22}/>
+                <MdDeleteForever size={22}/>
             </button>
             <Popup 
                 contentStyle={{width: "300px"}}

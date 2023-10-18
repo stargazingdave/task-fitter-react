@@ -10,6 +10,8 @@ import { useFirestore, useFirestoreCollectionData} from 'reactfire';
 import { User } from 'firebase/auth';
 import { CreateProjectForm } from './CreateProjectForm';
 import Popup from 'reactjs-popup';
+import { MdDeleteForever } from 'react-icons/md';
+import { BiEditAlt } from 'react-icons/bi';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -94,7 +96,7 @@ export const Projects = (props: ProjectsProps) =>  {
                                         title='מחיקת הפרויקט'
                                         className='delete-button' 
                                         onClick={() => setProjectDeletePopup(project.id)} >
-                                        <FaHammer size={25}/>
+                                        <MdDeleteForever size={25}/>
                                     </button>
                                     <Popup 
                                         contentStyle={{width: "300px"}}
@@ -114,20 +116,24 @@ export const Projects = (props: ProjectsProps) =>  {
                                                 </div>
                                             </div>
                                     </Popup>
-                                    <button title='עריכת שם ומנהל הפרויקט' className='edit-button' onClick={() => {
-                                                                props.setEditProject(project);
-                                                            }}>
-                                        <GiLargePaintBrush size={25}/>
+                                    <button 
+                                        title='עריכת שם ומנהל הפרויקט' 
+                                        className='edit-button' 
+                                        onClick={() => {
+                                            props.setEditProject(project);
+                                        }}>
+                                            <BiEditAlt size={25}/>
                                     </button>
                                 </>
-                                :
-                                    <div className="edit-project-form">
-                                    <EditProjectForm editProject={props.editProject} 
-                                                    projectsCollection={projectsCollection} 
-                                                    user={props.user} 
-                                                    setEditProject={(editProject) => props.setEditProject(editProject)} 
-                                                    db={db}/>
-                                    </div>
+                                : <div className="edit-project-form">
+                                    <EditProjectForm 
+                                        editProject={props.editProject} 
+                                        projectsCollection={projectsCollection} 
+                                        user={props.user} 
+                                        setEditProject={(editProject) => props.setEditProject(editProject)} 
+                                        db={db}
+                                    />
+                                </div>
                                 
                             }
                         </div>

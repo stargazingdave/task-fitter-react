@@ -1,0 +1,64 @@
+.user-panel {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content: right;
+    align-items: center;
+    background: #1F3C88;
+    height: 60px;
+    align-items: right;
+    h1 {
+        margin: 0px;
+        color: #ffffff;
+        font-weight: 400;
+        font-size: 26px;
+        text-align: right;
+        margin-right: 4px;
+        margin-left: 4px;
+    }
+    .info {
+        display: flex;
+        flex-direction: row;
+        padding: 10px;
+        gap: 10px;
+        align-items: center;
+    }
+    button {
+        background: #CEDDEF;
+        border: none;
+        color: 1F3C88;
+        padding: 5px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px;
+        border-radius: 3px;
+        width: fit-content;
+        &:hover {
+            background: #5893D4;
+            cursor: pointer;
+        }
+    }
+    .contact-list-button {
+        background: none;
+        position: absolute;
+        left: 26px;
+        &:hover {
+            background: none;
+            svg {
+                fill: #CEDDEF;
+            }
+        }
+        svg {
+            fill: #ffffff;
+        }
+    }
+}
+
+
+
+.display-name {
+    color: white;
+}

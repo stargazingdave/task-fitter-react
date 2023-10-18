@@ -45,7 +45,7 @@ export const EditContactForm = (props: EditContactFormProps) => {
 
 
     return (
-        <>
+        <div className="edit-contact-form">
             <label>
                 שם:
             </label>
@@ -77,6 +77,6 @@ export const EditContactForm = (props: EditContactFormProps) => {
                 </button>
                 <button onClick={() => props.setEditContact({})}>ביטול</button>
             </div>
-        </>
+        </div>
     )
 }

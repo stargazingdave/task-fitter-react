@@ -15,6 +15,7 @@ import Popup from "reactjs-popup";
 import { ConfirmationBox } from "../general/ConfirmationBox";
 import { FaHammer } from "react-icons/fa";
 import { ImageContainer } from "../general/ImageContainer";
+import { MdDeleteForever } from "react-icons/md";
 
 type ProjectTasksProps = {
     projectStack: DocumentData[];
@@ -87,7 +88,7 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                     onClick={() => {
                                         setTaskDeletePopup(task);
                                     }}>
-                                    <FaHammer size={25}/>
+                                    <MdDeleteForever size={25}/>
                                 </button>
                                 
                             </div>

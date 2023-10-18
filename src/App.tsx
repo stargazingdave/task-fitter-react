@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 
-import {Layout} from './components/Layout'
+import {Layout} from './components/general/Layout'
 
 // Import the functions you need from the SDKs you need
 import { DocumentData, collection, doc, getFirestore, orderBy, query } from 'firebase/firestore';
@@ -16,7 +16,7 @@ import { FirebaseAppProvider,
          useSigninCheck} from 'reactfire';
 import { User, getAuth, onAuthStateChanged } from 'firebase/auth'; 
 import { getDatabase } from 'firebase/database'; 
-import { MainPage } from './components/MainPage';
+import { MainPage } from './components/general/MainPage';
 import { Protocol } from './components/protocol/Protocol';
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Router, Routes, } from "react-router-dom";

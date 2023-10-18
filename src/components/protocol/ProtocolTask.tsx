@@ -11,6 +11,7 @@ import { FaHammer } from "react-icons/fa";
 import Popup from "reactjs-popup";
 import { ProtocolConfirmationBox } from "./ProtocolConfirmationBox";
 import { deleteImage, uploadImage } from "../../utils";
+import { MdDeleteForever } from "react-icons/md";
 
 
 type ProtocolTaskProps = {
@@ -125,7 +126,7 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                     className="delete-button" 
                     title="מחיקה"
                     onClick={() => setDeleteTask(props.task)}>
-                    <FaHammer />
+                    <MdDeleteForever />
                 </button>
                 {
                     deleteTask?.id &&

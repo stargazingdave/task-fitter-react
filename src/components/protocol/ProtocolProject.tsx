@@ -11,6 +11,7 @@ import { FaHammer } from "react-icons/fa";
 import { BiEditAlt } from "react-icons/bi";
 import { EditProjectForm } from "../projects/EditProjectForm";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import { MdDeleteForever } from "react-icons/md";
 
 type ProtocolProjectProps = {
     user: User;
@@ -110,7 +111,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                                         className="delete-button"
                                         title="מחיקת נושא"
                                         onClick={() => setDeleteSubject(subject)}>
-                                            <FaHammer size={24}/>
+                                            <MdDeleteForever size={24}/>
                                     </button>
                                     <button 
                                         className="edit-button"
@@ -171,7 +172,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                         <div className="buttons">
                             <button 
                                 title='מחיקת הפרויקט' className="delete-subproject-button" onClick={() => deleteDoc(doc(subProjectsCollection, project.id))}>
-                                <FaHammer size="24" />
+                                <MdDeleteForever size="24" />
                             </button>
                             <button 
                                 title='עריכת שם ומנהל הפרויקט'className="edit-subproject-button" onClick={() => setEditProject(project)}>

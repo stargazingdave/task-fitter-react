@@ -20,6 +20,7 @@ export const ContactTasks = (props: ContactTasksProps) => {
     const tasksCollection = collectionGroup(db, 'tasks');
     
     const tasksQuery = query(tasksCollection, 
+        where("user_id", '==', props.user.uid),
         where("collaborators", 'array-contains', props.contact.id),
         orderBy('deadline', isAscending ? 'asc' : 'desc'));
 

@@ -14,6 +14,7 @@ import Popup from 'reactjs-popup';
 import { ConfirmationBox } from '../general/ConfirmationBox';
 import { FaHammer } from 'react-icons/fa';
 import { BiEditAlt } from 'react-icons/bi';
+import { MdDeleteForever } from 'react-icons/md';
 
 
 type ProjectSubjectsProps = {
@@ -102,7 +103,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                                 title='מחיקת הנושא'
                                 className='delete-button'
                                 onClick={() => setSubjectDeletePopup(subject)}>
-                                    <FaHammer size={20}/>
+                                    <MdDeleteForever size={20}/>
                             </button>
                         </>
                         : <div>

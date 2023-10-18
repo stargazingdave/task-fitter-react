@@ -9,8 +9,10 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import { EditContactForm } from './EditContactForm';
 import { ConfirmationBox } from '../general/ConfirmationBox';
-import { FaHammer, FaTasks } from 'react-icons/fa';
+import { FaTasks } from 'react-icons/fa';
+import { MdDeleteForever } from 'react-icons/md'
 import { BiEditAlt } from 'react-icons/bi';
+import { Contact } from './Contact';
 
 
 
@@ -28,6 +30,7 @@ export const ContactList = (props: ContactListProps) => {
     const contactsCollection = collection(db, 'contacts');
     const [isAscending, setIsAscending] = useState(true);
     const [editContact, setEditContact] = useState({} as DocumentData);
+    const [openContact, setOpenContact] = useState({} as DocumentData);
     const [createContactFlag, setCreateContactFlag] = useState(false);
     const [contactDeletePopup, setContactDeletePopup] = useState({} as DocumentData);
     const contactsQuery = query(contactsCollection,
@@ -38,16 +41,27 @@ export const ContactList = (props: ContactListProps) => {
     // check the loading status
     if (status === 'loading') {
         return <p>טוען אנשי קשר...</p>;
-        }
+    }
 
-    console.log('list: ', contacts);
     
     return <div className="contacts">
             <h1>אנשי קשר</h1>
                 {contacts.map(contact => (
-                    <div className="contact" key={contact.id}>
+                    <div 
+                        className="contact" 
+                        key={contact.id} 
+                        >
                         <div className="name">
-                            <h1 title={contact.role}>{contact.name}</h1>
+                            <h1 
+                                title={contact.role}
+                                onClick={() => {
+                                    openContact?.id == contact.id
+                                    ? setOpenContact({})
+                                    : setOpenContact(contact)
+                                }}
+                                >
+                                    {contact.name}
+                            </h1>
                         </div>
                         <div className='buttons'>
                         <button title='עריכת איש קשר' className='edit-button' onClick={() => {
@@ -61,9 +75,9 @@ export const ContactList = (props: ContactListProps) => {
                             onClick={() => {
                                 setContactDeletePopup(contact);
                             }}>
-                                <FaHammer size={20} />
+                                <MdDeleteForever size={20} />
                         </button>
-                        <Popup modal={true} trigger={
+                        <Popup trigger={
                             <button title='רשימת משימות של איש הקשר' className='tasks-button'>
                                 <FaTasks  size={20} />
                         </button>} position="right center">
@@ -72,7 +86,6 @@ export const ContactList = (props: ContactListProps) => {
                         </div>
                         {
                             editContact?.id == contact.id && 
-                            <div className="edit-contact-form">
                                 <EditContactForm 
                                     editContact={editContact} 
                                     setEditContact={setEditContact}
@@ -84,9 +97,15 @@ export const ContactList = (props: ContactListProps) => {
                                         setEditContact({});
                                     }} 
                                     db={db} />
-                            </div>
+                        }
+                        {
+                            openContact?.id == contact.id &&
+                            <Contact 
+                                contact={openContact} 
+                            />
                         }
                     </div>
+                    
                 ))}
             <div className="create-contact">
             {createContactFlag
@@ -98,7 +117,6 @@ export const ContactList = (props: ContactListProps) => {
                                     onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>
                 </div>
             : <button onClick={() => setCreateContactFlag(!createContactFlag)}>איש קשר חדש</button>}
-            
             </div>
             {
                 contactDeletePopup?.id &&
