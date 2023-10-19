@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 import { FirebaseAppProvider,
     FirestoreProvider,
@@ -26,11 +28,13 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <div className='frame'>
-    <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <App />
-    </FirebaseAppProvider>
-  </div>
+    <div className='frame'>
+        <Provider store={store}>
+            <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+                <App />
+            </FirebaseAppProvider>
+        </Provider>
+    </div>
 );
 
 // If you want to start measuring performance in your app, pass a function

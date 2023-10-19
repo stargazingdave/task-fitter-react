@@ -4,56 +4,23 @@ import { Auth, GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
 import './Layout.scss';
 import { ImUsers } from 'react-icons/im';
 import { useState } from 'react';
+import { AppDispatch, RootState } from '../../store';
+import { connect, ConnectedProps } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../reduxHooks';
+import { signIn, signOut, onSignStateChanged, selectUser, selectSignedIn } from '../../redux/userSlice';
 
 export const LoadingSpinner = () => {
-        return (
-        <div className="animate-pulse">
-            <span>Loading...</span>
-        </div>
-        );
-    };
-
-
-    const signOut = (auth: Auth) => auth.signOut().then(() => console.log('signed out'));
-    const signIn = async (auth: Auth) => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({
-        prompt: 'select_account'
-    });
-
-    await signInWithPopup(auth, provider)
-        .then((result) => {
-            // Authentication successful
-            // Handle the result here
-        })
-        .catch((error) => {
-            if (error.code === 'auth/popup-closed-by-user') {
-                // Handle popup closed by user
-                console.log('Popup closed by user');
-            } else {
-                // Handle other errors
-                console.error(error);
-            }
-        });
-}
-
-export const AuthWrapper = ({ children, fallback }: React.PropsWithChildren<{ fallback: JSX.Element }>): JSX.Element => {
-    const { status, data: signInCheckResult } = useSigninCheck();
-    
-
-    if (!children) {
-        throw new Error('Children must be provided');
-    }
-    if (status === 'loading') {
-        return <LoadingSpinner />;
-    } else if (signInCheckResult.signedIn === true) {
-        return children as JSX.Element;
-    }
-
-    return fallback;
+    return (
+    <div className="animate-pulse">
+        <span>Loading...</span>
+    </div>
+    );
 };
 
-const UserPanel = ({ user } : { user: User}) => {
+const UserPanel = () => {
+    const dispatch = useAppDispatch();
+    const user = useAppSelector(selectUser);
+    debugger;
     const auth = useAuth();
     const [openContacts, setOpenContacts] = useState(false);
     return (
@@ -61,7 +28,7 @@ const UserPanel = ({ user } : { user: User}) => {
             <h1>Task Fitter</h1>
             <div className='info'>
                 <div title="Sign Out">
-                    <button onClick={() => signOut(auth)} >
+                    <button onClick={() => dispatch(signOut(auth))} >
                         יציאה מהחשבון
                     </button>
                 </div>
@@ -81,6 +48,7 @@ const UserPanel = ({ user } : { user: User}) => {
 };
 
 const SignInForm = () => {
+    const dispatch = useAppDispatch();
     const auth = useAuth();
 
     return (
@@ -92,22 +60,23 @@ const SignInForm = () => {
                     justifyContent: 'center',
                     background: 'white'}}>
         <h1 style={{color: '#1F3C88'}}>Task Fitter</h1>
-        <button onClick={() => signIn(auth)} >כניסה לחשבון</button>
+        <button onClick={() => dispatch(signIn(auth))} >כניסה לחשבון</button>
         </div>
     );
 };
 
 export const Layout = () => {
     const { status, data: signinResult } = useSigninCheck();
+    const dispatch = useAppDispatch();
+    dispatch(onSignStateChanged(signinResult?.user));
+    const signedIn = useAppSelector(selectSignedIn);
 
     if (status === 'loading') {
         return <LoadingSpinner />;
     }
 
-    const { signedIn, user } = signinResult;
-
     if (signedIn === true) {
-        return <UserPanel user={user} />;
+        return <UserPanel />;
     } else {
         return <SignInForm />;
     }
