@@ -10,6 +10,7 @@ import makeAnimated from 'react-select/animated';
 import { uploadImage } from "../../utils";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
+import { selectContacts } from "../../redux/contactsSlice";
 
 const animatedComponents = makeAnimated();
 
@@ -19,7 +20,6 @@ type CreateTaskFormProps = {
     onTaskCreate: (onTaskCreate: boolean) => void;
     onCancel: () => void;
     db: Firestore;
-    contacts: DocumentData[];
     project: DocumentData;
 }
 
@@ -52,12 +52,13 @@ const addTask = async (props: CreateTaskFormProps,
 
 export const CreateTaskForm = (props: CreateTaskFormProps) => {
     const user = useAppSelector(selectUser);
+    const contacts = useAppSelector(selectContacts);
     const selectContactRef = useRef<any>(null);
     const [taskTitle, setTaskTitle] = useState('');
     const [selectedOptions, setSelectedOptions] = useState();
     const [taskDeadline, setTaskDeadline] = useState(new Date());
     const [image, setImage] = useState<File | null>(null);
-    let contacts = props.contacts.map((contact) => ({value: contact.id, label: contact.name}));
+    let contactsOptions = contacts.map((contact) => ({value: contact.id, label: contact.name}));
 
     console.log('task: ', contacts);
 
@@ -95,7 +96,7 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
                     </label>
                     <Select 
                         ref={selectContactRef}
-                        options={contacts} 
+                        options={contactsOptions} 
                         closeMenuOnSelect={false}
                         components={animatedComponents}
                         isMulti

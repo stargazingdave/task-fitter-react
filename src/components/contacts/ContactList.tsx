@@ -13,8 +13,9 @@ import { FaTasks } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md'
 import { BiEditAlt } from 'react-icons/bi';
 import { Contact } from './Contact';
-import { useAppSelector } from '../../reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { selectSignedIn, selectUser } from '../../redux/userSlice';
+import { initContacts, selectContacts, selectContactsCollection } from '../../redux/contactsSlice';
 
 
 
@@ -27,23 +28,14 @@ type ContactListProps = {
 export const ContactList = (props: ContactListProps) => {
     // access the Firestore library
     //const dbRef = doc(useFirestore(), 'projects', 'KgZALPsAYOxhD9KS1dqg');
-    const user = useAppSelector(selectUser);
     const db = useFirestore();
-    const contactsCollection = collection(db, 'contacts');
-    const [isAscending, setIsAscending] = useState(true);
+    const contacts = useAppSelector(selectContacts);
+    const contactsCollection = useAppSelector(selectContactsCollection);
+    
     const [editContact, setEditContact] = useState({} as DocumentData);
     const [openContact, setOpenContact] = useState({} as DocumentData);
     const [createContactFlag, setCreateContactFlag] = useState(false);
     const [contactDeletePopup, setContactDeletePopup] = useState({} as DocumentData);
-    const contactsQuery = query(contactsCollection,
-                                where("user_id", "==", user.uid),
-                                orderBy('name', isAscending ? 'asc' : 'desc'));
-
-    const { status, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
-    // check the loading status
-    if (status === 'loading') {
-        return <p>טוען אנשי קשר...</p>;
-    }
 
     
     return <div className="contacts">

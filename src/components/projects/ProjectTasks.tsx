@@ -124,7 +124,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                     createTaskSelected={newTask} 
                                     onTaskCreate={() => setNewTask(false)} 
                                     onCancel={() => setNewTask(false)} 
-                                    contacts={props.contacts}
                                     project={props.projectStack[props.projectStack.length - 1]} />
                 : <button className="new-task-button" onClick={() => setNewTask(true)}>
                     משימה חדשה

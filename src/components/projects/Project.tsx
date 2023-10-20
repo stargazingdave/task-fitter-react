@@ -11,6 +11,7 @@ import { EditProjectForm } from "./EditProjectForm";
 import { useState } from "react";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
+import { selectContacts } from "../../redux/contactsSlice";
 
 type ProjectProps = {
     onProjectSelected: (projectStack: DocumentData[]) => void;
@@ -24,16 +25,11 @@ type ProjectProps = {
 
 
 export const Project = (props: ProjectProps) => {
-    const user = useAppSelector(selectUser);
+    const contacts = useAppSelector(selectContacts);
     const [isAscending, setIsAscending] = useState(true);
     const parentPath = getProjectsPath(props.projectStack.slice(0, props.projectStack.length - 1));
     const db = useFirestore();
-    const contactsCollection = collection(db, 'contacts');
-    const contactsQuery = query(contactsCollection,
-        where("user_id", "==", user.uid || 0),
-        orderBy('name', isAscending ? 'asc' : 'desc'));
     const parentCollection = collection(db, parentPath);
-    const { status: contactsStatus, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
 
     const updateProject = (project: DocumentData) => {
         props.setEditProject({} as DocumentData);
@@ -45,10 +41,6 @@ export const Project = (props: ProjectProps) => {
         }
     }
 
-    // check the loading status
-    if (contactsStatus === 'loading') {
-        return <p>טוען אנשי קשר...</p>;
-    }
 
     return <div className="project">
             <div className="projects-path">

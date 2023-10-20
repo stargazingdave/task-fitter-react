@@ -9,6 +9,7 @@ import { ProtocolTask } from "./ProtocolTask";
 import { deleteImage } from "../../utils";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
+import { selectContacts } from "../../redux/contactsSlice";
 
 type ProtocolTasksProps = {
     tasksCollection: CollectionReference;
@@ -19,14 +20,9 @@ type ProtocolTasksProps = {
 
 export const ProtocolTasks = (props: ProtocolTasksProps) => {
     const user = useAppSelector(selectUser);
-    const [isAscending, setIsAscending] = useState(true);
+    const contacts = useAppSelector(selectContacts);
     const db = getFirestore();
     const tasksQuery = query(props.tasksCollection, where("user_id", "==", user.uid || 0));
-    const contactsCollection = collection(db, 'contacts');
-    const contactsQuery = query(contactsCollection,
-        where("user_id", "==", user.uid || 0),
-        orderBy('name', isAscending ? 'asc' : 'desc'));
-    const { status: contactsStatus, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
 
     useEffect(() => {
         async function getToken() {
@@ -43,9 +39,7 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
     if (tasksStatus === 'loading') {
         return <p>טוען משימות...</p>;
     }
-    if (contactsStatus === 'loading') {
-        return <p>טוען משימות...</p>;
-    }
+
     return <div className="p-tasks">
         <div className="p-tasks-container">
             {tasks?.sort((task1, task2) => {return Date.parse(task1.deadline) - Date.parse(task2.deadline)}).map(task => (

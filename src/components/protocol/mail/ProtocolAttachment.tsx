@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas';
 import { ProtocolProjectAttachment } from './ProtocolProjectAttachment';
 import { useAppSelector } from '../../../reduxHooks';
 import { selectUser } from '../../../redux/userSlice';
+import { selectContacts } from '../../../redux/contactsSlice';
 
 
 type ProtocolAttachmentProps = {
@@ -60,6 +61,8 @@ const sendMail = async (project: DocumentData, tasks: DocumentData[], contacts: 
 export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
     const db = useFirestore();
     const user = useAppSelector(selectUser);
+    const contacts = useAppSelector(selectContacts);
+
     let { id } = useParams();
 
     const { status: projectStatus, data: project } = useFirestoreDocData(doc(db, 'projects', id || ''), { idField: 'id', });
@@ -70,15 +73,8 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
         where('project_id', '==', id));
     const {status: tasksStatus, data: projectTasks} = useFirestoreCollectionData(projectTasksQuery, { idField: 'id', });
     
-    const contactsCollection = collection(db, 'contacts');
-    const contactsQuery = query(contactsCollection,
-        where("user_id", "==", user.uid || 0));
-    const {status: contactsStatus, data: contacts} = useFirestoreCollectionData(contactsQuery, { idField: 'id', });
     
     if (projectStatus === 'loading') {
-        return <p>טוען פרוטוקול...</p>;
-    }
-    if (contactsStatus === 'loading') {
         return <p>טוען פרוטוקול...</p>;
     }
     if (tasksStatus === 'loading') {
