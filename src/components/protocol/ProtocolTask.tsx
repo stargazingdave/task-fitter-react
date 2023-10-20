@@ -17,7 +17,6 @@ import { MdDeleteForever } from "react-icons/md";
 type ProtocolTaskProps = {
     task: DocumentData;
     tasksCollection: CollectionReference;
-    user: User;
     db: Firestore;
     addSaveAction: (taskId: string, action: () => void) => void;
     contacts: DocumentData[];

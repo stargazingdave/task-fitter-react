@@ -15,6 +15,8 @@ import { BsFillBuildingsFill } from 'react-icons/bs';
 import { FaHammer } from 'react-icons/fa';
 import Popup from 'reactjs-popup';
 import { MdDeleteForever } from 'react-icons/md';
+import { useAppSelector } from '../../reduxHooks';
+import { selectUser } from '../../redux/userSlice';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -26,7 +28,6 @@ import { MdDeleteForever } from 'react-icons/md';
 
 type SubProjectsProps = {
   onProjectSelected: (projectStack: DocumentData[]) => void;
-  user: User;
   projectStack: DocumentData[];
   editProject: DocumentData;
   setEditProject: (editProject: DocumentData) => void;
@@ -37,6 +38,7 @@ type SubProjectsProps = {
 
 
 export const SubProjects = (props: SubProjectsProps) =>  {
+    const user = useAppSelector(selectUser);
   const path = getProjectsPath(props.projectStack);
   const db = useFirestore();
   const projectsCollection = collection(db, path);
@@ -45,7 +47,7 @@ export const SubProjects = (props: SubProjectsProps) =>  {
   const [editSubProject, setEditSubProject] = useState({} as DocumentData);
   const [projectDeletePopup, setProjectDeletePopup] = useState('');
   const projectsQuery = query(projectsCollection,
-                              where("user_id", "==", props.user.uid || 0),
+                              where("user_id", "==", user.uid || 0),
                               orderBy('creation_time', isAscending ? 'asc' : 'desc'));
   const { status, data: projects } = useFirestoreCollectionData(projectsQuery, { idField: 'id',});
   
@@ -107,7 +109,6 @@ export const SubProjects = (props: SubProjectsProps) =>  {
             <div className="edit-sub-project-form">
             <EditProjectForm editProject={editSubProject} 
                             projectsCollection={projectsCollection} 
-                            user={props.user} 
                             setEditProject={(project) => setEditSubProject(project)} 
                             db={db}/>
             </div>
@@ -120,7 +121,6 @@ export const SubProjects = (props: SubProjectsProps) =>  {
         <div className="create-sub-project-form">
             <CreateProjectForm 
                                 projectsCollection={projectsCollection} 
-                                user={props.user} 
                                 createProjectFlag={createSubProject} 
                                 onProjectCreate={
                                     (createProjectFlag) => {

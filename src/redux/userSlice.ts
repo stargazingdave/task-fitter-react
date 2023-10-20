@@ -2,8 +2,18 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../src/store'
 import { Auth, getAuth, GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth'
 import { useAuth } from 'reactfire';
+import { useAppDispatch } from '../reduxHooks';
 
-const signOutAction = (auth: Auth) => auth.signOut().then(() => console.log('signed out'));
+const clearFirestoreCache = () => {
+    const map = globalThis['_reactFirePreloadedObservables'];
+    Array.from(map.keys()).forEach(
+      (key: any) => key.includes('firestore') && map.delete(key),
+    );
+  };
+
+const signOutAction = (auth: Auth) => auth.signOut().then(() => {
+    clearFirestoreCache();
+});
 
 const signInAction = async (auth: Auth) => {
     const provider = new GoogleAuthProvider();
@@ -53,8 +63,8 @@ export const userSlice = createSlice({
     // Use the PayloadAction type to declare the contents of `action.payload`
     onSignStateChanged: (state, action: PayloadAction<User | null>) => {
         state.user = action.payload || {} as User;
-        state.signedIn = state.user.uid !== undefined;
-      },
+        state.signedIn = state.user.uid !== null && state.user.uid !== undefined;
+    },
   },
 })
 

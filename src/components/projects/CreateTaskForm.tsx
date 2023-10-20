@@ -8,12 +8,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select, { GroupBase } from 'react-select'
 import makeAnimated from 'react-select/animated';
 import { uploadImage } from "../../utils";
+import { useAppSelector } from "../../reduxHooks";
+import { selectUser } from "../../redux/userSlice";
 
 const animatedComponents = makeAnimated();
 
 type CreateTaskFormProps = {
     tasksCollection: CollectionReference;
-    user: User;
     createTaskSelected: boolean;
     onTaskCreate: (onTaskCreate: boolean) => void;
     onCancel: () => void;
@@ -28,7 +29,8 @@ const addTask = async (props: CreateTaskFormProps,
     taskTitle: string, 
     taskDeadline: Date,
     taskCollaborators: string[],
-    image: File | null) => {
+    image: File | null,
+    user: User) => {
         if (taskTitle == '') {
             alert('יש למלא את תיאור המשימה');
             return;
@@ -37,7 +39,7 @@ const addTask = async (props: CreateTaskFormProps,
             task: taskTitle,
             status: false,
             deadline: taskDeadline.toString(),
-            user_id: props.user.uid,
+            user_id: user.uid,
             collaborators: taskCollaborators,
             project_id: props.project.id
         })
@@ -49,7 +51,7 @@ const addTask = async (props: CreateTaskFormProps,
 
 
 export const CreateTaskForm = (props: CreateTaskFormProps) => {
-
+    const user = useAppSelector(selectUser);
     const selectContactRef = useRef<any>(null);
     const [taskTitle, setTaskTitle] = useState('');
     const [selectedOptions, setSelectedOptions] = useState();
@@ -125,7 +127,7 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
                 <button onClick={() => {
                         const comp = selectContactRef.current;
                         const taskCollaboratorsNew = comp.getValue().map((value) => value.value);
-                        addTask(props, taskTitle, taskDeadline, taskCollaboratorsNew, image);
+                        addTask(props, taskTitle, taskDeadline, taskCollaboratorsNew, image, user);
                     }}>
                     שמור
                 </button>

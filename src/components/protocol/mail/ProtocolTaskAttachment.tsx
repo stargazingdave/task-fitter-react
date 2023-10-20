@@ -4,12 +4,13 @@ import '.././ProtocolTask.scss'
 import { useFirestoreCollectionData } from "reactfire";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { useAppSelector } from "../../../reduxHooks";
+import { selectUser } from "../../../redux/userSlice";
 
 
 type ProtocolTaskAttachmentProps = {
     task: DocumentData;
     tasksCollection: CollectionReference;
-    user: User;
     db: Firestore;
     addSaveAction: (taskId: string, action: () => void) => void;
 }
@@ -19,9 +20,10 @@ type ProtocolTaskAttachmentProps = {
 
 
 export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
+    const user = useAppSelector(selectUser);
     const contactsCollection = collection(props.db, "contacts");
     const contactsQuery = query(contactsCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
     const { status, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
 
 

@@ -1,12 +1,13 @@
 import { User } from "firebase/auth";
 import { CollectionReference, DocumentData, Firestore, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";
+import { useAppSelector } from "../../reduxHooks";
+import { selectUser } from "../../redux/userSlice";
 
 type EditContactFormProps = {
   editContact: DocumentData;
   setEditContact: (DocumentData) => void;
   contactsCollection: CollectionReference;
-  user: User;
   onContactUpdate: (editContact: DocumentData) => void;
   db: Firestore;
 }
@@ -16,9 +17,10 @@ type EditContactFormProps = {
 const updateContact = async (props: EditContactFormProps,
                     contactName: string, 
                     contactRole: string,
-                    contactEmail: string) => {
+                    contactEmail: string,
+                    user: User) => {
         const temp = query(props.contactsCollection, 
-            where("user_id", "==", props.user.uid || 0), 
+            where("user_id", "==", user.uid || 0), 
             where("name", "==", contactName));
         const querySnapshot = await getDocs(temp);
         if (contactName == '') {
@@ -30,7 +32,7 @@ const updateContact = async (props: EditContactFormProps,
             creation_time: Date.now(),
             role: contactRole,
             email: contactEmail,
-            user_id: props.user.uid,
+            user_id: user.uid,
         });
         props.setEditContact({});
     }
@@ -38,7 +40,7 @@ const updateContact = async (props: EditContactFormProps,
 
 
 export const EditContactForm = (props: EditContactFormProps) => {
-
+    const user = useAppSelector(selectUser);
     const [contactName, setContactName] = useState(props.editContact.name);
     const [contactRole, setContactRole] = useState(props.editContact.role);
     const [contactEmail, setContactEmail] = useState(props.editContact.email);
@@ -72,7 +74,7 @@ export const EditContactForm = (props: EditContactFormProps) => {
                 />
             <div className="buttons">
                 <button 
-                    onClick={() => {updateContact(props, contactName, contactRole, contactEmail)}}>
+                    onClick={() => {updateContact(props, contactName, contactRole, contactEmail, user)}}>
                         שמור
                 </button>
                 <button onClick={() => props.setEditContact({})}>ביטול</button>

@@ -1,28 +1,28 @@
-import { useSigninCheck } from "reactfire";
+import { useAuth, useSigninCheck } from "reactfire";
 import { Project } from "../projects/Project";
 import { Projects } from "../projects/Projects";
 import { DocumentData } from "firebase/firestore";
 import { useState } from "react";
-import { User } from "firebase/auth";
 import { ContactList } from "../contacts/ContactList";
 import './MainPage.scss';
+import { useAppSelector } from "../../reduxHooks";
+import { selectSignedIn } from "../../redux/userSlice";
 
 type MainPageProps = {
-  user: User;
 }
 
 
 export const MainPage = (props: MainPageProps) => {
     const [projectStack, setProjectStack] = useState([] as DocumentData[]);
     const [editProject, setEditProject] = useState({} as DocumentData);
-
-
+    const signedIn = useAppSelector(selectSignedIn);
+    
     const { status, data: signInCheckResult } = useSigninCheck();
     if (status === 'loading') {
       return <span>loading...</span>;
     }
     
-    if (signInCheckResult.signedIn === true) {
+    if (signInCheckResult.signedIn && signedIn) {
       return (
         <>
         <div className="main-page">
@@ -37,20 +37,20 @@ export const MainPage = (props: MainPageProps) => {
                             } 
                             editProject={editProject}
                             setEditProject={(editProject) => setEditProject(editProject)}
-                            user={props.user} 
                         />
                 : <Projects onProjectSelected = {(array: DocumentData[]) => {
                                                     setProjectStack(array);
                                                 }
                                                 } 
-                            user={props.user} 
                             projectStack={projectStack}
                             editProject={editProject}
                             setEditProject={(editProject) => setEditProject(editProject)}
                         /> 
             }
         </>
-          {<ContactList user={props.user}/>}
+        {
+            <ContactList />
+        }
         </div>
       </>
       

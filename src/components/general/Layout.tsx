@@ -20,7 +20,6 @@ export const LoadingSpinner = () => {
 const UserPanel = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectUser);
-    debugger;
     const auth = useAuth();
     const [openContacts, setOpenContacts] = useState(false);
     return (
@@ -68,12 +67,14 @@ const SignInForm = () => {
 export const Layout = () => {
     const { status, data: signinResult } = useSigninCheck();
     const dispatch = useAppDispatch();
-    dispatch(onSignStateChanged(signinResult?.user));
     const signedIn = useAppSelector(selectSignedIn);
 
     if (status === 'loading') {
         return <LoadingSpinner />;
     }
+    
+
+    
 
     if (signedIn === true) {
         return <UserPanel />;

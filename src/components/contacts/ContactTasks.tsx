@@ -4,23 +4,24 @@ import { useEffect, useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 
 import './ContactTasks.scss'
+import { useAppSelector } from "../../reduxHooks";
+import { selectUser } from "../../redux/userSlice";
 
 
 type ContactTasksProps = {
     contact: DocumentData;
-    user: User;
 }
 
 
 export const ContactTasks = (props: ContactTasksProps) => {
-    
+    const user = useAppSelector(selectUser);
     const [isAscending, setIsAscending] = useState(false);
     const db = getFirestore();
     // const tasksCollection = collectionGroup(db, 'tasks');
     const tasksCollection = collectionGroup(db, 'tasks');
     
     const tasksQuery = query(tasksCollection, 
-        where("user_id", '==', props.user.uid),
+        where("user_id", '==', user.uid),
         where("collaborators", 'array-contains', props.contact.id),
         orderBy('deadline', isAscending ? 'asc' : 'desc'));
 

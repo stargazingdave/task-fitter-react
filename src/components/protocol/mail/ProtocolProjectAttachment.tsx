@@ -3,9 +3,10 @@ import { DocumentData, Firestore, addDoc, collection, deleteDoc, doc, query, upd
 import { useFirestoreCollectionData } from "reactfire";
 import '.././ProtocolProject.scss'
 import { ProtocolTasksAttachment } from "./ProtocolTasksAttachment";
+import { useAppSelector } from "../../../reduxHooks";
+import { selectUser } from "../../../redux/userSlice";
 
 type ProtocolProjectAttachmentProps = {
-    user: User;
     project: DocumentData;
     db: Firestore;
     path: string;
@@ -13,12 +14,13 @@ type ProtocolProjectAttachmentProps = {
 }
 
 export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps) => {
+    const user = useAppSelector(selectUser);
     const subProjectCollection = collection(props.db, props.path, 'projects');
     const subProjectsQuery = query(subProjectCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
     const projectSubjectsCollection = collection(props.db, props.path, 'subjects');
     const subjectsQuery = query(projectSubjectsCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
     const { status: statusP, data: projects } = useFirestoreCollectionData(subProjectsQuery, { idField: 'id',});
     const { status: statusS, data: subjects } = useFirestoreCollectionData(subjectsQuery, { idField: 'id',});
     // check the loading status
@@ -40,7 +42,6 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
                             <h1>{subject.title}</h1>
                         </div>
                         <ProtocolTasksAttachment   
-                            user={props.user}
                             tasksCollection={collection(props.db, props.path, 'subjects', subject.id, 'tasks')}
                             addSaveAction={props.addSaveAction} />
                     </div>
@@ -53,7 +54,6 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
                     <div className="sub-project" key={project.id}>
                         <h1>{project.project_name}</h1>
                         <ProtocolProjectAttachment    
-                            user={props.user}
                             project={project}
                             db={props.db} 
                             path={props.path + '/projects/' + project.id}

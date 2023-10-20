@@ -7,7 +7,6 @@ import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 type EditProjectFormProps = {
     editProject: DocumentData;
     projectsCollection: CollectionReference;
-    user: User;
     setEditProject: (editProject: DocumentData) => void;
     db: Firestore;
 }

@@ -5,18 +5,20 @@ import { useFirestoreCollectionData } from "reactfire";
 import '.././ProtocolTasks.scss'
 
 import { ProtocolTaskAttachment } from "./ProtocolTaskAttachment";
+import { useAppSelector } from "../../../reduxHooks";
+import { selectUser } from "../../../redux/userSlice";
 
 type ProtocolTasksAttachmentProps = {
-    user: User;
     tasksCollection: CollectionReference;
     addSaveAction: (taskId: string, action: () => void) => void;
 }
 
 
 export const ProtocolTasksAttachment = (props: ProtocolTasksAttachmentProps) => {
+    const user = useAppSelector(selectUser);
     const db = getFirestore();
     const tasksQuery = query(props.tasksCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
     const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
     
     if (status === 'loading') {
@@ -29,7 +31,6 @@ export const ProtocolTasksAttachment = (props: ProtocolTasksAttachmentProps) => 
                 <div className="p-task" key={task.id}>
                     <ProtocolTaskAttachment   task={task}
                                     tasksCollection={props.tasksCollection}
-                                    user={props.user}
                                     db={db} 
                                     addSaveAction={props.addSaveAction} />
                     {

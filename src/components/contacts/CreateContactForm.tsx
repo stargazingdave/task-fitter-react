@@ -1,11 +1,12 @@
 import { User } from "firebase/auth";
 import { CollectionReference, addDoc, getDocs, query, snapshotEqual, where } from "firebase/firestore";
 import { useState } from "react";
+import { useAppSelector } from "../../reduxHooks";
+import { selectUser } from "../../redux/userSlice";
 
 type CreateContactFormProps = {
   createContact: boolean;
   contactsCollection: CollectionReference;
-  user: User;
   createContactFlag: boolean;
   onContactCreate: (onContactCreate: boolean) => void;
 }
@@ -15,9 +16,10 @@ type CreateContactFormProps = {
 const addContact = async (props: CreateContactFormProps, 
                     contactName: string, 
                     contactRole: string,
-                    contactEmail: string) => {
+                    contactEmail: string,
+                    user: User) => {
     const temp = query(props.contactsCollection, 
-        where("user_id", "==", props.user.uid || 0), 
+        where("user_id", "==", user.uid || 0), 
         where("name", "==", contactName));
     const querySnapshot = await getDocs(temp);
     if (querySnapshot.size > 0) {
@@ -33,7 +35,7 @@ const addContact = async (props: CreateContactFormProps,
         creation_time: Date.now(),
         role: contactRole,
         email: contactEmail,
-        user_id: props.user.uid,
+        user_id: user.uid,
     });
     props.onContactCreate(props.createContactFlag);
 }
@@ -41,7 +43,7 @@ const addContact = async (props: CreateContactFormProps,
 
 
 export const CreateContactForm = (props: CreateContactFormProps) => {
-
+    const user = useAppSelector(selectUser);
     const [contactName, setContactName] = useState('');
     const [contactRole, setContactRole] = useState('');
     const [contactEmail, setContactEmail] = useState('');
@@ -72,7 +74,7 @@ export const CreateContactForm = (props: CreateContactFormProps) => {
             type="string"
             />
         <div className="buttons">
-            <button onClick={() => {addContact(props, contactName, contactRole, contactEmail)}}>
+            <button onClick={() => {addContact(props, contactName, contactRole, contactEmail, user)}}>
                 שמור
             </button>
             <button onClick={() => props.onContactCreate(props.createContactFlag)}>ביטול</button>

@@ -6,10 +6,11 @@ import { User } from 'firebase/auth';
 import { ProtocolProject } from './ProtocolProject';
 import { FiSave } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
+import { useAppSelector } from '../../reduxHooks';
+import { selectUser } from '../../redux/userSlice';
 
 
 type ProtocolProps = {
-    user: User;
     protocolOpen: boolean;
     onClose?: (protocolOpen: boolean) => void;
 }
@@ -29,7 +30,7 @@ const save = () => {
 
 export const Protocol = (props: ProtocolProps) => {
     const db = useFirestore();
-
+    const user = useAppSelector(selectUser);
     let { id } = useParams(); //extract from URL id="..."
 
     const { status, data: project } = useFirestoreDocData(doc(db, 'projects', id || ''), { idField: 'id', });
@@ -44,7 +45,7 @@ export const Protocol = (props: ProtocolProps) => {
 
     return <div className='protocol-container'>
         <h1>פרוטוקול פרויקט: {project.project_name}</h1>
-        <ProtocolProject user={props.user}
+        <ProtocolProject 
             project={project}
             db={db}
             path={'projects/' + project.id}

@@ -12,9 +12,10 @@ import { BiEditAlt } from "react-icons/bi";
 import { EditProjectForm } from "../projects/EditProjectForm";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
+import { useAppSelector } from "../../reduxHooks";
+import { selectUser } from "../../redux/userSlice";
 
 type ProtocolProjectProps = {
-    user: User;
     project: DocumentData;
     db: Firestore;
     path: string;
@@ -22,12 +23,13 @@ type ProtocolProjectProps = {
 }
 
 export const ProtocolProject = (props: ProtocolProjectProps) => {
+    const user = useAppSelector(selectUser);
     const subProjectsCollection = collection(props.db, props.path, 'projects');
     const subProjectsQuery = query(subProjectsCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
     const projectSubjectsCollection = collection(props.db, props.path, 'subjects');
     const projectSubjectsQuery = query(projectSubjectsCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
     const [editProject, setEditProject] = useState({} as DocumentData);
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
     const [createSubProject, setCreateSubProject] = useState(false);
@@ -96,7 +98,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                         setCreateSubProject(false)
                     }}
                     projectsCollection={subProjectsCollection}
-                    user={props.user} />
+                    />
             }
             {
                 subjects.map(subject => (
@@ -156,7 +158,6 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                             }
                         </div>
                         <ProtocolTasks   
-                            user={props.user}
                             tasksCollection={collection(props.db, props.path, 'subjects', subject.id, 'tasks')}
                             addSaveAction={props.addSaveAction}
                             project={props.project} />
@@ -186,10 +187,9 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                                 editProject={editProject} 
                                 projectsCollection={subProjectsCollection}
                                 setEditProject={(editProject) => setEditProject(editProject)}
-                                user={props.user} />
+                                />
                         }
                         <ProtocolProject    
-                            user={props.user}
                             project={project}
                             db={props.db} 
                             path={props.path + '/projects/' + project.id}

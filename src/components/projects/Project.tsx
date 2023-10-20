@@ -9,10 +9,11 @@ import { AiOutlineClose } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { EditProjectForm } from "./EditProjectForm";
 import { useState } from "react";
+import { useAppSelector } from "../../reduxHooks";
+import { selectUser } from "../../redux/userSlice";
 
 type ProjectProps = {
     onProjectSelected: (projectStack: DocumentData[]) => void;
-    user: User;
     projectStack: DocumentData[];
     setProjectStack: (projectStack: DocumentData[]) => void;
     editProject: DocumentData;
@@ -23,12 +24,13 @@ type ProjectProps = {
 
 
 export const Project = (props: ProjectProps) => {
+    const user = useAppSelector(selectUser);
     const [isAscending, setIsAscending] = useState(true);
     const parentPath = getProjectsPath(props.projectStack.slice(0, props.projectStack.length - 1));
     const db = useFirestore();
     const contactsCollection = collection(db, 'contacts');
     const contactsQuery = query(contactsCollection,
-        where("user_id", "==", props.user.uid || 0),
+        where("user_id", "==", user.uid || 0),
         orderBy('name', isAscending ? 'asc' : 'desc'));
     const parentCollection = collection(db, parentPath);
     const { status: contactsStatus, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
@@ -96,7 +98,6 @@ export const Project = (props: ProjectProps) => {
                             ? <EditProjectForm 
                                 editProject={props.editProject} 
                                 projectsCollection={parentCollection} 
-                                user={props.user} 
                                 setEditProject={(project: DocumentData) => updateProject(project)} 
                                 db={db} 
                             /> 
@@ -112,12 +113,10 @@ export const Project = (props: ProjectProps) => {
                 </div>
                 <div className="content">
                     <ProjectSubjects onProjectSelected={props.onProjectSelected} 
-                                    user={props.user} 
                                     projectStack={props.projectStack} 
                                     contacts={contacts} />
                     <SubProjects 
                         onProjectSelected={props.onProjectSelected} 
-                        user={props.user} 
                         projectStack={props.projectStack}
                         editProject={props.editProject}
                         setEditProject={(editProject) => props.setEditProject(editProject)} 

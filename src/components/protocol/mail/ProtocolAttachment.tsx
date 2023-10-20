@@ -7,10 +7,11 @@ import { User } from 'firebase/auth';
 import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { ProtocolProjectAttachment } from './ProtocolProjectAttachment';
+import { useAppSelector } from '../../../reduxHooks';
+import { selectUser } from '../../../redux/userSlice';
 
 
 type ProtocolAttachmentProps = {
-    user: User;
     protocolOpen: boolean;
     onClose?: (protocolOpen: boolean) => void;
 }
@@ -58,20 +59,20 @@ const sendMail = async (project: DocumentData, tasks: DocumentData[], contacts: 
 
 export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
     const db = useFirestore();
-    
+    const user = useAppSelector(selectUser);
     let { id } = useParams();
 
     const { status: projectStatus, data: project } = useFirestoreDocData(doc(db, 'projects', id || ''), { idField: 'id', });
     
     const tasksCollection = collectionGroup(db, 'tasks');
     const projectTasksQuery = query(tasksCollection, 
-        where("user_id", "==", props.user.uid || 0),
+        where("user_id", "==", user.uid || 0),
         where('project_id', '==', id));
     const {status: tasksStatus, data: projectTasks} = useFirestoreCollectionData(projectTasksQuery, { idField: 'id', });
     
     const contactsCollection = collection(db, 'contacts');
     const contactsQuery = query(contactsCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
     const {status: contactsStatus, data: contacts} = useFirestoreCollectionData(contactsQuery, { idField: 'id', });
     
     if (projectStatus === 'loading') {
@@ -92,7 +93,6 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
         <div  id="protocol-project">
             <h1>פרוטוקול פרויקט: {project.project_name}</h1>
             <ProtocolProjectAttachment 
-                user={props.user}
                 project={project}
                 db={db}
                 path={'projects/' + project.id}

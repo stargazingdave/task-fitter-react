@@ -12,6 +12,8 @@ import { CreateProjectForm } from './CreateProjectForm';
 import Popup from 'reactjs-popup';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiEditAlt } from 'react-icons/bi';
+import { useAppSelector } from '../../reduxHooks';
+import { selectUser } from '../../redux/userSlice';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -23,7 +25,6 @@ import { BiEditAlt } from 'react-icons/bi';
 
 type ProjectsProps = {
     onProjectSelected: (projectStack: DocumentData[]) => void;
-    user: User;
     projectStack: DocumentData[];
     editProject: DocumentData;
     setEditProject: (editProject: DocumentData) => void;
@@ -34,13 +35,14 @@ type ProjectsProps = {
 
 
 export const Projects = (props: ProjectsProps) =>  {
+    const user = useAppSelector(selectUser);
     // access the Firestore library
     const db = useFirestore();
     const projectsCollection = collection(db, 'projects');
     const [isAscending, setIsAscending] = useState(false);
     const [createProjectFlag, setCreateProjectFlag] = useState(false);
     const projectsQuery = query(projectsCollection,
-                                where("user_id", "==", props.user.uid || 0),
+                                where("user_id", "==", user.uid),
                                 orderBy('creation_time', isAscending ? 'asc' : 'desc'));
     const { status, data: projects } = useFirestoreCollectionData(projectsQuery, { idField: 'id',});
     
@@ -51,7 +53,6 @@ export const Projects = (props: ProjectsProps) =>  {
         return <p>טוען פרויקטים...</p>;
     }
     
-
     return <div className='projects-container'>
         <h1>פרויקטים</h1>
         <div>
@@ -69,7 +70,6 @@ export const Projects = (props: ProjectsProps) =>  {
             <div className="create-project-form">
                 <CreateProjectForm  
                     projectsCollection={projectsCollection} 
-                    user={props.user} 
                     createProjectFlag={createProjectFlag} 
                     onProjectCreate={(createProjectFlag) => {
                         setCreateProjectFlag(!createProjectFlag)
@@ -129,7 +129,6 @@ export const Projects = (props: ProjectsProps) =>  {
                                     <EditProjectForm 
                                         editProject={props.editProject} 
                                         projectsCollection={projectsCollection} 
-                                        user={props.user} 
                                         setEditProject={(editProject) => props.setEditProject(editProject)} 
                                         db={db}
                                     />

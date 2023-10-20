@@ -11,7 +11,6 @@ import makeAnimated from 'react-select/animated';
 
 type EditTaskFormProps = {
     tasksCollection: CollectionReference;
-    user: User;
     setEditTask: (editProject: DocumentData) => void;
     db: Firestore;
     task: DocumentData;

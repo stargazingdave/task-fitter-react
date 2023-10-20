@@ -15,11 +15,12 @@ import { ConfirmationBox } from '../general/ConfirmationBox';
 import { FaHammer } from 'react-icons/fa';
 import { BiEditAlt } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
+import { useAppSelector } from '../../reduxHooks';
+import { selectUser } from '../../redux/userSlice';
 
 
 type ProjectSubjectsProps = {
     onProjectSelected: (projectStack: DocumentData[]) => void;
-    user: User;
     projectStack: DocumentData[];
     contacts: DocumentData[];
 }
@@ -29,11 +30,12 @@ type ProjectSubjectsProps = {
 
 
 export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
+    const user = useAppSelector(selectUser);
     const subjectsPath = getSubjectsPath(props.projectStack);
     const db = useFirestore();
     const subjectsCollection = collection(db, subjectsPath);
     const subjectsQuery = query(subjectsCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
     const [createTaskSubjectId, setCreateTaskSubjectId] = useState('');
     const [editSubject, setEditSubject] = useState({} as DocumentData);
@@ -74,7 +76,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                             addDoc(collection(db, subjectsPath), {
                                 title: subjectName || '',
                                 creation_time: new Date().toString(),
-                                user_id: props.user.uid
+                                user_id: user.uid
                             });
                             setSubjectName('');
                             setCreateSubjectFlag(!createSubjectFlag);
@@ -156,7 +158,6 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                     </div>
                     <ProjectTasks
                         projectStack={props.projectStack}
-                        user={props.user}
                         tasksCollection={collection(db, getSubjectsPath(props.projectStack), subject.id, 'tasks')} 
                         contacts={props.contacts} 
                         />

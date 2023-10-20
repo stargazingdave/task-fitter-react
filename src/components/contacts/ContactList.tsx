@@ -13,19 +13,21 @@ import { FaTasks } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md'
 import { BiEditAlt } from 'react-icons/bi';
 import { Contact } from './Contact';
+import { useAppSelector } from '../../reduxHooks';
+import { selectSignedIn, selectUser } from '../../redux/userSlice';
 
 
 
 
 
 type ContactListProps = {
-    user: User;
-  }
+}
   
 
 export const ContactList = (props: ContactListProps) => {
     // access the Firestore library
     //const dbRef = doc(useFirestore(), 'projects', 'KgZALPsAYOxhD9KS1dqg');
+    const user = useAppSelector(selectUser);
     const db = useFirestore();
     const contactsCollection = collection(db, 'contacts');
     const [isAscending, setIsAscending] = useState(true);
@@ -34,7 +36,7 @@ export const ContactList = (props: ContactListProps) => {
     const [createContactFlag, setCreateContactFlag] = useState(false);
     const [contactDeletePopup, setContactDeletePopup] = useState({} as DocumentData);
     const contactsQuery = query(contactsCollection,
-                                where("user_id", "==", props.user.uid || 0),
+                                where("user_id", "==", user.uid),
                                 orderBy('name', isAscending ? 'asc' : 'desc'));
 
     const { status, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
@@ -81,7 +83,7 @@ export const ContactList = (props: ContactListProps) => {
                             <button title='רשימת משימות של איש הקשר' className='tasks-button'>
                                 <FaTasks  size={20} />
                         </button>} position="right center">
-                            <ContactTasks contact={contact} user={props.user} />
+                            <ContactTasks contact={contact} />
                         </Popup>
                         </div>
                         {
@@ -90,7 +92,6 @@ export const ContactList = (props: ContactListProps) => {
                                     editContact={editContact} 
                                     setEditContact={setEditContact}
                                     contactsCollection={contactsCollection} 
-                                    user={props.user} 
                                     onContactUpdate={(editContact) => {
                                         const i = contacts.findIndex((contact) => contact.id == editContact.id);
                                         contacts[i] = editContact;
@@ -110,11 +111,11 @@ export const ContactList = (props: ContactListProps) => {
             <div className="create-contact">
             {createContactFlag
             ? <div className="create-contact-form">
-                <CreateContactForm createContact={createContactFlag} 
-                                    contactsCollection={contactsCollection} 
-                                    user={props.user} 
-                                    createContactFlag={createContactFlag} 
-                                    onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>
+                <CreateContactForm 
+                    createContact={createContactFlag} 
+                    contactsCollection={contactsCollection} 
+                    createContactFlag={createContactFlag} 
+                    onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>
                 </div>
             : <button onClick={() => setCreateContactFlag(!createContactFlag)}>איש קשר חדש</button>}
             </div>

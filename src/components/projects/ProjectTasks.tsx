@@ -16,10 +16,11 @@ import { ConfirmationBox } from "../general/ConfirmationBox";
 import { FaHammer } from "react-icons/fa";
 import { ImageContainer } from "../general/ImageContainer";
 import { MdDeleteForever } from "react-icons/md";
+import { useAppSelector } from "../../reduxHooks";
+import { selectUser } from "../../redux/userSlice";
 
 type ProjectTasksProps = {
     projectStack: DocumentData[];
-    user: User;
     tasksCollection: CollectionReference;
     contacts: DocumentData[];
 }
@@ -27,6 +28,7 @@ type ProjectTasksProps = {
 
 
 export const ProjectTasks = (props: ProjectTasksProps) => {
+    const user = useAppSelector(selectUser);
     
     const db = getFirestore();
 
@@ -37,7 +39,7 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
     const [editTask, setEditTask] = useState({} as DocumentData);
     const [taskDeletePopup, setTaskDeletePopup] = useState({} as DocumentData);
     const tasksQuery = query(props.tasksCollection,
-        where("user_id", "==", props.user.uid || 0));
+        where("user_id", "==", user.uid || 0));
 
 
     const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
@@ -108,7 +110,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                         editTask?.id == task.id &&
                         <EditTaskForm 
                             tasksCollection={props.tasksCollection} 
-                            user={props.user} 
                             setEditTask={setEditTask} 
                             db={db} 
                             task={editTask} 
@@ -120,7 +121,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                 newTask
                 ? <CreateTaskForm tasksCollection={props.tasksCollection} 
                                     db={db}
-                                    user={props.user} 
                                     createTaskSelected={newTask} 
                                     onTaskCreate={() => setNewTask(false)} 
                                     onCancel={() => setNewTask(false)} 

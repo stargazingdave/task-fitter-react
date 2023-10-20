@@ -7,9 +7,10 @@ import './ProtocolTasks.scss'
 
 import { ProtocolTask } from "./ProtocolTask";
 import { deleteImage } from "../../utils";
+import { useAppSelector } from "../../reduxHooks";
+import { selectUser } from "../../redux/userSlice";
 
 type ProtocolTasksProps = {
-    user: User;
     tasksCollection: CollectionReference;
     addSaveAction: (taskId: string, action: () => void) => void;
     project: DocumentData;
@@ -17,12 +18,13 @@ type ProtocolTasksProps = {
 
 
 export const ProtocolTasks = (props: ProtocolTasksProps) => {
+    const user = useAppSelector(selectUser);
     const [isAscending, setIsAscending] = useState(true);
     const db = getFirestore();
-    const tasksQuery = query(props.tasksCollection, where("user_id", "==", props.user.uid || 0));
+    const tasksQuery = query(props.tasksCollection, where("user_id", "==", user.uid || 0));
     const contactsCollection = collection(db, 'contacts');
     const contactsQuery = query(contactsCollection,
-        where("user_id", "==", props.user.uid || 0),
+        where("user_id", "==", user.uid || 0),
         orderBy('name', isAscending ? 'asc' : 'desc'));
     const { status: contactsStatus, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
 
@@ -51,7 +53,6 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                     <ProtocolTask   
                         task={task}
                         tasksCollection={props.tasksCollection}
-                        user={props.user}
                         db={db} 
                         addSaveAction={props.addSaveAction} 
                         contacts={contacts}
@@ -80,7 +81,7 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                     task: "",
                     status: false,
                     deadline: new Date().toString(),
-                    user_id: props.user.uid,
+                    user_id: user.uid,
                     collaborators: [],
                     project_id: props.project.id
                 })}}>
