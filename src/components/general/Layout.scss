@@ -57,7 +57,49 @@
     }
 }
 
-
+.login-panel {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    h1 {
+        font-size: 50px;
+        color: #1F3C88;
+        margin: 0;
+    }
+    h2 {
+        font-size: 25px;
+        font-family: inherit;
+        font-weight: normal;
+        color: #1F3C88;
+        margin: 0;
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+    }
+    .login-button {
+        font-family: inherit;
+        font-weight: bold;
+        background: #CEDDEF;
+        border: none;
+        color: #1F3C88;
+        padding: 10px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 18px;
+        margin: 4px;
+        border-radius: 3px;
+        width: fit-content;
+        &:hover {
+            background: #5893D4;
+            cursor: pointer;
+        }
+    }
+}
 
 .display-name {
     color: white;

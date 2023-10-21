@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useAuth, useSigninCheck } from 'reactfire';
 import './Layout.scss';
 import { ImUsers } from 'react-icons/im';
+import { LiaHandPointer } from 'react-icons/lia';
 import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { signIn, signOut, onSignStateChanged, selectUser, selectSignedIn } from '../../redux/userSlice';
 import { openContactsToggle, selectOpenContacts } from '../../redux/contactsSlice';
@@ -49,18 +50,16 @@ const SignInForm = () => {
     
 
     return (
-        <div 
-            className='login-panel'
-            style={{
-                display: 'flex',
-                height: '500px',
-                gap: '10px',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'white'
-            }}>
-            <h1 style={{color: '#1F3C88'}}>Task Fitter</h1>
-            <button onClick={() => dispatch(signIn(auth))} >כניסה לחשבון</button>
+        <div className='login-panel'>
+            <h1>Task Fitter</h1>
+            <h2>עדכון אישי לכל חבר צוות בקליק <LiaHandPointer size={30} /></h2>
+            <br></br>
+            <button 
+                className='login-button'
+                onClick={() => dispatch(signIn(auth))} 
+                >
+                כניסה לחשבון
+            </button>
         </div>
     );
 };
