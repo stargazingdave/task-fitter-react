@@ -29,6 +29,7 @@ const save = () => {
 }
 
 export const Protocol = (props: ProtocolProps) => {
+    debugger
     const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
     let { id } = useParams(); //extract from URL id="..."

@@ -21,6 +21,7 @@ type ProtocolProjectProps = {
 }
 
 export const ProtocolProject = (props: ProtocolProjectProps) => {
+    debugger
     const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
     const subProjectsCollection = collection(db, props.path, 'projects');
