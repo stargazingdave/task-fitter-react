@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from './reduxHooks';
 import { onSignStateChanged, selectUser } from './redux/userSlice';
 import { initContacts } from './redux/contactsSlice';
 import { AccountLoadder } from './components/general/AccountLoadder';
+import { databaseInit } from './redux/databaseSlice';
 
 
 
@@ -33,9 +34,7 @@ function App() {
     const db = getFirestore(useFirebaseApp());
     const app = useFirebaseApp();
     const auth = getAuth(app);
-    
     const dispatch = useAppDispatch();
-    
     onAuthStateChanged(auth, (user) => {
         dispatch(onSignStateChanged(user));
     });

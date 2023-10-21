@@ -1,5 +1,4 @@
-import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, Firestore, collection, deleteDoc, doc, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { CollectionReference, DocumentData, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { useRef, useState } from "react";
 import './ProtocolTask.scss'
 import { Checkbox } from "../general/Checkbox";
@@ -7,19 +6,18 @@ import DatePicker from "react-datepicker";
 import Select, { GroupBase } from 'react-select';
 import makeAnimated from 'react-select/animated';
 import "react-datepicker/dist/react-datepicker.css";
-import { FaHammer } from "react-icons/fa";
 import Popup from "reactjs-popup";
 import { ProtocolConfirmationBox } from "./ProtocolConfirmationBox";
 import { deleteImage, uploadImage } from "../../utils";
 import { MdDeleteForever } from "react-icons/md";
+import { useAppSelector } from "../../reduxHooks";
+import { selectContacts } from "../../redux/contactsSlice";
 
 
 type ProtocolTaskProps = {
     task: DocumentData;
     tasksCollection: CollectionReference;
-    db: Firestore;
     addSaveAction: (taskId: string, action: () => void) => void;
-    contacts: DocumentData[];
 }
   
 const animatedComponents = makeAnimated();
@@ -27,12 +25,13 @@ const animatedComponents = makeAnimated();
 
 
 export const ProtocolTask = (props: ProtocolTaskProps) => {
-    let contacts = props.contacts.map((contact) => ({value: contact.id, label: contact.name}));
+    const contacts = useAppSelector(selectContacts);
+    let contactsOptions = contacts.map((contact) => ({value: contact.id, label: contact.name}));
     const [taskTitle, setTaskTitle] = useState(props.task.task);
     const [isAscending, setIsAscending] = useState(true);
     const [taskDeadline, setTaskDeadline] = useState(new Date(Date.parse(props.task.deadline)));
     const [taskCollaborators, setTaskCollaborators] = useState(props.task.collaborators);
-    const [selectedOptions, setSelectedOptions] = useState(props.contacts
+    const [selectedOptions, setSelectedOptions] = useState(contacts
         .filter((contact) => props.task.collaborators.includes(contact.id))
         .map((collaborator) => ({value: collaborator.id, label: collaborator.name})));
     const [deleteTask, setDeleteTask] = useState({} as DocumentData);
@@ -95,7 +94,7 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                             }),
                         }}
                         ref={selectContactRef}
-                        options={contacts} 
+                        options={contactsOptions} 
                         closeMenuOnSelect={false}
                         components={animatedComponents}
                         isMulti

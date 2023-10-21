@@ -5,9 +5,8 @@ import './ProjectSubjects.scss';
 
 // Import the functions you need from the SDKs you need
 import { DocumentData, addDoc, collection, deleteDoc, doc, query, updateDoc, where } from 'firebase/firestore';
-import { useFirestore, useFirestoreCollectionData} from 'reactfire';
-import { User } from 'firebase/auth';
-import { getSubjectsPath } from '../../utils';
+import { useFirestoreCollectionData} from 'reactfire';
+import { deleteSubject, getSubjectsPath } from '../../utils';
 import { ProjectTasks } from './ProjectTasks';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Popup from 'reactjs-popup';
@@ -17,12 +16,13 @@ import { BiEditAlt } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
 import { useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
+import { selectDb } from '../../redux/databaseSlice';
+import { store } from '../../store';
 
 
 type ProjectSubjectsProps = {
     onProjectSelected: (projectStack: DocumentData[]) => void;
     projectStack: DocumentData[];
-    contacts: DocumentData[];
 }
 
 
@@ -32,12 +32,11 @@ type ProjectSubjectsProps = {
 export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
     const user = useAppSelector(selectUser);
     const subjectsPath = getSubjectsPath(props.projectStack);
-    const db = useFirestore();
+    const db = useAppSelector(selectDb);
     const subjectsCollection = collection(db, subjectsPath);
     const subjectsQuery = query(subjectsCollection,
         where("user_id", "==", user.uid || 0));
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
-    const [createTaskSubjectId, setCreateTaskSubjectId] = useState('');
     const [editSubject, setEditSubject] = useState({} as DocumentData);
     const [subjectName, setSubjectName] = useState('');
     const [subjectDeletePopup, setSubjectDeletePopup] = useState({} as DocumentData);
@@ -128,6 +127,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                                             updateDoc(doc(subjectsCollection, editSubject.id), {
                                                 title: subjectName
                                                 });
+                                            setSubjectName('');
                                             setEditSubject({});
                                         }}
                                         className="save-button" 
@@ -135,7 +135,10 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                                             <AiOutlineCheck size={20} />
                                     </button>
                                     <button 
-                                        onClick={() => setEditSubject({})} 
+                                        onClick={() => {
+                                            setSubjectName('');
+                                            setEditSubject({});
+                                        }}
                                         className="cancel-button" 
                                         title="ביטול" >
                                             <AiOutlineClose size={20} />
@@ -159,7 +162,6 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                     <ProjectTasks
                         projectStack={props.projectStack}
                         tasksCollection={collection(db, getSubjectsPath(props.projectStack), subject.id, 'tasks')} 
-                        contacts={props.contacts} 
                         />
                 </div>
             ))}
@@ -171,7 +173,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                     modal={true}>
                     <ConfirmationBox 
                         onConfirm={() => {
-                            deleteDoc(doc(db, subjectsPath, subjectDeletePopup.id));
+                            deleteSubject(store.getState(), doc(db, subjectsPath, subjectDeletePopup.id), getSubjectsPath(props.projectStack) + '/');
                             setSubjectDeletePopup({});
                         }}
                         onCancel={() => setSubjectDeletePopup({})} />

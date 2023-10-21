@@ -1,5 +1,4 @@
-import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, Firestore, doc, updateDoc } from "firebase/firestore";
+import { CollectionReference, DocumentData, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import "./EditProjectForm.scss"
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
@@ -8,7 +7,6 @@ type EditProjectFormProps = {
     editProject: DocumentData;
     projectsCollection: CollectionReference;
     setEditProject: (editProject: DocumentData) => void;
-    db: Firestore;
 }
   
 

@@ -1,5 +1,4 @@
-import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, Firestore, collection, deleteDoc, deleteField, doc, updateDoc } from "firebase/firestore";
+import { CollectionReference, DocumentData, deleteField, doc, updateDoc } from "firebase/firestore";
 import { useRef, useState } from "react";
 import "./EditTaskForm.scss";
 import DatePicker from "react-datepicker";
@@ -7,14 +6,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import { deleteImage, uploadImage } from "../../utils";
 import Select, { GroupBase } from 'react-select';
 import makeAnimated from 'react-select/animated';
+import { useAppSelector } from "../../reduxHooks";
+import { selectContacts } from "../../redux/contactsSlice";
 
 
 type EditTaskFormProps = {
     tasksCollection: CollectionReference;
     setEditTask: (editProject: DocumentData) => void;
-    db: Firestore;
     task: DocumentData;
-    contacts: DocumentData[];
 }
 
 const animatedComponents = makeAnimated();
@@ -44,10 +43,11 @@ const updateTask = (props: EditTaskFormProps,
 
 
 export const EditTaskForm = (props: EditTaskFormProps) => {
-    let contacts = props.contacts.map((contact) => ({value: contact.id, label: contact.name}));
+    const contacts = useAppSelector(selectContacts);
+    let contactsOptions = contacts.map((contact) => ({value: contact.id, label: contact.name}));
 
     const selectContactRef = useRef<any>(null);
-    const [selectedOptions, setSelectedOptions] = useState(props.contacts
+    const [selectedOptions, setSelectedOptions] = useState(contacts
         .filter((contact) => props.task.collaborators.includes(contact.id))
         .map((collaborator) => ({value: collaborator.id, label: collaborator.name})));
     const [taskTitle, setTaskTitle] = useState(props.task.task);
@@ -87,7 +87,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                     </label>
                     <Select 
                         ref={selectContactRef}
-                        options={contacts} 
+                        options={contactsOptions} 
                         closeMenuOnSelect={false}
                         components={animatedComponents}
                         isMulti

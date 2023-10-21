@@ -1,13 +1,13 @@
 import './Protocol.scss';
 
 import { doc } from 'firebase/firestore';
-import { useFirestore, useFirestoreDocData } from 'reactfire';
-import { User } from 'firebase/auth';
+import { useFirestoreDocData } from 'reactfire';
 import { ProtocolProject } from './ProtocolProject';
 import { FiSave } from 'react-icons/fi';
 import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
+import { selectDb } from '../../redux/databaseSlice';
 
 
 type ProtocolProps = {
@@ -29,7 +29,7 @@ const save = () => {
 }
 
 export const Protocol = (props: ProtocolProps) => {
-    const db = useFirestore();
+    const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
     let { id } = useParams(); //extract from URL id="..."
 
@@ -47,7 +47,6 @@ export const Protocol = (props: ProtocolProps) => {
         <h1>פרוטוקול פרויקט: {project.project_name}</h1>
         <ProtocolProject 
             project={project}
-            db={db}
             path={'projects/' + project.id}
             addSaveAction={addSaveAction} />
         <div className="buttons">

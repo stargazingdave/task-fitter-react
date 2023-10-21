@@ -3,11 +3,13 @@ import { useState } from "react";
 import { useFirebaseApp, useFirestore, useFirestoreCollectionData } from "reactfire";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
-import { initContacts } from "../../redux/contactsSlice";
+import { closeContacts, initContacts, openContactsToggle } from "../../redux/contactsSlice";
+import { databaseInit } from "../../redux/databaseSlice";
 
 const AccountLoadderInternal = () => {
     const dispatch = useAppDispatch();
     const db = getFirestore(useFirebaseApp());
+    dispatch(databaseInit(db));
     const user = useAppSelector(selectUser);
     const contactsCollection = collection(db, 'contacts');
     const [isAscending, setIsAscending] = useState(true);
@@ -33,6 +35,7 @@ export const AccountLoadder = () => {
     }
     else {
         dispatch(initContacts({contacts: [], contactsCollection: {} as CollectionReference}));
+        dispatch(closeContacts());
         return <></>;
     }
 }

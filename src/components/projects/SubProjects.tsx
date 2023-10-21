@@ -7,16 +7,15 @@ import { EditProjectForm } from './EditProjectForm';
 
 // Import the functions you need from the SDKs you need
 import { DocumentData, collection, deleteDoc, doc, orderBy, query, where } from 'firebase/firestore';
-import { useFirestore, useFirestoreCollectionData } from 'reactfire';
-import { User } from 'firebase/auth';
+import { useFirestoreCollectionData } from 'reactfire';
 import { CreateProjectForm } from './CreateProjectForm';
 import { getProjectsPath } from '../../utils';
 import { BsFillBuildingsFill } from 'react-icons/bs';
-import { FaHammer } from 'react-icons/fa';
 import Popup from 'reactjs-popup';
 import { MdDeleteForever } from 'react-icons/md';
 import { useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
+import { selectDb } from '../../redux/databaseSlice';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -40,7 +39,7 @@ type SubProjectsProps = {
 export const SubProjects = (props: SubProjectsProps) =>  {
     const user = useAppSelector(selectUser);
   const path = getProjectsPath(props.projectStack);
-  const db = useFirestore();
+  const db = useAppSelector(selectDb);
   const projectsCollection = collection(db, path);
   const [isAscending, setIsAscending] = useState(false);
   const [createSubProject, setCreateSubProject] = useState(false);
@@ -110,7 +109,7 @@ export const SubProjects = (props: SubProjectsProps) =>  {
             <EditProjectForm editProject={editSubProject} 
                             projectsCollection={projectsCollection} 
                             setEditProject={(project) => setEditSubProject(project)} 
-                            db={db}/>
+                            />
             </div>
         }
     </>

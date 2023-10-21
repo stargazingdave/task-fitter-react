@@ -6,11 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './store';
 
-import { FirebaseAppProvider,
-    FirestoreProvider,
-    useFirestoreDocData,
-    useFirestore,
-    useFirebaseApp } from 'reactfire';
+import { FirebaseAppProvider } from 'reactfire';
 
 
 

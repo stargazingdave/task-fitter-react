@@ -1,8 +1,8 @@
 import '.././Protocol.scss';
 
 // Import the functions you need from the SDKs you need
-import { DocumentData, collection, collectionGroup, doc, query, where } from 'firebase/firestore';
-import { useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
+import { DocumentData, collectionGroup, doc, query, where } from 'firebase/firestore';
+import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
 import { User } from 'firebase/auth';
 import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
@@ -10,6 +10,7 @@ import { ProtocolProjectAttachment } from './ProtocolProjectAttachment';
 import { useAppSelector } from '../../../reduxHooks';
 import { selectUser } from '../../../redux/userSlice';
 import { selectContacts } from '../../../redux/contactsSlice';
+import { selectDb } from '../../../redux/databaseSlice';
 
 
 type ProtocolAttachmentProps = {
@@ -59,7 +60,7 @@ const sendMail = async (project: DocumentData, tasks: DocumentData[], contacts: 
 }
 
 export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
-    const db = useFirestore();
+    const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
     const contacts = useAppSelector(selectContacts);
 
@@ -90,7 +91,6 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
             <h1>פרוטוקול פרויקט: {project.project_name}</h1>
             <ProtocolProjectAttachment 
                 project={project}
-                db={db}
                 path={'projects/' + project.id}
                 addSaveAction={addSaveAction} 
             />

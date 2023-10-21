@@ -1,6 +1,4 @@
-import { User } from 'firebase/auth';
 import { DocumentData, collection, deleteDoc, doc, orderBy, query, where } from 'firebase/firestore';
-import { useFirestore, useFirestoreCollectionData } from 'reactfire';
 import { useState } from 'react';
 import { CreateContactForm } from './CreateContactForm';
 import './ContactList.scss';
@@ -16,6 +14,7 @@ import { Contact } from './Contact';
 import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { selectSignedIn, selectUser } from '../../redux/userSlice';
 import { initContacts, selectContacts, selectContactsCollection } from '../../redux/contactsSlice';
+import { selectDb } from '../../redux/databaseSlice';
 
 
 
@@ -26,9 +25,7 @@ type ContactListProps = {
   
 
 export const ContactList = (props: ContactListProps) => {
-    // access the Firestore library
-    //const dbRef = doc(useFirestore(), 'projects', 'KgZALPsAYOxhD9KS1dqg');
-    const db = useFirestore();
+    const db = useAppSelector(selectDb);
     const contacts = useAppSelector(selectContacts);
     const contactsCollection = useAppSelector(selectContactsCollection);
     
@@ -89,7 +86,7 @@ export const ContactList = (props: ContactListProps) => {
                                         contacts[i] = editContact;
                                         setEditContact({});
                                     }} 
-                                    db={db} />
+                                />
                         }
                         {
                             openContact?.id == contact.id &&

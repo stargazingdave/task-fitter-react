@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { GiLargePaintBrush } from 'react-icons/gi';
-import { FaHammer } from 'react-icons/fa';
 import { BsFillBuildingsFill } from 'react-icons/bs';
 import './Projects.scss';
 import { EditProjectForm } from './EditProjectForm';
 
 import { DocumentData, collection, deleteDoc, doc, orderBy, query, where } from 'firebase/firestore';
-import { useFirestore, useFirestoreCollectionData} from 'reactfire';
-import { User } from 'firebase/auth';
+import { useFirestoreCollectionData} from 'reactfire';
 import { CreateProjectForm } from './CreateProjectForm';
 import Popup from 'reactjs-popup';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiEditAlt } from 'react-icons/bi';
 import { useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
+import { selectDb } from '../../redux/databaseSlice';
+import { deleteProject } from '../../utils';
+import { store } from '../../store';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -37,7 +37,7 @@ type ProjectsProps = {
 export const Projects = (props: ProjectsProps) =>  {
     const user = useAppSelector(selectUser);
     // access the Firestore library
-    const db = useFirestore();
+    const db = useAppSelector(selectDb);
     const projectsCollection = collection(db, 'projects');
     const [isAscending, setIsAscending] = useState(false);
     const [createProjectFlag, setCreateProjectFlag] = useState(false);
@@ -107,7 +107,9 @@ export const Projects = (props: ProjectsProps) =>  {
                                                 <div className='buttons'>
                                                     <button onClick={() => {
                                                             const path = 'projects/'; 
-                                                            deleteDoc(doc(db, path, projectDeletePopup));
+                                                            // deleteDoc(doc(db, path, projectDeletePopup));
+                                                            deleteProject(store.getState(), 
+                                                                path + projectDeletePopup)
                                                             setProjectDeletePopup('');
                                                         }}>
                                                             מחיקה לתמיד
@@ -130,7 +132,6 @@ export const Projects = (props: ProjectsProps) =>  {
                                         editProject={props.editProject} 
                                         projectsCollection={projectsCollection} 
                                         setEditProject={(editProject) => props.setEditProject(editProject)} 
-                                        db={db}
                                     />
                                 </div>
                                 

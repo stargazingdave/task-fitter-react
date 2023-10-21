@@ -1,7 +1,5 @@
-import { DocumentData, collection, orderBy, query, where } from "firebase/firestore";
+import { DocumentData, collection } from "firebase/firestore";
 import "./Project.scss"
-import { useFirestore, useFirestoreCollectionData } from "reactfire";
-import { User } from "firebase/auth";
 import { SubProjects } from "./SubProjects";
 import { getProjectsPath } from "../../utils";
 import { ProjectSubjects } from "./ProjectSubjects";
@@ -10,8 +8,8 @@ import { BiEditAlt } from "react-icons/bi";
 import { EditProjectForm } from "./EditProjectForm";
 import { useState } from "react";
 import { useAppSelector } from "../../reduxHooks";
-import { selectUser } from "../../redux/userSlice";
 import { selectContacts } from "../../redux/contactsSlice";
+import { selectDb } from "../../redux/databaseSlice";
 
 type ProjectProps = {
     onProjectSelected: (projectStack: DocumentData[]) => void;
@@ -25,10 +23,8 @@ type ProjectProps = {
 
 
 export const Project = (props: ProjectProps) => {
-    const contacts = useAppSelector(selectContacts);
-    const [isAscending, setIsAscending] = useState(true);
     const parentPath = getProjectsPath(props.projectStack.slice(0, props.projectStack.length - 1));
-    const db = useFirestore();
+    const db = useAppSelector(selectDb);
     const parentCollection = collection(db, parentPath);
 
     const updateProject = (project: DocumentData) => {
@@ -91,7 +87,6 @@ export const Project = (props: ProjectProps) => {
                                 editProject={props.editProject} 
                                 projectsCollection={parentCollection} 
                                 setEditProject={(project: DocumentData) => updateProject(project)} 
-                                db={db} 
                             /> 
                             : <></>
                         }
@@ -104,9 +99,10 @@ export const Project = (props: ProjectProps) => {
                         </button>
                 </div>
                 <div className="content">
-                    <ProjectSubjects onProjectSelected={props.onProjectSelected} 
-                                    projectStack={props.projectStack} 
-                                    contacts={contacts} />
+                    <ProjectSubjects 
+                        onProjectSelected={props.onProjectSelected} 
+                        projectStack={props.projectStack} 
+                    />
                     <SubProjects 
                         onProjectSelected={props.onProjectSelected} 
                         projectStack={props.projectStack}

@@ -1,5 +1,4 @@
-import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, deleteDoc, doc, getFirestore, query, updateDoc, where } from "firebase/firestore";
+import { CollectionReference, DocumentData, deleteDoc, doc, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 import { getStorage, ref, deleteObject } from "firebase/storage";
@@ -13,27 +12,23 @@ import { EditTaskForm } from "./EditTaskForm";
 import { BiEditAlt } from "react-icons/bi";
 import Popup from "reactjs-popup";
 import { ConfirmationBox } from "../general/ConfirmationBox";
-import { FaHammer } from "react-icons/fa";
 import { ImageContainer } from "../general/ImageContainer";
 import { MdDeleteForever } from "react-icons/md";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
+import { selectContacts } from "../../redux/contactsSlice";
 
 type ProjectTasksProps = {
     projectStack: DocumentData[];
     tasksCollection: CollectionReference;
-    contacts: DocumentData[];
 }
 
 
 
 export const ProjectTasks = (props: ProjectTasksProps) => {
     const user = useAppSelector(selectUser);
-    
-    const db = getFirestore();
-
     const storage = getStorage();
-    
+    const contacts = useAppSelector(selectContacts);
 
     const [newTask, setNewTask] = useState(false);
     const [editTask, setEditTask] = useState({} as DocumentData);
@@ -72,7 +67,7 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                 editTask?.id != task.id &&
                                 task.collaborators?.map((collaborator: string) => (
                                     <div key={collaborator} className="collaborator">
-                                        <p>{props.contacts.find((contact) => contact.id == collaborator)?.name}</p><p className="comma">, </p>
+                                        <p>{contacts.find((contact) => contact.id == collaborator)?.name}</p><p className="comma">, </p>
                                     </div>
                                 ))
                             }
@@ -111,16 +106,14 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                         <EditTaskForm 
                             tasksCollection={props.tasksCollection} 
                             setEditTask={setEditTask} 
-                            db={db} 
                             task={editTask} 
-                            contacts={props.contacts} /> 
+                        />
                     }
                 </div>
             ))}
             {
                 newTask
                 ? <CreateTaskForm tasksCollection={props.tasksCollection} 
-                                    db={db}
                                     createTaskSelected={newTask} 
                                     onTaskCreate={() => setNewTask(false)} 
                                     onCancel={() => setNewTask(false)} 

@@ -3,13 +3,13 @@ import { CollectionReference, DocumentData, Firestore, doc, getDocs, query, upda
 import { useState } from "react";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
+import { selectDb } from "../../redux/databaseSlice";
 
 type EditContactFormProps = {
   editContact: DocumentData;
   setEditContact: (DocumentData) => void;
   contactsCollection: CollectionReference;
   onContactUpdate: (editContact: DocumentData) => void;
-  db: Firestore;
 }
   
 
@@ -18,7 +18,8 @@ const updateContact = async (props: EditContactFormProps,
                     contactName: string, 
                     contactRole: string,
                     contactEmail: string,
-                    user: User) => {
+                    user: User,
+                    db: Firestore) => {
         const temp = query(props.contactsCollection, 
             where("user_id", "==", user.uid || 0), 
             where("name", "==", contactName));
@@ -27,7 +28,7 @@ const updateContact = async (props: EditContactFormProps,
             alert('לא ניתן ליצור איש קשר ללא שם');
             return;
         }
-        updateDoc(doc(props.db, 'contacts', props.editContact.id), {
+        updateDoc(doc(db, 'contacts', props.editContact.id), {
             name: contactName,
             creation_time: Date.now(),
             role: contactRole,
@@ -41,6 +42,7 @@ const updateContact = async (props: EditContactFormProps,
 
 export const EditContactForm = (props: EditContactFormProps) => {
     const user = useAppSelector(selectUser);
+    const db = useAppSelector(selectDb);
     const [contactName, setContactName] = useState(props.editContact.name);
     const [contactRole, setContactRole] = useState(props.editContact.role);
     const [contactEmail, setContactEmail] = useState(props.editContact.email);
@@ -74,7 +76,7 @@ export const EditContactForm = (props: EditContactFormProps) => {
                 />
             <div className="buttons">
                 <button 
-                    onClick={() => {updateContact(props, contactName, contactRole, contactEmail, user)}}>
+                    onClick={() => {updateContact(props, contactName, contactRole, contactEmail, user, db)}}>
                         שמור
                 </button>
                 <button onClick={() => props.setEditContact({})}>ביטול</button>

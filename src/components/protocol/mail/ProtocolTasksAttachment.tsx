@@ -1,4 +1,3 @@
-import { User } from "firebase/auth";
 import { CollectionReference, getFirestore, query, where } from "firebase/firestore";
 import { useFirestoreCollectionData } from "reactfire";
 
@@ -16,7 +15,6 @@ type ProtocolTasksAttachmentProps = {
 
 export const ProtocolTasksAttachment = (props: ProtocolTasksAttachmentProps) => {
     const user = useAppSelector(selectUser);
-    const db = getFirestore();
     const tasksQuery = query(props.tasksCollection,
         where("user_id", "==", user.uid || 0));
     const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
@@ -31,7 +29,6 @@ export const ProtocolTasksAttachment = (props: ProtocolTasksAttachmentProps) => 
                 <div className="p-task" key={task.id}>
                     <ProtocolTaskAttachment   task={task}
                                     tasksCollection={props.tasksCollection}
-                                    db={db} 
                                     addSaveAction={props.addSaveAction} />
                     {
                         task.image && <img src={task.image} style={{scale: "90%", height: "200px", width: "fit-content"}} />

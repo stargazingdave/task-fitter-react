@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../src/store'
-import { collection, CollectionReference, DocumentData, orderBy, query, where } from 'firebase/firestore';
-import { useFirestore } from 'reactfire';
+import { CollectionReference, DocumentData } from 'firebase/firestore';
 
 
 // Define a type for the slice state
@@ -30,6 +29,9 @@ export const contactsSlice = createSlice({
         state.contacts = action.payload.contacts;
         state.contactsCollection = action.payload.contactsCollection;
     },
+    closeContacts: (state) => {
+        state.openContacts = false;
+    },
     onUpdateContact: (state, action: PayloadAction<DocumentData>) => {
         const temp = [...state.contacts];
         const index = temp.findIndex((contact) => contact.id == action.payload.id);
@@ -50,7 +52,14 @@ export const contactsSlice = createSlice({
   },
 })
 
-export const { openContactsToggle, initContacts, onUpdateContact, onAddContact, onDeleteContact } = contactsSlice.actions
+export const { 
+    openContactsToggle, 
+    initContacts, 
+    onUpdateContact, 
+    onAddContact, 
+    onDeleteContact, 
+    closeContacts 
+} = contactsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectOpenContacts = (state: RootState) => state.contacts.openContacts;

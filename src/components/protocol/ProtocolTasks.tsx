@@ -47,9 +47,7 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                     <ProtocolTask   
                         task={task}
                         tasksCollection={props.tasksCollection}
-                        db={db} 
                         addSaveAction={props.addSaveAction} 
-                        contacts={contacts}
                     />
                     {
                         task.image && <img src={task.image} style={{maxHeight: "200px"}} />

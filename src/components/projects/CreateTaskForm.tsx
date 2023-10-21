@@ -19,7 +19,6 @@ type CreateTaskFormProps = {
     createTaskSelected: boolean;
     onTaskCreate: (onTaskCreate: boolean) => void;
     onCancel: () => void;
-    db: Firestore;
     project: DocumentData;
 }
 
