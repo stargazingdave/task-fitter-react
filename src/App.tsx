@@ -28,7 +28,7 @@ function MyRoutes() {
         user.uid
         ? <Routes>
                 <Route index element={<MainPage />} />
-                <Route path="protocol/:id" element={<Protocol protocolOpen={true} />} />
+                <Route path="protocol/:id" element={<Protocol />} />
                 <Route path="protocol-preview/:id" element={<ProtocolAttachment protocolOpen onClose={() => {}} />} />
             </Routes>
         : <></>

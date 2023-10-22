@@ -1,9 +1,21 @@
 .create-project-form {
+    max-width: 300px;
     display: flex;
+    flex-direction: column;
     gap: 10px;
     padding: 10px;
-    /* border: 2px solid black; */
-    /* background: #747474; */
+    border: 1px solid #747474;
+    border-radius: 8px;
     flex-wrap: wrap;
     justify-content: space-around;
+    h1 {
+        font-family: inherit;
+        font-size: 20px;
+        color: #1F3C88;
+    }
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
 }

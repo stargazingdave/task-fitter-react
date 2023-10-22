@@ -11,8 +11,6 @@ import { selectDb } from '../../redux/databaseSlice';
 
 
 type ProtocolProps = {
-    protocolOpen: boolean;
-    onClose?: (protocolOpen: boolean) => void;
 }
 
 const actions = {}; // key-value map. key - task id, value - action(function)

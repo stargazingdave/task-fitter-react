@@ -67,14 +67,12 @@ export const Projects = (props: ProjectsProps) =>  {
         }
         {
             createProjectFlag &&
-            <div className="create-project-form">
-                <CreateProjectForm  
-                    projectsCollection={projectsCollection} 
-                    createProjectFlag={createProjectFlag} 
-                    onProjectCreate={(createProjectFlag) => {
-                        setCreateProjectFlag(!createProjectFlag)
-                    }}/>
-            </div>
+            <CreateProjectForm  
+                projectsCollection={projectsCollection} 
+                createProjectFlag={createProjectFlag} 
+                onProjectCreate={(createProjectFlag) => {
+                    setCreateProjectFlag(!createProjectFlag)
+                }}/>
         }  
             <div className="projects">
                 {

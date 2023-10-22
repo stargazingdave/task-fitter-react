@@ -39,26 +39,29 @@ export const CreateProjectForm = (props: CreateProjectFormProps) => {
     const [managerName, setManagerName] = useState('');
     return (
         <div className="create-project-form">
+            <h1>יצירת פרויקט חדש</h1>
             <label>
                 שם הפרויקט:
-                <input
-                    value={projectName}
-                    onChange={e => setProjectName(e.target.value)}
-                    type="string" />
             </label>
+            <input
+                value={projectName}
+                onChange={e => setProjectName(e.target.value)}
+                type="string" />
             <label>
                 מנהל הפרויקט:
-                <input
-                    value={managerName}
-                    onChange={e => setManagerName(e.target.value)}
-                    type="string" />
             </label>
-            <button onClick={() => {addProject(props, projectName, managerName, user)}}>
-                שמירה
-            </button>
-            <button onClick={() => props.onProjectCreate(props.createProjectFlag)}>
-                ביטול
-            </button>
+            <input
+                value={managerName}
+                onChange={e => setManagerName(e.target.value)}
+                type="string" />
+            <div className="buttons">
+                <button onClick={() => {addProject(props, projectName, managerName, user)}}>
+                    שמירה
+                </button>
+                <button onClick={() => props.onProjectCreate(props.createProjectFlag)}>
+                    ביטול
+                </button>
+            </div>
         </div>
         )
 }
