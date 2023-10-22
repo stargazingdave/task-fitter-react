@@ -42,11 +42,23 @@
         }
     }
     .contact-list-button {
+        display: flex;
+        flex-direction: row;
+        gap: 6px;
+        padding: 10px 10px;
+        align-items: center;
         background: none;
+        border: 1px solid white;
+        border-radius: 4px;
+        color: white;
         position: absolute;
         left: 26px;
+        &.open {
+            background: #070D59;
+        }
         &:hover {
             background: none;
+            color: #CEDDEF;
             svg {
                 fill: #CEDDEF;
             }

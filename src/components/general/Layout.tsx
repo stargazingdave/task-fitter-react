@@ -18,8 +18,8 @@ export const LoadingSpinner = () => {
 const UserPanel = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectUser);
-    const auth = useAuth();
     const openContacts = useAppSelector(selectOpenContacts);
+    const auth = useAuth();
     return (
         <div className='user-panel'>
             <h1>Task Fitter</h1>
@@ -34,11 +34,12 @@ const UserPanel = () => {
                 </div>
             </div>
             <button 
-                className='contact-list-button' 
+                className={'contact-list-button' + (openContacts ? ' open' : '')} 
                 title='רשימת אנשי הקשר'
                 onClick={() => dispatch(openContactsToggle())}
                 >
-                <ImUsers size={24} />
+                    <ImUsers size={24} />
+                    אנשי קשר
             </button>
         </div>
     );

@@ -13,6 +13,8 @@ import { MdDeleteForever } from "react-icons/md";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
 import { selectDb } from "../../redux/databaseSlice";
+import { deleteProject, deleteSubject } from "../../utils";
+import { store } from "../../store";
 
 type ProtocolProjectProps = {
     project: DocumentData;
@@ -33,7 +35,8 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
     const [editProject, setEditProject] = useState({} as DocumentData);
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
     const [createSubProject, setCreateSubProject] = useState(false);
-    const [deleteSubject, setDeleteSubject] = useState({} as DocumentData);
+    const [selectedSubject, setSelectedSubject] = useState({} as DocumentData);
+    const [selectedProject, setSelectedProject] = useState({} as DocumentData);
     const [editSubject, setEditSubject] = useState({} as DocumentData);
     const [subjectName, setSubjectName] = useState('');
     const { status: statusP, data: projects } = useFirestoreCollectionData(subProjectsQuery, { idField: 'id',});
@@ -80,9 +83,13 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                             alert('לא ניתן ליצור נושא ללא כותרת');
                             return;
                         }
-                        addDoc(projectSubjectsCollection, {title: subjectName, creation_time: new Date().toString()});
-                                                setCreateSubjectFlag(false);
-                                            }}>
+                        addDoc(projectSubjectsCollection, 
+                            {
+                                title: subjectName, 
+                                creation_time: new Date().toString(),
+                            });
+                        setCreateSubjectFlag(false);
+                    }}>
                         שמירה
                     </button>
                     <button onClick={() => setCreateSubjectFlag(false)}>
@@ -112,7 +119,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                                     <button 
                                         className="delete-button"
                                         title="מחיקת נושא"
-                                        onClick={() => setDeleteSubject(subject)}>
+                                        onClick={() => setSelectedSubject(subject)}>
                                             <MdDeleteForever size={24}/>
                                     </button>
                                     <button 
@@ -172,7 +179,9 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                         <h1>{project.project_name}</h1>
                         <div className="buttons">
                             <button 
-                                title='מחיקת הפרויקט' className="delete-subproject-button" onClick={() => deleteDoc(doc(subProjectsCollection, project.id))}>
+                                title='מחיקת הפרויקט' 
+                                className="delete-subproject-button" 
+                                onClick={() => setSelectedProject(project)} >
                                 <MdDeleteForever size="24" />
                             </button>
                             <button 
@@ -196,18 +205,39 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                 ))
             }
             {
-                deleteSubject?.id &&
+                selectedSubject?.id &&
                 <Popup 
                     contentStyle={{width: "300px"}}
                     modal={true}  
-                    open={deleteSubject.id} >
+                    open={selectedSubject.id} >
                         <ProtocolConfirmationBox 
                             object="הנושא" 
                             onConfirm={() => {
-                                deleteDoc(doc(projectSubjectsCollection, deleteSubject.id));
-                                setDeleteSubject({});
+                                //deleteDoc(doc(projectSubjectsCollection, selectedSubject.id));
+                                // delete subject and nested data (tasks)
+                                deleteSubject(store.getState(), 
+                                    doc(projectSubjectsCollection, selectedSubject.id), 
+                                    props.path + '/subjects/');
+                                setSelectedSubject({});
                             }} 
-                            onCancel={() => setDeleteSubject({})} />
+                            onCancel={() => setSelectedSubject({})} />
+                </Popup>
+            }
+            {
+                selectedProject?.id &&
+                <Popup 
+                    contentStyle={{width: "300px"}}
+                    modal={true}  
+                    open={selectedProject.id} >
+                        <ProtocolConfirmationBox 
+                            object="הפרויקט" 
+                            onConfirm={() => {
+                                // delete project and nested data
+                                deleteProject(store.getState(), 
+                                props.path + '/projects/' + selectedProject.id)
+                                setSelectedProject({});
+                            }} 
+                            onCancel={() => setSelectedProject({})} />
                 </Popup>
             }
         </div>

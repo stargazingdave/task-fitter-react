@@ -6,16 +6,17 @@ import { EditProjectForm } from './EditProjectForm';
 
 
 // Import the functions you need from the SDKs you need
-import { DocumentData, collection, deleteDoc, doc, orderBy, query, where } from 'firebase/firestore';
+import { DocumentData, collection, orderBy, query, where } from 'firebase/firestore';
 import { useFirestoreCollectionData } from 'reactfire';
 import { CreateProjectForm } from './CreateProjectForm';
-import { getProjectsPath } from '../../utils';
+import { deleteProject, getProjectsPath } from '../../utils';
 import { BsFillBuildingsFill } from 'react-icons/bs';
 import Popup from 'reactjs-popup';
 import { MdDeleteForever } from 'react-icons/md';
 import { useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
 import { selectDb } from '../../redux/databaseSlice';
+import { store } from '../../store';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -83,10 +84,13 @@ export const SubProjects = (props: SubProjectsProps) =>  {
                 open={projectDeletePopup != ''}
                 modal={true} >
                     <div className='delete-project-confirmation-box'>
-                        <p>פעולה זו תמחק את הפרויקט לתמיד <b>ללא אפשרות שחזור התוכן שלו</b>. להמשיך במחיקה?</p>
+                        <p>פעולה זו תמחק את הפרויקט לתמיד <b>כולל כל התוכן שלו, ללא אפשרות שחזור</b>. להמשיך במחיקה?</p>
                         <div className='buttons'>
                             <button onClick={() => {
-                                    deleteDoc(doc(db, path, projectDeletePopup));
+                                debugger
+                                    // delete project and nested data
+                                    deleteProject(store.getState(), 
+                                        path + projectDeletePopup);
                                     setProjectDeletePopup('');
                                 }}>
                                     מחיקה לתמיד

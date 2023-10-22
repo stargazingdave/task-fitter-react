@@ -13,15 +13,14 @@ import {
 import { deleteObject, getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { RootState } from "./store";
 
-// `path` needs to be to the collection containing the project.
-// for example: `projects/<someProjectId>/projects`
+// `path` needs to be to the project document.
+// for example: `projects/<someProjectId>`
 export const deleteProject = async (
     reduxState: RootState,
     path: string
 ) => {
     const db = reduxState.database.db;
     const user = reduxState.user.user;
-    debugger;
     // delete sub projects
     const subProjectsCollection = collection(db,
         path, 'projects');
@@ -51,8 +50,9 @@ export const deleteProject = async (
     deleteDoc(doc(db, path));
 }
 
-// `path` needs to be to the collection containing the subject.
-// for example: `projects/<someProjectId>/subjects`
+// `path` needs to be to the collection containing the subject, with '/' in the
+// end.
+// for example: `projects/<someProjectId>/subjects/`
 export const deleteSubject = async (
     reduxState: RootState,
     subject: DocumentReference,
@@ -60,7 +60,7 @@ export const deleteSubject = async (
 ) => {
     const db = reduxState.database.db;
     const user = reduxState.user.user;
-
+debugger
     // delete tasks
     const tasksCollection = collection(db,
         path + subject.id + '/' + 'tasks');
@@ -78,7 +78,7 @@ export const deleteSubject = async (
 
 export const getProjectsPath = (array: DocumentData[]) => {
     return array.length != 0
-        ? 'projects/' + array.map(project => project.id).join('/projects/') + '/projects'
+        ? 'projects/' + array.map(project => project.id).join('/projects/') + '/projects/'
         : 'projects/';
 }
 

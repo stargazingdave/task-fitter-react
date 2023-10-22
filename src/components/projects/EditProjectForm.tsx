@@ -21,6 +21,7 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
     
     return (
         <div className="edit-project-form">
+            <h1>עריכת הפרויקט</h1>
             <label className="name-label">
                 שם הפרויקט:
             </label>

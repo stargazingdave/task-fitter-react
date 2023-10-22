@@ -4,14 +4,13 @@ import './ProjectSubjects.scss';
 
 
 // Import the functions you need from the SDKs you need
-import { DocumentData, addDoc, collection, deleteDoc, doc, query, updateDoc, where } from 'firebase/firestore';
+import { DocumentData, addDoc, collection, doc, query, updateDoc, where } from 'firebase/firestore';
 import { useFirestoreCollectionData} from 'reactfire';
 import { deleteSubject, getSubjectsPath } from '../../utils';
 import { ProjectTasks } from './ProjectTasks';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Popup from 'reactjs-popup';
 import { ConfirmationBox } from '../general/ConfirmationBox';
-import { FaHammer } from 'react-icons/fa';
 import { BiEditAlt } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
 import { useAppSelector } from '../../reduxHooks';
@@ -173,6 +172,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                     modal={true}>
                     <ConfirmationBox 
                         onConfirm={() => {
+                            // delete subject and nested data
                             deleteSubject(store.getState(), doc(db, subjectsPath, subjectDeletePopup.id), getSubjectsPath(props.projectStack) + '/');
                             setSubjectDeletePopup({});
                         }}

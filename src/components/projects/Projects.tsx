@@ -3,7 +3,7 @@ import { BsFillBuildingsFill } from 'react-icons/bs';
 import './Projects.scss';
 import { EditProjectForm } from './EditProjectForm';
 
-import { DocumentData, collection, deleteDoc, doc, orderBy, query, where } from 'firebase/firestore';
+import { DocumentData, collection, orderBy, query, where } from 'firebase/firestore';
 import { useFirestoreCollectionData} from 'reactfire';
 import { CreateProjectForm } from './CreateProjectForm';
 import Popup from 'reactjs-popup';
@@ -61,8 +61,14 @@ export const Projects = (props: ProjectsProps) =>  {
             ))}
         </div>
         {
-            !createProjectFlag && !props.editProject?.id
-            ? <button onClick={() => setCreateProjectFlag(!createProjectFlag)}>יצירת פרויקט חדש</button>
+            !createProjectFlag
+            ? <button 
+                className='create-project-button'
+                onClick={() => setCreateProjectFlag(!createProjectFlag)}
+                disabled={props.editProject?.id}
+                >
+                    יצירת פרויקט חדש
+                </button>
             : <></>
         }
         {
@@ -78,13 +84,13 @@ export const Projects = (props: ProjectsProps) =>  {
                 {
                     projects.map(project => (
                         <div className="project-tile" key={project.id}>
-                            <div className='project-details'>
-                                <h1>{project.project_name}</h1>
-                                <h2>{project.project_manager}</h2>
-                            </div>
                             {
                                 props.editProject?.id != project.id
                                 ? <>
+                                    <div className='project-details'>
+                                        <h1>{project.project_name}</h1>
+                                        <h2>{project.project_manager}</h2>
+                                    </div>
                                     <button title='פתיחת הפרויקט' className='open-button' onClick={() => {
                                                                 props.onProjectSelected([...props.projectStack, project]);
                                                             }}>
@@ -105,9 +111,9 @@ export const Projects = (props: ProjectsProps) =>  {
                                                 <div className='buttons'>
                                                     <button onClick={() => {
                                                             const path = 'projects/'; 
-                                                            // deleteDoc(doc(db, path, projectDeletePopup));
+                                                            // delete project and nested data
                                                             deleteProject(store.getState(), 
-                                                                path + projectDeletePopup)
+                                                                path + projectDeletePopup);
                                                             setProjectDeletePopup('');
                                                         }}>
                                                             מחיקה לתמיד
