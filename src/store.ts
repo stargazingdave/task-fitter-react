@@ -2,12 +2,17 @@ import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './redux/userSlice'
 import contactsReducer from './redux/contactsSlice'
 import databaseReducer from './redux/databaseSlice'
+import userSettingsReducer from './redux/userSettingsSlice'
+import projectsReducer from './redux/projectsSlice'
+
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         contacts: contactsReducer,
         database: databaseReducer,
+        userSettings: userSettingsReducer,
+        projects: projectsReducer,
     },
 })
 

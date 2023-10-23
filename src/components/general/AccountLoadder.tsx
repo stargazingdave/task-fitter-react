@@ -1,30 +1,72 @@
-import { CollectionReference, collection, getFirestore, orderBy, query, where } from "firebase/firestore";
+import { CollectionReference, DocumentData, DocumentReference, addDoc, collection, doc, getFirestore, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";
 import { useFirebaseApp, useFirestore, useFirestoreCollectionData } from "reactfire";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
 import { closeContacts, initContacts, openContactsToggle } from "../../redux/contactsSlice";
 import { databaseInit } from "../../redux/databaseSlice";
+import { userSettingsInit } from "../../redux/userSettingsSlice";
 
 const AccountLoadderInternal = () => {
+    const [isAscending, setIsAscending] = useState(true);
     const dispatch = useAppDispatch();
     const db = getFirestore(useFirebaseApp());
     dispatch(databaseInit(db));
     const user = useAppSelector(selectUser);
+
+    
+    
     const contactsCollection = collection(db, 'contacts');
-    const [isAscending, setIsAscending] = useState(true);
     const contactsQuery = query(contactsCollection,
         where("user_id", "==", user.uid),
         orderBy('name', isAscending ? 'asc' : 'desc'));
-    const { status, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
-    // check the loading status
-    if (status === 'loading') {
-        return <p>החשבון בטעינה...</p>;
-    }
+    const { status: contactsStatus, data: contacts } = useFirestoreCollectionData(contactsQuery, { idField: 'id',});
+    
     dispatch(initContacts({contacts, contactsCollection}));
 
+    const userSettingsCollection = collection(db, 'user_settings');
+    const UserSettingsQuery = query(userSettingsCollection,
+        where("user_id", "==", user.uid));
+    const { status: userSettingsStatus, data: userSettings } = useFirestoreCollectionData(UserSettingsQuery, { idField: 'id',});
+
+    // check the loading status
+    if (contactsStatus === 'loading') {
+        return <p>אנשי הקשר בטעינה...</p>;
+    }
+    if (userSettingsStatus === 'loading') {
+        return <p>הגדרות בטעינה...</p>;
+    }
+
+    // check if new user and initiate settings
+    if (userSettings.length === 1) {
+        dispatch(userSettingsInit(userSettings[0]));
+    }
+    if (userSettings.length === 0) {
+
+        const temp = {} as DocumentData;
+        temp.user_id = user.uid;
+        temp.demo = true;
+        dispatch(userSettingsInit(temp));
+        addDoc(userSettingsCollection, {
+            user_id: temp.user_id,
+            demo: temp.demo,
+        }).then((docRef) => {
+            createDemoProjects()
+            .then(() => {
+                dispatch(userSettingsInit(temp));
+                updateDoc(docRef, {
+                    demo: false,
+                });
+            });
+        });
+        
+    }
     
     return <></>
+}
+
+const createDemoProjects = async() => {
+
 }
 
 export const AccountLoadder = () => {

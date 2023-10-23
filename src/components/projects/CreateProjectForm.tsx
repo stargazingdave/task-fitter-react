@@ -21,7 +21,7 @@ const addProject = (props: CreateProjectFormProps,
         alert('לא ניתן ליצור פרויקט ללא שם');
         return;
     }
-        addDoc(props.projectsCollection, {
+    addDoc(props.projectsCollection, {
         project_name: projectName,
         creation_time: Date.now(),
         project_manager: managerName,

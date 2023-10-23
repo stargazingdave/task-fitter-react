@@ -27,6 +27,7 @@ const addSaveAction = (taskId: string, action: () => void) => {
 
 
 const sendMail = async (project: DocumentData, tasks: DocumentData[], contacts: DocumentData[]) => {
+    debugger
     const linkToProtocolProject = document.getElementById("protocol-project");
     // @ts-ignore
     const canvas = await html2canvas(linkToProtocolProject, { scale: 1.5 })
