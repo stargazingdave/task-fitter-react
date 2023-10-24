@@ -3,7 +3,6 @@ import '.././Protocol.scss';
 // Import the functions you need from the SDKs you need
 import { DocumentData, collectionGroup, doc, query, where } from 'firebase/firestore';
 import { useFirestoreCollectionData, useFirestoreDocData } from 'reactfire';
-import { User } from 'firebase/auth';
 import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { ProtocolProjectAttachment } from './ProtocolProjectAttachment';
@@ -13,6 +12,8 @@ import { selectContacts } from '../../../redux/contactsSlice';
 import { selectDb } from '../../../redux/databaseSlice';
 import { TbMailFast, TbMailForward, TbMailShare } from 'react-icons/tb';
 import { useState } from 'react';
+import { getDownloadURL, getStorage, ref, uploadBytes, uploadString } from 'firebase/storage';
+import { User } from 'firebase/auth';
 
 
 type ProtocolAttachmentProps = {
@@ -26,19 +27,40 @@ const addSaveAction = (taskId: string, action: () => void) => {
     actions[taskId] = action;
 }
 
+const getCanvasBlob = (canvas) => {
+    return new Promise<Blob>(function(resolve, reject) {
+        canvas.toBlob(function(blob: Blob) {
+            resolve(blob)
+        })
+    })
+}
 
 
 const sendMail = async (
     project: DocumentData, 
     tasks: DocumentData[], 
     contacts: DocumentData[],
-    setSending: (boolean) => void
+    setSending: (boolean) => void,
+    user: User,
     ) => {
+    const storage = getStorage();
+
+    // Create a child reference
+    const imageRef = ref(storage, 'images/' + project.id + '.png');
+    // imagesRef now points to 'images'
+
     setSending(true);
     const linkToProtocolProject = document.getElementById("protocol-project");
     // @ts-ignore
     const canvas = await html2canvas(linkToProtocolProject, { scale: 1.5 })
-    const base64 = canvas.toDataURL();
+    const base64 = canvas.toDataURL("image/jpeg", 1.0);
+    let file = await getCanvasBlob(canvas);
+    debugger; 
+    // upload file to firebase storage
+    await uploadBytes(imageRef, file)
+    const imageLink = await getDownloadURL(imageRef);
+    
+    
     
     const collaborators = {}; // key (collaboratorId) => value ({collaborator, tasks})
     tasks.forEach((task) => {
@@ -51,12 +73,14 @@ const sendMail = async (
         })
     });
     
-
     Object.values(collaborators).forEach((instance) => {
+        debugger;
         //@ts-ignore
         emailjs.send("task-fitter", "template_kqmklat", {
-            attachment: base64,
+            //attachment: base64,
             project_name: project.project_name,
+            user_mail: user.email,
+            protocol_link: imageLink,
             //@ts-ignore
             contact_mail: instance.collaborator.email,
             //@ts-ignore
@@ -125,7 +149,7 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
                 </button>
                 : <button 
                     className='send-button' 
-                    onClick={() => sendMail(project, projectTasks, contacts, setSending)}
+                    onClick={() => sendMail(project, projectTasks, contacts, setSending, user)}
                     >
                     שליחה <TbMailShare size={34} />
                 </button>

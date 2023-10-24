@@ -87,6 +87,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                             {
                                 title: subjectName, 
                                 creation_time: new Date().toString(),
+                                user_id: user.uid,
                             });
                         setCreateSubjectFlag(false);
                     }}>

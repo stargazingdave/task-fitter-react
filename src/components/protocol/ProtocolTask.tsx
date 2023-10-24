@@ -1,5 +1,5 @@
 import { CollectionReference, DocumentData, deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import './ProtocolTask.scss'
 import { Checkbox } from "../general/Checkbox";
 import DatePicker from "react-datepicker";
@@ -30,25 +30,24 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
     const [taskTitle, setTaskTitle] = useState(props.task.task);
     const [taskDeadline, setTaskDeadline] = useState(new Date(Date.parse(props.task.deadline)));
     const [taskCollaborators, setTaskCollaborators] = useState(props.task.collaborators);
-    const [selectedOptions, setSelectedOptions] = useState(contacts
+    const selectedOptions = contacts
         .filter((contact) => props.task.collaborators.includes(contact.id))
-        .map((collaborator) => ({value: collaborator.id, label: collaborator.name})));
+        .map((collaborator) => ({value: collaborator.id, label: collaborator.name}));
     const [deleteTask, setDeleteTask] = useState({} as DocumentData);
     const [image, setImage] = useState<File | null>(null);
-    const selectContactRef = useRef<any>(null);
 
 
 
     props.addSaveAction(props.task.id, () => {
         const date = new Date(); // get current time for `update_time` field
         const docRef = doc(props.tasksCollection, props.task.id); // get document reference in firebase to update
-        const comp = selectContactRef.current; // get reference to Select component
-        const taskCollaboratorsNew = comp.getValue().map((value) => value.value); // get selected collaborators from Select component
+        // const comp = selectContactRef.current; // get reference to Select component
+        // const taskCollaboratorsNew = comp.getValue().map((value) => value.value); // get selected collaborators from Select component
         updateDoc(docRef, {
             task: taskTitle,
             update_time: date.toString(),
             deadline: taskDeadline.toString(),
-            collaborators: taskCollaboratorsNew
+            collaborators: taskCollaborators
         });
         if (image) {
             props.task.image && deleteImage(props.task.id);
@@ -93,12 +92,12 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                                 width: "fit-content",
                             }),
                         }}
-                        ref={selectContactRef}
                         options={contactsOptions} 
                         closeMenuOnSelect={false}
                         components={animatedComponents}
                         isMulti
                         defaultValue={selectedOptions}
+                        onChange={(value) => {setTaskCollaborators(value.map((value) => value.value))}}
                     />
                 </div>
                 <div className="set-deadline">

@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, Firestore, addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { CollectionReference, DocumentData, addDoc } from "firebase/firestore";
 import React, { useRef } from "react";
 import { useState } from "react";
 import './CreateTaskForm.scss'
