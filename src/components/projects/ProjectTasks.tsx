@@ -9,7 +9,8 @@ import './ProjectTasks.scss'
 import { CreateTaskForm } from "./CreateTaskForm";
 import { Checkbox } from "../general/Checkbox";
 import { EditTaskForm } from "./EditTaskForm";
-import { BiEditAlt } from "react-icons/bi";
+import { BiEditAlt, BiTask } from "react-icons/bi";
+import { AiOutlinePlus } from "react-icons/ai";
 import Popup from "reactjs-popup";
 import { ConfirmationBox } from "../general/ConfirmationBox";
 import { ImageContainer } from "../general/ImageContainer";
@@ -119,6 +120,10 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                     onCancel={() => setNewTask(false)} 
                                     project={props.projectStack[props.projectStack.length - 1]} />
                 : <button className="new-task-button" onClick={() => setNewTask(true)}>
+                    <div className="icons">
+                        <AiOutlinePlus size={20} />
+                        <BiTask size={30} />
+                    </div>
                     משימה חדשה
                 </button>
             }

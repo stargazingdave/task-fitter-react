@@ -86,7 +86,13 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
                 <label>
                     דד-ליין:
                 </label>
-                <DatePicker wrapperClassName={"datepicker-wrapper"} dateFormat={"dd/MM/yyyy"} showIcon selected={taskDeadline} onChange={(date) => date ? setTaskDeadline(date) : setTaskDeadline(taskDeadline)}/>
+                <DatePicker 
+                    wrapperClassName={"datepicker-wrapper"} 
+                    dateFormat={"dd/MM/yyyy"} 
+                    showIcon 
+                    selected={taskDeadline} 
+                    onChange={(date) => date ? setTaskDeadline(date) : setTaskDeadline(taskDeadline)}
+                />
             </div>
             <div className="collaborators-container">
                 <div className="collaborators-selection">

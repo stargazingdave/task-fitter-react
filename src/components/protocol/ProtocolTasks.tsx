@@ -1,5 +1,4 @@
-import { User } from "firebase/auth";
-import { CollectionReference, DocumentData, addDoc, collection, deleteField, doc, getDocs, getFirestore, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { CollectionReference, DocumentData, addDoc, deleteField, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 
@@ -9,7 +8,8 @@ import { ProtocolTask } from "./ProtocolTask";
 import { deleteImage } from "../../utils";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
-import { selectContacts } from "../../redux/contactsSlice";
+import { AiOutlinePlus } from "react-icons/ai";
+import { BiTask } from "react-icons/bi";
 
 type ProtocolTasksProps = {
     tasksCollection: CollectionReference;
@@ -20,8 +20,6 @@ type ProtocolTasksProps = {
 
 export const ProtocolTasks = (props: ProtocolTasksProps) => {
     const user = useAppSelector(selectUser);
-    const contacts = useAppSelector(selectContacts);
-    const db = getFirestore();
     const tasksQuery = query(props.tasksCollection, where("user_id", "==", user.uid || 0));
 
     useEffect(() => {
@@ -69,14 +67,21 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
             <button 
                 className="new-task-button"
                 title="משימה חדשה"
-                onClick={() => {addDoc(props.tasksCollection, {
-                    task: "",
-                    status: false,
-                    deadline: new Date().toString(),
-                    user_id: user.uid,
-                    collaborators: [],
-                    project_id: props.project.id
-                })}}>
+                onClick={() => {
+                    addDoc(props.tasksCollection, {
+                        task: "",
+                        status: false,
+                        deadline: new Date().toString(),
+                        user_id: user.uid,
+                        collaborators: [],
+                        project_id: props.project.id
+                    });
+                }}
+                >
+                    <div className="icons">
+                        <AiOutlinePlus size={20} />
+                        <BiTask size={30} />
+                    </div>
                     משימה חדשה
             </button>
         </div>

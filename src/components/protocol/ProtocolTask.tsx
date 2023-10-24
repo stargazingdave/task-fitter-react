@@ -28,7 +28,6 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
     const contacts = useAppSelector(selectContacts);
     let contactsOptions = contacts.map((contact) => ({value: contact.id, label: contact.name}));
     const [taskTitle, setTaskTitle] = useState(props.task.task);
-    const [isAscending, setIsAscending] = useState(true);
     const [taskDeadline, setTaskDeadline] = useState(new Date(Date.parse(props.task.deadline)));
     const [taskCollaborators, setTaskCollaborators] = useState(props.task.collaborators);
     const [selectedOptions, setSelectedOptions] = useState(contacts
@@ -41,14 +40,15 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
 
 
     props.addSaveAction(props.task.id, () => {
-        const date = new Date();
-        const docRef = doc(props.tasksCollection, props.task.id);
-        
+        const date = new Date(); // get current time for `update_time` field
+        const docRef = doc(props.tasksCollection, props.task.id); // get document reference in firebase to update
+        const comp = selectContactRef.current; // get reference to Select component
+        const taskCollaboratorsNew = comp.getValue().map((value) => value.value); // get selected collaborators from Select component
         updateDoc(docRef, {
             task: taskTitle,
             update_time: date.toString(),
             deadline: taskDeadline.toString(),
-            collaborators: taskCollaborators
+            collaborators: taskCollaboratorsNew
         });
         if (image) {
             props.task.image && deleteImage(props.task.id);
