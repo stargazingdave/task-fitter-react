@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
 import { selectDb } from '../../redux/databaseSlice';
+import { TbMailSearch } from 'react-icons/tb';
 
 
 type ProtocolProps = {
@@ -53,14 +54,14 @@ export const Protocol = (props: ProtocolProps) => {
                 onClick={save}
                 type='submit'
                 className='save-button' >
-                <FiSave size={"60px"} />
+                    שמירת הפרויקט <FiSave size={28} />
             </button>
             <a 
                 title='תצוגה מקדימה של הפרוטוקול לפני שליחה'
                 className="preview-link" 
                 target="_blank" 
                 href={"/protocol-preview/" + id}>
-                    תצוגה מקדימה
+                    תצוגה מקדימה <TbMailSearch size={28} />
             </a>
         </div>
     </div>

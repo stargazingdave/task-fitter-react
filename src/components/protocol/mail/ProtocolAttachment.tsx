@@ -11,6 +11,8 @@ import { useAppSelector } from '../../../reduxHooks';
 import { selectUser } from '../../../redux/userSlice';
 import { selectContacts } from '../../../redux/contactsSlice';
 import { selectDb } from '../../../redux/databaseSlice';
+import { TbMailFast, TbMailForward, TbMailShare } from 'react-icons/tb';
+import { useState } from 'react';
 
 
 type ProtocolAttachmentProps = {
@@ -26,8 +28,13 @@ const addSaveAction = (taskId: string, action: () => void) => {
 
 
 
-const sendMail = async (project: DocumentData, tasks: DocumentData[], contacts: DocumentData[]) => {
-    debugger
+const sendMail = async (
+    project: DocumentData, 
+    tasks: DocumentData[], 
+    contacts: DocumentData[],
+    setSending: (boolean) => void
+    ) => {
+    setSending(true);
     const linkToProtocolProject = document.getElementById("protocol-project");
     // @ts-ignore
     const canvas = await html2canvas(linkToProtocolProject, { scale: 1.5 })
@@ -56,7 +63,16 @@ const sendMail = async (project: DocumentData, tasks: DocumentData[], contacts: 
             contact_name: instance.collaborator.name,
             //@ts-ignore
             task_list: instance.tasks.map((task) => task.task).join('<br>')
-        }, "vtVkQrnc2d67CfVRb");
+        }, "vtVkQrnc2d67CfVRb")
+            .then((response) => {
+                alert('הצלחה! הפרוטוקול נשלח בהצלחה לכל המשתתפים' + response.status + response.text);
+                setSending(false);
+            },
+            (error) => {
+                alert('שגיאה!' + error.status + error.text);
+                setSending(false);
+            });
+            
     })
 }
 
@@ -64,6 +80,7 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
     const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
     const contacts = useAppSelector(selectContacts);
+    const [sending, setSending] = useState(false);
 
     let { id } = useParams();
 
@@ -97,9 +114,22 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
             />
         </div>
         <div className="buttons">
-            <button onClick={() => sendMail(project, projectTasks, contacts)}>
-                שליחה
-            </button>
+            {
+                sending
+                ? <button 
+                    className='send-button sending' 
+                    onClick={() => {}}
+                    disabled
+                    >
+                    מתבצעת שליחה <TbMailFast size={34} /><div className="loader"></div>
+                </button>
+                : <button 
+                    className='send-button' 
+                    onClick={() => sendMail(project, projectTasks, contacts, setSending)}
+                    >
+                    שליחה <TbMailShare size={34} />
+                </button>
+            }
         </div>
     </div>
 }

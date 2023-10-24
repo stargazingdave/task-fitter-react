@@ -38,7 +38,7 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
                 subjects.map(subject => (
                     
                     <div className='p-subject' key={subject.id}>
-                        <div className='subject-title'>
+                        <div className='subject-title attachment'>
                             <h1>{subject.title}</h1>
                         </div>
                         <ProtocolTasksAttachment   

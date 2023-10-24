@@ -138,6 +138,10 @@
         border-left: none;
         position: relative;
         width: 180px;
+        &.attachment {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
         &:hover {
             .buttons {
                 opacity: 1;

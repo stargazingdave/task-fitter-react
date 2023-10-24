@@ -23,7 +23,7 @@ export const ProtocolTasksAttachment = (props: ProtocolTasksAttachmentProps) => 
         return <p>טוען משימות...</p>;
     }
     
-    return <div className="p-tasks">
+    return <div className="p-tasks attachment">
         <div className="p-tasks-container">
             {tasks?.map(task => (
                 <div className="p-task" key={task.id}>
