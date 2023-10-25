@@ -8,12 +8,13 @@ import html2canvas from 'html2canvas';
 import { ProtocolProjectAttachment } from './ProtocolProjectAttachment';
 import { useAppSelector } from '../../../reduxHooks';
 import { selectUser } from '../../../redux/userSlice';
-import { selectContacts } from '../../../redux/contactsSlice';
+import { selectContacts, selectOpenContacts } from '../../../redux/contactsSlice';
 import { selectDb } from '../../../redux/databaseSlice';
 import { TbMailFast, TbMailForward, TbMailShare } from 'react-icons/tb';
 import { useState } from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { User } from 'firebase/auth';
+import { ContactList } from '../../contacts/ContactList';
 
 
 type ProtocolAttachmentProps = {
@@ -105,6 +106,7 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
     const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
     const contacts = useAppSelector(selectContacts);
+    const openContacts = useAppSelector(selectOpenContacts);
     const [sending, setSending] = useState(false);
 
     let { id } = useParams();
@@ -129,33 +131,39 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
         return <p>פרויקט לא קיים</p>
     }
 
-    return <div className='protocol-container'>
-        <div  id="protocol-project">
-            <h1>פרוטוקול פרויקט: {project.project_name}</h1>
-            <ProtocolProjectAttachment 
-                project={project}
-                path={'projects/' + project.id}
-                addSaveAction={addSaveAction} 
-            />
+    return <div className='protocol-page'>
+        <div className='protocol-container'>
+            <div  id="protocol-project">
+                <h1>פרוטוקול פרויקט: {project.project_name}</h1>
+                <ProtocolProjectAttachment 
+                    project={project}
+                    path={'projects/' + project.id}
+                    addSaveAction={addSaveAction} 
+                />
+            </div>
+            <div className="buttons">
+                {
+                    sending
+                    ? <button 
+                        className='send-button sending' 
+                        onClick={() => {}}
+                        disabled
+                        >
+                        מתבצעת שליחה <TbMailFast size={34} /><div className="loader"></div>
+                    </button>
+                    : <button 
+                        className='send-button' 
+                        onClick={() => sendMail(project, projectTasks, contacts, setSending, user)}
+                        >
+                        שליחה <TbMailShare size={34} />
+                    </button>
+                }
+            </div>
         </div>
-        <div className="buttons">
-            {
-                sending
-                ? <button 
-                    className='send-button sending' 
-                    onClick={() => {}}
-                    disabled
-                    >
-                    מתבצעת שליחה <TbMailFast size={34} /><div className="loader"></div>
-                </button>
-                : <button 
-                    className='send-button' 
-                    onClick={() => sendMail(project, projectTasks, contacts, setSending, user)}
-                    >
-                    שליחה <TbMailShare size={34} />
-                </button>
-            }
-        </div>
+        {
+            openContacts &&
+            <ContactList />
+        }
     </div>
 }
 

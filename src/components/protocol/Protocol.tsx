@@ -9,6 +9,8 @@ import { useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
 import { selectDb } from '../../redux/databaseSlice';
 import { TbMailSearch } from 'react-icons/tb';
+import { selectOpenContacts } from '../../redux/contactsSlice';
+import { ContactList } from '../contacts/ContactList';
 
 
 type ProtocolProps = {
@@ -28,7 +30,7 @@ const save = () => {
 }
 
 export const Protocol = (props: ProtocolProps) => {
-    debugger
+    const openContacts = useAppSelector(selectOpenContacts);
     const db = useAppSelector(selectDb);
     let { id } = useParams(); //extract from URL id="..."
 
@@ -42,28 +44,35 @@ export const Protocol = (props: ProtocolProps) => {
         return <p>פרויקט לא קיים</p>
     }
 
-    return <div className='protocol-container'>
-        <h1>פרוטוקול פרויקט: {project.project_name}</h1>
-        <ProtocolProject 
-            project={project}
-            path={'projects/' + project.id}
-            addSaveAction={addSaveAction} />
-        <div className="buttons">
-            <button 
-                title='שמירת כל השינויים בפרויקט'
-                onClick={save}
-                type='submit'
-                className='save-button' >
-                    שמירת הפרויקט <FiSave size={28} />
-            </button>
-            <a 
-                title='תצוגה מקדימה של הפרוטוקול לפני שליחה'
-                className="preview-link" 
-                target="_blank" 
-                href={"/protocol-preview/" + id}>
-                    תצוגה מקדימה <TbMailSearch size={28} />
-            </a>
+    return <div className='protocol-page'>
+        <div className='protocol-container'>
+            <h1>פרוטוקול פרויקט: {project.project_name}</h1>
+            <ProtocolProject 
+                project={project}
+                path={'projects/' + project.id}
+                addSaveAction={addSaveAction} />
+            <div className="buttons">
+                <button 
+                    title='שמירת כל השינויים בפרויקט'
+                    onClick={save}
+                    type='submit'
+                    className='save-button' >
+                        שמירת הפרויקט <FiSave size={28} />
+                </button>
+                <a 
+                    title='תצוגה מקדימה של הפרוטוקול לפני שליחה'
+                    className="preview-link" 
+                    target="_blank" 
+                    href={"/protocol-preview/" + id}>
+                        תצוגה מקדימה <TbMailSearch size={28} />
+                </a>
+            </div>
+
         </div>
+        {
+            openContacts &&
+            <ContactList />
+        }
     </div>
 }
 

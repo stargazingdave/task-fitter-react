@@ -124,6 +124,9 @@
     button {
         background: #CEDDEF;
         color: #1F3C88;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
         &:hover {
             background: #5893D4;
             cursor: pointer;
