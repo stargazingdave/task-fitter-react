@@ -79,7 +79,8 @@ const sendMail = async (
         emailjs.send("task-fitter", "template_kqmklat", {
             //attachment: base64,
             project_name: project.project_name,
-            user_mail: user.email,
+            reply_to: user.email,
+            from_name: user.displayName,
             protocol_link: imageLink,
             //@ts-ignore
             contact_mail: instance.collaborator.email,
