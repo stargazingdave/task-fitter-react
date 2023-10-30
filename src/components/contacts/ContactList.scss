@@ -13,11 +13,16 @@
     box-sizing: border-box;
     border: 1px solid #EEEDED;
     overflow-y: scroll;
+    max-height: calc(100vh - 100px);
+    h1 {
+        font-size: 26px;
+        color: #1F3C88;
+        margin: 0;
+    }
     .contact {
         border: none;
         width: auto;
         height: fit-content;
-        overflow: hidden;
         position: relative;
         background: #fff;
         border-bottom: solid 1.5px #1F3C88;

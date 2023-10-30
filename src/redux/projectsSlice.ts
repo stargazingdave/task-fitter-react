@@ -23,12 +23,16 @@ export const projectsSlice = createSlice({
     projectsDestroy: (state) => {
         state.projectStack = [] as DocumentData[];
     },
+    setProjectStack: (state, action: PayloadAction<DocumentData[]>) => {
+        state.projectStack = action.payload;
+    },
   },
 })
 
 export const { 
     pushProject, 
     projectsDestroy,
+    setProjectStack,
 } = projectsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

@@ -5,9 +5,10 @@ import { DocumentData } from "firebase/firestore";
 import { useState } from "react";
 import { ContactList } from "../contacts/ContactList";
 import './MainPage.scss';
-import { useAppSelector } from "../../reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectSignedIn } from "../../redux/userSlice";
 import { selectOpenContacts } from "../../redux/contactsSlice";
+import { selectProjectStack, setProjectStack } from "../../redux/projectsSlice";
 
 type MainPageProps = {
 }
@@ -15,7 +16,9 @@ type MainPageProps = {
 
 export const MainPage = (props: MainPageProps) => {
     const openContacts = useAppSelector(selectOpenContacts);
-    const [projectStack, setProjectStack] = useState([] as DocumentData[]);
+    const projectStack = useAppSelector(selectProjectStack);
+    const dispatch = useAppDispatch();
+    //const [projectStack, setProjectStack] = useState([] as DocumentData[]);
     const [editProject, setEditProject] = useState({} as DocumentData);
     const signedIn = useAppSelector(selectSignedIn);
     
@@ -32,19 +35,10 @@ export const MainPage = (props: MainPageProps) => {
             {
                 projectStack.length != 0
                 ? <Project 
-                    projectStack={projectStack}
-                    setProjectStack={setProjectStack}
-                    onProjectSelected = {(array: DocumentData[]) => {
-                        setProjectStack(array);
-                    }} 
                     editProject={editProject}
                     setEditProject={(editProject) => setEditProject(editProject)}
                 />
                 : <Projects 
-                    onProjectSelected = {(array: DocumentData[]) => {
-                        setProjectStack(array);
-                    }} 
-                    projectStack={projectStack}
                     editProject={editProject}
                     setEditProject={(editProject) => setEditProject(editProject)}
                 /> 

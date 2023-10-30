@@ -7,14 +7,12 @@ import { AiOutlineClose } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { EditProjectForm } from "./EditProjectForm";
 import { useState } from "react";
-import { useAppSelector } from "../../reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectContacts } from "../../redux/contactsSlice";
 import { selectDb } from "../../redux/databaseSlice";
+import { pushProject, selectProjectStack, setProjectStack } from "../../redux/projectsSlice";
 
 type ProjectProps = {
-    onProjectSelected: (projectStack: DocumentData[]) => void;
-    projectStack: DocumentData[];
-    setProjectStack: (projectStack: DocumentData[]) => void;
     editProject: DocumentData;
     setEditProject: (editProject: DocumentData) => void;
 }
@@ -23,17 +21,21 @@ type ProjectProps = {
 
 
 export const Project = (props: ProjectProps) => {
-    const parentPath = getProjectsPath(props.projectStack.slice(0, props.projectStack.length - 1));
+    
     const db = useAppSelector(selectDb);
+    const projectStack = useAppSelector(selectProjectStack);
+    const dispatch = useAppDispatch();
+
+    const parentPath = getProjectsPath(projectStack.slice(0, projectStack.length - 1));
     const parentCollection = collection(db, parentPath);
 
     const updateProject = (project: DocumentData) => {
         props.setEditProject({} as DocumentData);
         
         if (project?.id) {
-            let temp = [...props.projectStack];
+            let temp = [...projectStack];
             temp[temp.length-1] = project;
-            props.setProjectStack(temp);
+            dispatch(pushProject(project));
         }
     }
 
@@ -42,14 +44,14 @@ export const Project = (props: ProjectProps) => {
             <div className="projects-path">
                 פרויקט נוכחי:
                 {
-                    props.projectStack.map((project => 
+                    projectStack.map((project => 
                         <>
                             <button onClick={() => {
-                                let temp = [...props.projectStack];
+                                let temp = [...projectStack];
                                 while(temp[temp.length-1] != project) {
                                     temp.pop();
                                 }
-                                props.onProjectSelected(temp);
+                                dispatch(setProjectStack(temp));;
                                 
                             }}>
                                 {project.project_name}
@@ -62,21 +64,21 @@ export const Project = (props: ProjectProps) => {
             <div className="project-container">
                 <div className="project-header">
                     <div className="project-title">
-                        <h1>שם הפרויקט: {props.projectStack[props.projectStack.length-1].project_name}</h1>
-                        <h2>מנהל הפרויקט: {props.projectStack[props.projectStack.length-1].project_manager}</h2>
+                        <h1>שם הפרויקט: {projectStack[projectStack.length-1].project_name}</h1>
+                        <h2>מנהל הפרויקט: {projectStack[projectStack.length-1].project_manager}</h2>
                         <div className="buttons">
                             <button 
                                 className='edit-button' 
                                 title="עריכת שם ומנהל הפרויקט" 
-                                onClick={() => props.setEditProject(props.projectStack[props.projectStack.length-1])} >
+                                onClick={() => props.setEditProject(projectStack[projectStack.length-1])} >
                                     <BiEditAlt size={25}/>
                             </button>
                             {
-                                props.projectStack.length == 1 &&
+                                projectStack.length == 1 &&
                                 <a 
                                     className="protocol-link" 
                                     target="_blank" 
-                                    href={"/protocol/" + props.projectStack[props.projectStack.length-1].id}>
+                                    href={"/protocol/" + projectStack[projectStack.length-1].id}>
                                         פרוטוקול
                                 </a>
                             }
@@ -94,18 +96,13 @@ export const Project = (props: ProjectProps) => {
                     <button 
                             className="exit-button" 
                             title="יציאה מהפרויקט לדף הבית" 
-                            onClick={() => props.onProjectSelected([] as DocumentData[])}>
+                            onClick={() => dispatch(setProjectStack([] as DocumentData[]))}>
                                 <AiOutlineClose size={25} />
                         </button>
                 </div>
                 <div className="content">
-                    <ProjectSubjects 
-                        onProjectSelected={props.onProjectSelected} 
-                        projectStack={props.projectStack} 
-                    />
+                    <ProjectSubjects />
                     <SubProjects 
-                        onProjectSelected={props.onProjectSelected} 
-                        projectStack={props.projectStack}
                         editProject={props.editProject}
                         setEditProject={(editProject) => props.setEditProject(editProject)} 
                     />

@@ -9,11 +9,12 @@ import { CreateProjectForm } from './CreateProjectForm';
 import Popup from 'reactjs-popup';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiEditAlt } from 'react-icons/bi';
-import { useAppSelector } from '../../reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
 import { selectDb } from '../../redux/databaseSlice';
 import { deleteProject } from '../../utils';
 import { store } from '../../store';
+import { pushProject, selectProjectStack, setProjectStack } from '../../redux/projectsSlice';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -24,8 +25,6 @@ import { store } from '../../store';
 
 
 type ProjectsProps = {
-    onProjectSelected: (projectStack: DocumentData[]) => void;
-    projectStack: DocumentData[];
     editProject: DocumentData;
     setEditProject: (editProject: DocumentData) => void;
 }
@@ -38,6 +37,9 @@ export const Projects = (props: ProjectsProps) =>  {
     const user = useAppSelector(selectUser);
     // access the Firestore library
     const db = useAppSelector(selectDb);
+    const projectStack = useAppSelector(selectProjectStack);
+    const dispatch = useAppDispatch();
+    
     const projectsCollection = collection(db, 'projects');
     const [isAscending, setIsAscending] = useState(false);
     const [createProjectFlag, setCreateProjectFlag] = useState(false);
@@ -56,7 +58,7 @@ export const Projects = (props: ProjectsProps) =>  {
     return <div className='projects-container'>
         <h1>פרויקטים</h1>
         <div>
-            {props.projectStack.map(project => (
+            {projectStack.map(project => (
                 <div>{project.project_name}</div>
             ))}
         </div>
@@ -92,7 +94,7 @@ export const Projects = (props: ProjectsProps) =>  {
                                         <h2>{project.project_manager}</h2>
                                     </div>
                                     <button title='פתיחת הפרויקט' className='open-button' onClick={() => {
-                                                                props.onProjectSelected([...props.projectStack, project]);
+                                                                dispatch(pushProject(project));
                                                             }}>
                                         <BsFillBuildingsFill size={50}/>
                                     </button>

@@ -5,7 +5,6 @@ import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
 
 type CreateContactFormProps = {
-  createContact: boolean;
   contactsCollection: CollectionReference;
   createContactFlag: boolean;
   onContactCreate: (onContactCreate: boolean) => void;

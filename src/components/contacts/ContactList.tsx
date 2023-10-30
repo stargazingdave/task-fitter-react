@@ -39,6 +39,7 @@ export const ContactList = (props: ContactListProps) => {
             <h1>אנשי קשר</h1>
                 {contacts.map(contact => (
                     <div 
+                        data-testid={contact.id}    
                         className="contact" 
                         key={contact.id} 
                         >
@@ -55,13 +56,14 @@ export const ContactList = (props: ContactListProps) => {
                             </h1>
                         </div>
                         <div className='buttons'>
-                        <button title='עריכת איש קשר' className='edit-button' onClick={() => {
+                        <button title='עריכת איש קשר' data-testid={'edit-button' + contact.id} className='edit-button' onClick={() => {
                                 setEditContact(contact);
                             }}>
                                 <BiEditAlt size={20} />
                         </button>
                         <button 
                             title='מחיקת איש קשר'
+                            data-testid={'delete-button' + contact.id}
                             className='delete-button' 
                             onClick={() => {
                                 setContactDeletePopup(contact);
@@ -101,7 +103,6 @@ export const ContactList = (props: ContactListProps) => {
             {createContactFlag
             ? <div className="create-contact-form">
                 <CreateContactForm 
-                    createContact={createContactFlag} 
                     contactsCollection={contactsCollection} 
                     createContactFlag={createContactFlag} 
                     onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>

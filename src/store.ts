@@ -4,6 +4,9 @@ import contactsReducer from './redux/contactsSlice'
 import databaseReducer from './redux/databaseSlice'
 import userSettingsReducer from './redux/userSettingsSlice'
 import projectsReducer from './redux/projectsSlice'
+import { CollectionReference, Firestore } from 'firebase/firestore'
+import { Provider } from 'react'
+import { render } from 'react-dom'
 
 
 export const store = configureStore({

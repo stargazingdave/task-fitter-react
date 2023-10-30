@@ -15,12 +15,12 @@ import Popup from "reactjs-popup";
 import { ConfirmationBox } from "../general/ConfirmationBox";
 import { ImageContainer } from "../general/ImageContainer";
 import { MdDeleteForever } from "react-icons/md";
-import { useAppSelector } from "../../reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
 import { selectContacts } from "../../redux/contactsSlice";
+import { selectProjectStack } from "../../redux/projectsSlice";
 
 type ProjectTasksProps = {
-    projectStack: DocumentData[];
     tasksCollection: CollectionReference;
 }
 
@@ -30,6 +30,8 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
     const user = useAppSelector(selectUser);
     const storage = getStorage();
     const contacts = useAppSelector(selectContacts);
+    const projectStack = useAppSelector(selectProjectStack);
+    const dispatch = useAppDispatch();
 
     const [newTask, setNewTask] = useState(false);
     const [editTask, setEditTask] = useState({} as DocumentData);
@@ -118,7 +120,7 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                     createTaskSelected={newTask} 
                                     onTaskCreate={() => setNewTask(false)} 
                                     onCancel={() => setNewTask(false)} 
-                                    project={props.projectStack[props.projectStack.length - 1]} />
+                                    project={projectStack[projectStack.length - 1]} />
                 : <button className="new-task-button" onClick={() => setNewTask(true)}>
                     <div className="icons">
                         <AiOutlinePlus size={20} />

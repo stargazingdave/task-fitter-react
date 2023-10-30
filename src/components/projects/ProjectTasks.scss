@@ -10,7 +10,7 @@
     flex-direction: column;
     flex-grow: 3;
     box-sizing: border-box;
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
     width: 100%;
     h1 {
@@ -51,7 +51,7 @@
         height: fit-content;
         margin: 0;
         padding: 10px 5px;
-        background: none;
+        background: #ffffffa2;
         border: 1px dashed #1F3C88;
         color: #1F3C88;
         font-size: 24px;
@@ -76,7 +76,6 @@
     overflow: visible;
     position: relative;
     background: #ffffff;
-    border-radius: 5px;
     border-bottom: solid 1.5px #1F3C88;
     box-shadow: 0 2px 4px rgba(124, 114, 255, 0.1), 0 8px 16px rgba(0.1, 0, 0, 0.1);
     &:hover {
