@@ -22,7 +22,7 @@ const UserPanel = () => {
     const auth = useAuth();
     return (
         <div className='user-panel'>
-            <h1>Task Fitter</h1>
+            <a className='app-logo' href="https://task-fitter.com/">Task Fitter</a>
             <div className='info'>
                 <div title="Sign Out">
                     <button onClick={() => dispatch(signOut(auth))} >

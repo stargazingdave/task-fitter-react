@@ -1,10 +1,13 @@
 .protocol-page {
     display: flex;
     flex-direction: row;
+    overflow-y: auto;
 }
 
 .protocol-container {
     width: 100%;
+    overflow-y: auto;
+    max-height: calc(100vh - 80px);
     h1 {
         color: #1F3C88;
         padding-right: 20px;
@@ -106,8 +109,4 @@
             }
         }
     }
-}
-
-.form {
-    overflow: hidden;
 }
