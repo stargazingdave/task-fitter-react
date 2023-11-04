@@ -4,7 +4,7 @@ import './ProjectSubjects.scss';
 
 
 // Import the functions you need from the SDKs you need
-import { DocumentData, addDoc, collection, doc, query, updateDoc, where } from 'firebase/firestore';
+import { DocumentData, addDoc, collection, doc, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { useFirestoreCollectionData} from 'reactfire';
 import { deleteSubject, getSubjectsPath } from '../../utils';
 import { ProjectTasks } from './ProjectTasks';
@@ -30,12 +30,12 @@ type ProjectSubjectsProps = {
 export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
     const user = useAppSelector(selectUser);
     const projectStack = useAppSelector(selectProjectStack);
-    const dispatch = useAppDispatch();
     const subjectsPath = getSubjectsPath(projectStack);
     const db = useAppSelector(selectDb);
     const subjectsCollection = collection(db, subjectsPath);
     const subjectsQuery = query(subjectsCollection,
-        where("user_id", "==", user.uid || 0));
+        where("user_id", "==", user.uid || 0),
+        orderBy("creation_time", "asc"));
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
     const [editSubject, setEditSubject] = useState({} as DocumentData);
     const [subjectName, setSubjectName] = useState('');
@@ -51,64 +51,32 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
     return <div className='tasks-area'>
         <div className='tasks-header'>
             <h1>משימות</h1>
-            <div className='create-subject'>
-            {
-                !createSubjectFlag 
-                ? <button 
-                    className='create-button' 
-                    onClick={() => setCreateSubjectFlag(!createSubjectFlag)}>
-                        נושא חדש
-                    </button>
-                : <div className='form'>
-                    <label>
-                        כותרת:
-                        <input
-                            value={subjectName}
-                            onChange={e => setSubjectName(e.target.value)}
-                            type="string" />
-                    </label>
-                    <button onClick={() => {
-                            if (subjectName == '') {
-                                alert('לא ניתן ליצור נושא ללא כותרת');
-                                return;
-                            }
-                            addDoc(collection(db, subjectsPath), {
-                                title: subjectName || '',
-                                creation_time: new Date().toString(),
-                                user_id: user.uid
-                            });
-                            setSubjectName('');
-                            setCreateSubjectFlag(!createSubjectFlag);
-                        }}>
-                        שמירה
-                    </button>
-                    <button onClick={() => {
-                            setSubjectName('');
-                            setCreateSubjectFlag(!createSubjectFlag);
-                    }}>ביטול</button>
-                </div>
-            }
-            </div>
         </div>
-        
         <>
             {subjects.map(subject => (
                 <div className='subject' key={subject.id}>
-                    <div >
-                    <h1>{subject.title}</h1>
-                    <div className='buttons'>
-                    {
-                        editSubject?.id != subject.id
-                        ? <>
-                            <button 
-                                title='מחיקת הנושא'
-                                className='delete-button'
-                                onClick={() => setSubjectDeletePopup(subject)}>
-                                    <MdDeleteForever size={20}/>
-                            </button>
-                        </>
-                        : <div>
-                            <div className="edit-subject-form">
+                    <div className='subject-title'>
+                        <h1>{subject.title}</h1>
+                        {
+                            editSubject?.id != subject.id
+                            ? <div className='buttons'>
+                                <button 
+                                    title='מחיקת הנושא'
+                                    className='delete-button'
+                                    onClick={() => setSubjectDeletePopup(subject)}>
+                                        <MdDeleteForever size={20}/>
+                                </button>
+                                <button 
+                                    title='עריכת הנושא'
+                                    className='edit-button'
+                                    onClick={() => {
+                                        setEditSubject(subject);
+                                        setSubjectName(subject.title)
+                                    }}>
+                                        <BiEditAlt size={20}/>
+                                </button>
+                            </div>
+                            : <div className="edit-subject-form">
                                 <label className="title">
                                     נושא:
                                 </label>
@@ -116,6 +84,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                                     value={subjectName}
                                     onChange={e => setSubjectName(e.target.value)}
                                     type="string"
+                                    autoFocus
                                 />
                                 <div className="buttons">
                                     <button 
@@ -145,19 +114,7 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    }
-                    <button 
-                        title='עריכת הנושא'
-                        className='edit-button'
-                        onClick={() => {
-                            setEditSubject(subject);
-                            setSubjectName(subject.title)
-                        }}>
-                            <BiEditAlt size={20}/>
-                    </button>
-                    </div>
-                    
+                        }
                     </div>
                     <ProjectTasks
                         tasksCollection={collection(db, getSubjectsPath(projectStack), subject.id, 'tasks')} 
@@ -180,6 +137,48 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                 </Popup>
             }
         </>
+        <div className='create-subject'>
+            {
+                !createSubjectFlag 
+                ? <button 
+                    className='new-subject-button' 
+                    onClick={() => setCreateSubjectFlag(!createSubjectFlag)}>
+                        {
+                            subjects.length === 0
+                            ? <p>להוספת משימות יש ליצור נושא חדש</p>
+                            : <p>נושא חדש</p>
+                        }
+                    </button>
+                : <div className='form'>
+                    <label>
+                        כותרת:
+                        <input
+                            value={subjectName}
+                            onChange={e => setSubjectName(e.target.value)}
+                            type="string" />
+                    </label>
+                    <button onClick={() => {
+                            if (subjectName == '') {
+                                alert('לא ניתן ליצור נושא ללא כותרת');
+                                return;
+                            }
+                            addDoc(collection(db, subjectsPath), {
+                                title: subjectName || '',
+                                creation_time: new Date().getTime(),
+                                user_id: user.uid
+                            });
+                            setSubjectName('');
+                            setCreateSubjectFlag(!createSubjectFlag);
+                        }}>
+                        שמירה
+                    </button>
+                    <button onClick={() => {
+                            setSubjectName('');
+                            setCreateSubjectFlag(!createSubjectFlag);
+                    }}>ביטול</button>
+                </div>
+            }
+        </div>
     </div>
 }
 

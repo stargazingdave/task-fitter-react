@@ -47,73 +47,76 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
         return <p>טוען משימות...</p>;
     }
 
-    
     return <div className="tasks">
         <div className="tasks-container">
             {tasks?.sort((x, y) => {
-                if (Date.parse(x.deadline) > Date.parse(y.deadline)) {
+                if (x.deadline > y.deadline) {
                     return 1;
                 }
-                if (new Date(Date.parse(x.deadline)) < new Date(Date.parse(y.deadline))) {
+                if (x.deadline < y.deadline) {
                     return -1;
                 }
                 return 0;
             }).map(task => (
                 <div className="task" key={task.id}>
-                    <div className="task-top">
-                        <div className="task-details">
-                            <h1>{task.task}</h1>
-                            <h2>{new Date(Date.parse(task.deadline)).toLocaleDateString("he-IL")}</h2>
-                        </div>
-                        <div className="collaborators">
-                            {
-                                editTask?.id != task.id &&
-                                task.collaborators?.map((collaborator: string) => (
-                                    <div key={collaborator} className="collaborator">
-                                        <p>{contacts.find((contact) => contact.id == collaborator)?.name}</p><p className="comma">, </p>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        {
-                            editTask?.id != task.id &&
-                            <div className="task-buttons">
-                                <button title='עריכת המשימה' className='edit-button' 
-                                                onClick={() => setEditTask(task)}>
-                                    <BiEditAlt size={25}/>
-                                </button>
-                                <button 
-                                    title='מחיקת המשימה'
-                                    className='delete-button' 
-                                    onClick={() => {
-                                        setTaskDeletePopup(task);
-                                    }}>
-                                    <MdDeleteForever size={25}/>
-                                </button>
-                                
-                            </div>
-                        }
-                    </div>
-                    <div className="task-status">
-                        <Checkbox task= {task} updateFunc={(task) => updateDoc(doc(props.tasksCollection,
-                                                                                    task.id), 
-                                                                                    {status: !task.status})}/>
-                        {task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}
-                    </div>
                     {
-                        task.image &&
-                        <ImageContainer imageURL={task.image} />
-                    }
-                    {
-                        editTask?.id == task.id &&
-                        <EditTaskForm 
+                        editTask?.id == task.id
+                        ? <EditTaskForm 
                             tasksCollection={props.tasksCollection} 
                             setEditTask={setEditTask} 
                             task={editTask} 
                         />
-                    }
-                </div>
-            ))}
+                        : <div className="task-details">
+                            <div className="task-visible">
+                                <h1>{task.task}</h1>
+                            </div>
+                            <div className="task-invisible">
+                                
+                                <h2 className="task-deadline">{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
+                                <div className="collaborators">
+                                    {
+                                        editTask?.id != task.id &&
+                                        task.collaborators?.map((collaborator: string) => (
+                                            <div key={collaborator} className="collaborator">
+                                                <p>{contacts.find((contact) => contact.id == collaborator)?.name}</p><p className="comma">, </p>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                                {
+                                    editTask?.id != task.id &&
+                                    <div className="task-buttons">
+                                        <button title='עריכת המשימה' className='edit-button' 
+                                                        onClick={() => setEditTask(task)}>
+                                            <BiEditAlt size={25}/>
+                                        </button>
+                                        <button 
+                                            title='מחיקת המשימה'
+                                            className='delete-button' 
+                                            onClick={() => {
+                                                setTaskDeletePopup(task);
+                                            }}>
+                                            <MdDeleteForever size={25}/>
+                                        </button>
+                                        
+                                    </div>
+                                }
+                            </div>
+                            <div className="task-status">
+                                <Checkbox task={task} updateFunc={(task) => updateDoc(doc(props.tasksCollection,
+                                                                                            task.id), 
+                                                                                            {status: !task.status})}/>
+                                {task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}
+                            </div>
+                        </div>
+                        }
+                        {
+                            task.image &&
+                            <ImageContainer imageURL={task.image} />
+                        }
+                    </div>
+                ))
+            }
             {
                 newTask
                 ? <CreateTaskForm tasksCollection={props.tasksCollection} 
@@ -124,7 +127,7 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                 : <button className="new-task-button" onClick={() => setNewTask(true)}>
                     <div className="icons">
                         <AiOutlinePlus size={20} />
-                        <BiTask size={30} />
+                        <BiTask size={24} />
                     </div>
                     משימה חדשה
                 </button>

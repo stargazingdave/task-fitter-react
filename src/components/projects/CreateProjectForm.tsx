@@ -46,7 +46,9 @@ export const CreateProjectForm = (props: CreateProjectFormProps) => {
             <input
                 value={projectName}
                 onChange={e => setProjectName(e.target.value)}
-                type="string" />
+                type="string" 
+                autoFocus
+                />
             <label>
                 מנהל הפרויקט:
             </label>

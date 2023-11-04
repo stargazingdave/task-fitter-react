@@ -55,6 +55,7 @@ export const CreateContactForm = (props: CreateContactFormProps) => {
             value={contactName}
             onChange={e => setContactName(e.target.value)}
             type="string"
+            autoFocus
             />
         <label>
             תפקיד:
@@ -71,6 +72,7 @@ export const CreateContactForm = (props: CreateContactFormProps) => {
             value={contactEmail}
             onChange={e => setContactEmail(e.target.value)}
             type="string"
+            dir="ltr"
             />
         <div className="buttons">
             <button onClick={() => {addContact(props, contactName, contactRole, contactEmail, user)}}>

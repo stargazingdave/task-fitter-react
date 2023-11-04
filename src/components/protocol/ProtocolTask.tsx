@@ -28,7 +28,7 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
     const contacts = useAppSelector(selectContacts);
     let contactsOptions = contacts.map((contact) => ({value: contact.id, label: contact.name}));
     const [taskTitle, setTaskTitle] = useState(props.task.task);
-    const [taskDeadline, setTaskDeadline] = useState(new Date(Date.parse(props.task.deadline)));
+    const [taskDeadline, setTaskDeadline] = useState(new Date(props.task.deadline));
     const [taskCollaborators, setTaskCollaborators] = useState(props.task.collaborators);
     const selectedOptions = contacts
         .filter((contact) => props.task.collaborators.includes(contact.id))
@@ -39,13 +39,13 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
 
 
     props.addSaveAction(props.task.id, () => {
-        const date = new Date(); // get current time for `update_time` field
+        const date = new Date().getTime(); // get current time for `update_time` field
         const docRef = doc(props.tasksCollection, props.task.id); // get document reference in firebase to update
         // const comp = selectContactRef.current; // get reference to Select component
         // const taskCollaboratorsNew = comp.getValue().map((value) => value.value); // get selected collaborators from Select component
         updateDoc(docRef, {
             task: taskTitle,
-            update_time: date.toString(),
+            update_time: date,
             deadline: taskDeadline.toString(),
             collaborators: taskCollaborators
         });
@@ -59,7 +59,6 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
         <>
             <div className="protocol-task">
                 <div className="task-title">
-                    <label htmlFor="title-input" >משימה: </label>
                     <textarea className="title-input" 
                                 style={{background: "white",
                                         width: "auto",
@@ -77,9 +76,6 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                                 overflow-y="scroll" />
                 </div>
                 <div className="collaborators-selection">
-                    <label>
-                        משתתפים:
-                    </label>
                     <Select 
                         styles={{
                             control: (baseStyles, state) => ({
@@ -101,17 +97,12 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                     />
                 </div>
                 <div className="set-deadline">
-                    <label>
-                        דד-ליין:
-                    </label>
-                    <>
                     <DatePicker 
                         wrapperClassName={"datepicker-wrapper"} 
                         dateFormat={"dd/MM/yyyy"} 
                         showIcon 
                         selected={taskDeadline} 
                         onChange={(date) => date ? setTaskDeadline(date) : setTaskDeadline(taskDeadline)}/>
-                    </>
                 </div>
                 <div className="task-status">
                     <Checkbox task= {props.task} updateFunc={(task) => updateDoc(doc(props.tasksCollection,

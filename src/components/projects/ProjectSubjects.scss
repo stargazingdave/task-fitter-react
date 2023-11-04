@@ -10,11 +10,11 @@
     box-shadow: none;
     overflow-x: hidden;
     overflow-y: auto;
+    height: fit-content;
     max-height: calc(100vh - 257px);
     .tasks-header {
         position: relative;
         color: #1F3C88;
-        margin: 4px;
         font-family: inherit;
         font-size: 30px;
         font-weight: bold;
@@ -27,29 +27,49 @@
             font-family: inherit;
             font-size: 24px;
             font-weight: bold;
-            width: fit-content;
-            position: absolute;
-            top: 2px;
             left: calc(50% - 25px);
         }
-        .create-subject {
-            position: relative;
-            margin: 0;
-            padding: 0;
-            width: fit-content;
-            button {
-                margin: 0;
+    }
+    .create-subject {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        box-shadow: none;
+        border-top: 2px solid white;
+        .new-subject-button {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            height: fit-content;
+            margin: 10px;
+            padding: 10px 5px;
+            background: #ffffffa2;
+            border: 1px dashed #1F3C88;
+            color: #1F3C88;
+            font-size: 18px;
+            font-family: inherit;
+            p {
+                width: 100%;
+                text-align: center;
             }
-            .form {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: flex-start;
-                gap: 8px;
-                label {
-                    font-family: inherit;
-                    font-size: 14px;
-                }
+            &:hover {
+                background: #ffffff;
+            }
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 8px;
+            width: inherit;
+            label {
+                font-family: inherit;
+                font-size: 14px;
             }
         }
     }
@@ -62,7 +82,7 @@
     gap: 10px;
     width: 100%;
     box-shadow: none;
-    border-top: 2px solid white;
+    border-top: 1px solid #1F3C88;
     &:hover {
         .buttons {
             opacity: 1;
@@ -76,6 +96,9 @@
         text-wrap: wrap;
         text-align: center;
         color: #070D59;
+    }
+    .subject-title {
+        width: 150px;
     }
     .buttons {
         display: flex;
@@ -108,22 +131,6 @@
                 &:hover {
                     fill: #36e047;
                     cursor: pointer;
-                }
-            }
-            &:hover {
-                cursor: pointer;
-            }
-        }
-        .new-task-button {
-            background: none;
-            width: fit-content;
-            padding: 0;
-            margin: 0;
-            margin-left: 14px;
-            svg {
-                fill: #5893D4;
-                &:hover {
-                    fill: #1F3C88;
                 }
             }
             &:hover {

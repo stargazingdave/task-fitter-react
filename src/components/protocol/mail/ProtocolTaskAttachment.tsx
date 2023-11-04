@@ -34,13 +34,12 @@ export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
     
     return (
         <>
-            <div className="protocol-task">
+            <div className="protocol-task attachment">
                 <div className="task-title">
-                    <label >משימה: </label>
                     <p className="task-title" 
                         style={{width: "auto",
                                 margin: "0",
-                                fontSize: "20px",
+                                fontSize: "16px",
                                 fontFamily: "Segoe UI"
                             }}
                         overflow-wrap="anywhere"
@@ -49,7 +48,6 @@ export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
                     </p>
                 </div>
                 <div className="task-collaborators" >
-                    <label>משתתפים: </label>
                     <div className="collaborators-list">
                         {props.task.collaborators?.map((collaborator: string, index: number) => (
                             <div key={collaborator} className="contact">
@@ -60,12 +58,9 @@ export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
                         ))}
                     </div>
                 </div>
-                <div className="set-deadline">
-                    <label>
-                        דד-ליין:
-                    </label>
+                <div className="set-deadline attachment">
                     <div>
-                        {new Date(Date.parse(props.task.deadline)).toLocaleDateString("he-IL")}
+                        {new Date(props.task.deadline).toLocaleDateString("he-IL")}
                     </div>
                 </div>
                 <div className="task-status">

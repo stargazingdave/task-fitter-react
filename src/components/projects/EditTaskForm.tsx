@@ -28,11 +28,11 @@ const updateTask = (props: EditTaskFormProps,
             alert('יש למלא את תיאור המשימה');
             return;
         }
-        const date = new Date();
+        const date = new Date().getTime();
         updateDoc(doc(props.tasksCollection, props.task.id), {
             task: taskTitle,
-            update_time: date.toLocaleDateString("he-IL"),
-            deadline: taskDeadline.toString(),
+            update_time: date,
+            deadline: taskDeadline.getTime(),
             collaborators: taskCollaborators || [],
             });
         if (image != null) {
@@ -51,8 +51,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
         .filter((contact) => props.task.collaborators.includes(contact.id))
         .map((collaborator) => ({value: collaborator.id, label: collaborator.name})));
     const [taskTitle, setTaskTitle] = useState(props.task.task);
-    const [taskCollaborators, setTaskCollaborators] = useState(props.task.collaborators);
-    const [taskDeadline, setTaskDeadline] = useState(new Date(Date.parse(props.task.deadline)));
+    const [taskDeadline, setTaskDeadline] = useState(new Date(props.task.deadline));
     const [image, setImage] = useState<File | null>(null);
     
 
@@ -73,13 +72,24 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                                 value={taskTitle}
                                 onChange={e => setTaskTitle(e.target.value)}
                                 placeholder="משימה ריקה"
+                                autoFocus
                     />
                 </div>
                 <div className="set-deadline">
                     <label>
                         דד-ליין:
                     </label>
-                    <DatePicker wrapperClassName={"datepicker-wrapper"} dateFormat={"dd/MM/yyyy"} showIcon selected={taskDeadline} onChange={(date) => date ? setTaskDeadline(date) : setTaskDeadline(taskDeadline)}/>
+                    <DatePicker 
+                        wrapperClassName={"datepicker-wrapper"} 
+                        dateFormat={"dd/MM/yyyy"} 
+                        showIcon 
+                        selected={taskDeadline} 
+                        onChange={(date) => 
+                            date 
+                            ? setTaskDeadline(date) 
+                            : setTaskDeadline(new Date(props.task.deadline))
+                        }
+                    />
                 </div>
                 <div className="collaborators-selection">
                     <label>

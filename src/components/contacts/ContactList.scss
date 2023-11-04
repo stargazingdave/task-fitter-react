@@ -9,11 +9,10 @@
     align-items: right;
     flex-direction: column;
     width: 235px;
-    border-radius: 8px;
     box-sizing: border-box;
-    border: 1px solid #EEEDED;
-    overflow-y: scroll;
-    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    height: calc(100vh - 80px);
+    box-shadow: 0 2px 4px rgba(124, 114, 255, 0.1), 0 8px 16px rgba(0.1, 0, 0, 0.1);
     h1 {
         font-size: 26px;
         color: #1F3C88;

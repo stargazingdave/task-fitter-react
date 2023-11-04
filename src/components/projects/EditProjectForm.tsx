@@ -29,6 +29,7 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
                 value={projectName}
                 onChange={e => setProjectName(e.target.value)}
                 type="string"
+                autoFocus
             />
             <label className="manager-label">
                 מנהל הפרויקט:
@@ -41,7 +42,7 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
             <div className="buttons">
                 <button 
                     onClick={() => {
-                        const date = new Date().toLocaleDateString();
+                        const date = new Date().getTime();
                         if (projectName == '') {
                             alert('לא ניתן ליצור פרויקט ללא שם');
                             return;

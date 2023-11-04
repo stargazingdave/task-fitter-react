@@ -37,6 +37,18 @@ export const ContactList = (props: ContactListProps) => {
     
     return <div className="contacts">
             <h1>אנשי קשר</h1>
+                <div className="create-contact">
+                    {
+                        createContactFlag
+                        ? <div className="create-contact-form">
+                            <CreateContactForm 
+                                contactsCollection={contactsCollection} 
+                                createContactFlag={createContactFlag} 
+                                onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>
+                            </div>
+                        : <button onClick={() => setCreateContactFlag(!createContactFlag)}>איש קשר חדש</button>
+                    }
+                </div>
                 {contacts.map(contact => (
                     <div 
                         data-testid={contact.id}    
@@ -99,16 +111,6 @@ export const ContactList = (props: ContactListProps) => {
                     </div>
                     
                 ))}
-            <div className="create-contact">
-            {createContactFlag
-            ? <div className="create-contact-form">
-                <CreateContactForm 
-                    contactsCollection={contactsCollection} 
-                    createContactFlag={createContactFlag} 
-                    onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>
-                </div>
-            : <button onClick={() => setCreateContactFlag(!createContactFlag)}>איש קשר חדש</button>}
-            </div>
             {
                 contactDeletePopup?.id &&
                 <Popup 

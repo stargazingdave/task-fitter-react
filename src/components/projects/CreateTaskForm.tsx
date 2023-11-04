@@ -37,7 +37,7 @@ const addTask = async (props: CreateTaskFormProps,
         await addDoc(props.tasksCollection, {
             task: taskTitle,
             status: false,
-            deadline: taskDeadline.toString(),
+            deadline: taskDeadline.getTime(),
             user_id: user.uid,
             collaborators: taskCollaborators,
             project_id: props.project.id
@@ -67,7 +67,7 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
     return (
         <div className="create-task-form">
             <div className="text-box">
-                <label htmlFor="task-input" >משימה: </label>
+                <label >משימה: </label>
                 <textarea 
                     className="task-input" 
                     style={{background: "white",

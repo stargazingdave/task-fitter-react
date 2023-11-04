@@ -40,7 +40,7 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
 
     return <div className="p-tasks">
         <div className="p-tasks-container">
-            {tasks?.sort((task1, task2) => {return Date.parse(task1.deadline) - Date.parse(task2.deadline)}).map(task => (
+            {tasks?.sort((task1, task2) => {return task1.deadline - task2.deadline}).map(task => (
                 <div className="p-task" key={task.id}>
                     <ProtocolTask   
                         task={task}
@@ -71,7 +71,7 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                     addDoc(props.tasksCollection, {
                         task: "",
                         status: false,
-                        deadline: new Date().toString(),
+                        deadline: new Date().getTime(),
                         user_id: user.uid,
                         collaborators: [],
                         project_id: props.project.id

@@ -63,58 +63,61 @@ export const SubProjects = (props: SubProjectsProps) =>  {
         <div className="sub-projects">
         {projects.map(project => (<>
             <div className="sub-project-tile" key={project.id}>
-                <div className='sub-project-details'>
-                <h1>{project.project_name}</h1>
-                <p>{project.project_manager}</p>
-                </div>
-                <button className='open-button' 
-                    title='פתיחה'
-                    onClick={() => dispatch(pushProject(project))}>
-                        <BsFillBuildingsFill size={26}/>
-                </button>
-                <button 
-                    title='מחיקת תת הפרויקט'
-                    className='delete-button' 
-                    onClick={() => setProjectDeletePopup(project.id)} >
-                    <MdDeleteForever size={22}/>
-                </button>
-                <Popup 
-                    contentStyle={{width: "300px"}}
-                    open={projectDeletePopup != ''}
-                    modal={true} >
-                        <div className='delete-project-confirmation-box'>
-                            <p>פעולה זו תמחק את הפרויקט לתמיד <b>כולל כל התוכן שלו, ללא אפשרות שחזור</b>. להמשיך במחיקה?</p>
-                            <div className='buttons'>
-                                <button onClick={() => {
-                                    debugger
-                                        // delete project and nested data
-                                        deleteProject(store.getState(), 
-                                            path + projectDeletePopup);
-                                        setProjectDeletePopup('');
-                                    }}>
-                                        מחיקה לתמיד
-                                </button>
-                                <button onClick={() => setProjectDeletePopup('')} >ביטול</button>
-                            </div>
-                        </div>
-                </Popup>
-                <button 
-                    className='edit-button' 
-                    title='עריכת שם ומנהל תת הפרויקט'
-                    onClick={() => {
-                        setEditSubProject(project);
-                    }}>
-                        <GiLargePaintBrush size={22}/>
-                </button>
+                {
+                    editSubProject?.id == project.id 
+                    ? <div className="edit-sub-project-form">
+                        <EditProjectForm 
+                            editProject={editSubProject} 
+                            projectsCollection={projectsCollection} 
+                            setEditProject={(project) => setEditSubProject(project)} 
+                        />
+                    </div>
+                    : <div className='sub-project-details'>
+                        <h1>{project.project_name}</h1>
+                        <p>{project.project_manager}</p>
+                        <button className='open-button' 
+                            title='פתיחה'
+                            onClick={() => dispatch(pushProject(project))}>
+                                <BsFillBuildingsFill size={26}/>
+                        </button>
+                        <button 
+                            title='מחיקת תת הפרויקט'
+                            className='delete-button' 
+                            onClick={() => setProjectDeletePopup(project.id)} >
+                            <MdDeleteForever size={22}/>
+                        </button>
+                        <Popup 
+                            contentStyle={{width: "300px"}}
+                            open={projectDeletePopup != ''}
+                            modal={true} >
+                                <div className='delete-project-confirmation-box'>
+                                    <p>פעולה זו תמחק את הפרויקט לתמיד <b>כולל כל התוכן שלו, ללא אפשרות שחזור</b>. להמשיך במחיקה?</p>
+                                    <div className='buttons'>
+                                        <button onClick={() => {
+                                            debugger
+                                                // delete project and nested data
+                                                deleteProject(store.getState(), 
+                                                    path + projectDeletePopup);
+                                                setProjectDeletePopup('');
+                                            }}>
+                                                מחיקה לתמיד
+                                        </button>
+                                        <button onClick={() => setProjectDeletePopup('')} >ביטול</button>
+                                    </div>
+                                </div>
+                        </Popup>
+                        <button 
+                            className='edit-button' 
+                            title='עריכת שם ומנהל תת הפרויקט'
+                            onClick={() => {
+                                setEditSubProject(project);
+                            }}>
+                                <GiLargePaintBrush size={22}/>
+                        </button>
+                    </div>
+                }
             </div>
-            {editSubProject?.id == project.id &&
-                <div className="edit-sub-project-form">
-                <EditProjectForm editProject={editSubProject} 
-                                projectsCollection={projectsCollection} 
-                                setEditProject={(project) => setEditSubProject(project)} 
-                                />
-                </div>
-            }
+            
         </>
         ))}
         </div>

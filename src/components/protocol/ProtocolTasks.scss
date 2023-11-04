@@ -62,19 +62,7 @@
         }
         &:not(:last-child)
         {
-            border-bottom: 2px solid #5C6E91;
-        }
-        .task-title {
-            padding: 10px;
-        }
-        .task-collaborators {
-            padding: 10px;
-        }
-        .set-deadline {
-            padding: 10px;
-        }
-        .task-status {
-            padding: 10px;
+            border-bottom: 1px solid #5C6E91;
         }
     }
 }

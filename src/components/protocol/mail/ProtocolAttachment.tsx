@@ -133,6 +133,14 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
 
     return <div className='protocol-page'>
         <div className='protocol-container'>
+            <div className="headers-container">
+                <div className="headers">
+                    <div className="full-height"></div>
+                    <div >משימה: </div>
+                    <div >משתתפים: </div>
+                    <div >דד-ליין: </div>
+                </div>
+            </div>
             <div  id="protocol-project">
                 <h1>פרוטוקול פרויקט: {project.project_name}</h1>
                 <ProtocolProjectAttachment 

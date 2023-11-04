@@ -3,7 +3,7 @@
     flex-flow: row nowrap;
     justify-content: space-between;
     position: relative;
-    overflow: hidden;
+    overflow: auto;
     max-height: calc(100vh - 80px);
     button {
         background: #CEDDEF;

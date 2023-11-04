@@ -32,8 +32,9 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
     }
 
     return (<div className="form">
-
+        
         <div className="form-tasks">
+        
             {
                 subjects.map(subject => (
                     
