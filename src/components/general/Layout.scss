@@ -45,6 +45,25 @@
             cursor: pointer;
         }
     }
+    .user-menu-button {
+        background: none;
+        display: flex;
+        flex-direction: row;
+        svg {
+            fill: white;
+        }
+        &:hover {
+            background: none;
+            svg {
+                fill: #CEDDEF;
+            }
+        }
+        &.open {
+            svg {
+                fill: #070D59;
+            }
+        }
+    }
     .contact-list-button {
         display: flex;
         flex-direction: row;
@@ -55,8 +74,7 @@
         border: 1px solid white;
         border-radius: 4px;
         color: white;
-        position: absolute;
-        left: 26px;
+        
         &.open {
             background: #070D59;
         }

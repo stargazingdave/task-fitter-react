@@ -10,7 +10,7 @@ import Popup from 'reactjs-popup';
 import { MdDeleteForever } from 'react-icons/md';
 import { BiEditAlt } from 'react-icons/bi';
 import { useAppDispatch, useAppSelector } from '../../reduxHooks';
-import { selectUser } from '../../redux/userSlice';
+import { selectIsAdmin, selectUser } from '../../redux/userSlice';
 import { selectDb } from '../../redux/databaseSlice';
 import { deleteProject } from '../../utils';
 import { store } from '../../store';
@@ -37,6 +37,8 @@ export const Projects = (props: ProjectsProps) =>  {
     const user = useAppSelector(selectUser);
     // access the Firestore library
     const db = useAppSelector(selectDb);
+    const isAdmin = useAppSelector(selectIsAdmin);
+    console.log(isAdmin);
     const projectStack = useAppSelector(selectProjectStack);
     const dispatch = useAppDispatch();
     
@@ -67,7 +69,8 @@ export const Projects = (props: ProjectsProps) =>  {
             ? <button 
                 className='create-project-button'
                 onClick={() => setCreateProjectFlag(!createProjectFlag)}
-                disabled={props.editProject?.id}
+                disabled={!isAdmin}
+                title={isAdmin ? 'יצירת פרויקט חדש' : 'אין לחשבון שלך גישה ליצירת פרויקטים'}
                 >
                     יצירת פרויקט חדש
                 </button>

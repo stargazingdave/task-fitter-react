@@ -6,6 +6,9 @@ import { LiaHandPointer } from 'react-icons/lia';
 import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { signIn, signOut, onSignStateChanged, selectUser, selectSignedIn } from '../../redux/userSlice';
 import { openContactsToggle, selectOpenContacts } from '../../redux/contactsSlice';
+import { BiMenu } from 'react-icons/bi';
+import { menuOpenToggle, selectMenuOpen } from '../../redux/userSettingsSlice';
+import { AiOutlineClose } from 'react-icons/ai';
 
 export const LoadingSpinner = () => {
     return (
@@ -18,14 +21,25 @@ export const LoadingSpinner = () => {
 const UserPanel = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectUser);
-    const openContacts = useAppSelector(selectOpenContacts);
+    const menuOpen = useAppSelector(selectMenuOpen);
     const auth = useAuth();
     return (
         <div className='user-panel'>
+            <button
+                className={'user-menu-button' + (menuOpen ? ' open' : '')} 
+                title='תפריט'
+                onClick={() => dispatch(menuOpenToggle())}
+                >
+                    {
+                        menuOpen
+                        ? <AiOutlineClose size={30}/>
+                        : <BiMenu size={30}/>
+                    }
+            </button>
             <a className='app-logo' href="https://task-fitter.com/">Task Fitter</a>
             <div className='info'>
                 <div title="Sign Out">
-                    <button onClick={() => dispatch(signOut(auth))} >
+                    <button className='logout-button' onClick={() => dispatch(signOut(auth))} >
                         יציאה מהחשבון
                     </button>
                 </div>
@@ -33,14 +47,7 @@ const UserPanel = () => {
                     {user.displayName}
                 </div>
             </div>
-            <button 
-                className={'contact-list-button' + (openContacts ? ' open' : '')} 
-                title='רשימת אנשי הקשר'
-                onClick={() => dispatch(openContactsToggle())}
-                >
-                    <ImUsers size={24} />
-                    אנשי קשר
-            </button>
+            
         </div>
     );
 };

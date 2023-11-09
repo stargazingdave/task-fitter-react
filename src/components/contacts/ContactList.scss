@@ -118,22 +118,22 @@
   align-content: center;
   align-items: center;
   flex-direction: column;
-  flex-grow: 1;
   border-radius: 8px;
   box-sizing: border-box;
   border: 1px solid #5893D4;
 }
 
-.create-contact {
-    button {
-        background: #CEDDEF;
-        color: #1F3C88;
-        border: none;
-        border-radius: 4px;
-        padding: 5px 10px;
-        &:hover {
-            background: #5893D4;
-            cursor: pointer;
+.new-contact-button {
+    background: none;
+    border: none;
+    padding: 0;
+    svg {
+        fill: #1F3C88;
+    }
+    &:hover {
+        cursor: pointer;
+        svg {
+            fill: #5893D4;
         }
     }
 }

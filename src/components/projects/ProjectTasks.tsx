@@ -75,7 +75,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                 <h2 className="task-deadline">{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
                                 <div className="collaborators">
                                     {
-                                        editTask?.id != task.id &&
                                         task.collaborators?.map((collaborator: string) => (
                                             <div key={collaborator} className="collaborator">
                                                 <p>{contacts.find((contact) => contact.id == collaborator)?.name}</p><p className="comma">, </p>
@@ -83,8 +82,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                         ))
                                     }
                                 </div>
-                                {
-                                    editTask?.id != task.id &&
                                     <div className="task-buttons">
                                         <button title='עריכת המשימה' className='edit-button' 
                                                         onClick={() => setEditTask(task)}>
@@ -100,7 +97,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                         </button>
                                         
                                     </div>
-                                }
                             </div>
                             <div className="task-status">
                                 <Checkbox task={task} updateFunc={(task) => updateDoc(doc(props.tasksCollection,

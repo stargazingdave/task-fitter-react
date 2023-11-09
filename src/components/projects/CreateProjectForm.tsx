@@ -27,6 +27,7 @@ const addProject = (props: CreateProjectFormProps,
         project_manager: managerName,
         creator_name: user.displayName,
         user_id: user.uid,
+        shared_emails: [user.uid],
     });
     props.onProjectCreate(props.createProjectFlag);
 }

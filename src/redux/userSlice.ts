@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../src/store'
-import { Auth, getAuth, GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth'
-import { useAuth } from 'reactfire';
-import { useAppDispatch } from '../reduxHooks';
+import { Auth, GoogleAuthProvider, signInWithPopup, User } from 'firebase/auth'
 
 const clearFirestoreCache = () => {
     const map = globalThis['_reactFirePreloadedObservables'];
@@ -40,13 +38,15 @@ const signInAction = async (auth: Auth) => {
 // Define a type for the slice state
 interface UserState {
   user: User,
-  signedIn: boolean
+  signedIn: boolean,
+  isAdmin: boolean,
 }
 
 // Define the initial state using that type
 const initialState: UserState = {
     user: {} as User,
     signedIn: false,
+    isAdmin: false,
 }
 
 export const userSlice = createSlice({
@@ -65,13 +65,17 @@ export const userSlice = createSlice({
         state.user = action.payload || {} as User;
         state.signedIn = state.user.uid !== null && state.user.uid !== undefined;
     },
+    setIsAdmin: (state, action: PayloadAction<boolean>) => {
+        state.isAdmin = action.payload;
+    },
   },
 })
 
-export const { signIn, signOut, onSignStateChanged } = userSlice.actions
+export const { signIn, signOut, onSignStateChanged, setIsAdmin } = userSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user.user
 export const selectSignedIn = (state: RootState) => state.user.signedIn
+export const selectIsAdmin = (state: RootState) => state.user.isAdmin
 
 export default userSlice.reducer

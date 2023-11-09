@@ -1,10 +1,24 @@
 .projects-container {
     display: flex;
-    flex-grow: 4;
     flex-direction: column;
     padding: 20px;
     overflow-y: auto;
     .create-project-button {
+        background: #CEDDEF;
+        border: none;
+        color: 1F3C88;
+        padding: 5px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px;
+        border-radius: 3px;
+        width: fit-content;
+        &:hover {
+            background: #5893D4;
+            cursor: pointer;
+        }
         &:disabled {
             background: #9b9b9b;
         }
@@ -48,7 +62,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
     width: 230px;
     height: 230px;
-    flex-grow: 0;
     position: relative;
     align-items: center;
     border-radius: 8px;

@@ -35,8 +35,8 @@ export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
     return (
         <>
             <div className="protocol-task attachment">
-                <div className="task-title">
-                    <p className="task-title" 
+                <div className="task-title attachment">
+                    <p className="task-title attachment" 
                         style={{width: "auto",
                                 margin: "0",
                                 fontSize: "16px",
@@ -63,7 +63,7 @@ export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
                         {new Date(props.task.deadline).toLocaleDateString("he-IL")}
                     </div>
                 </div>
-                <div className="task-status">
+                <div className="task-status attachment">
                     {props.task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}
                 </div>
             </div>

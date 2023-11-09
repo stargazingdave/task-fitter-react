@@ -26,13 +26,21 @@ export const ProtocolTasksAttachment = (props: ProtocolTasksAttachmentProps) => 
     return <div className="p-tasks attachment">
         <div className="p-tasks-container">
             {tasks?.map(task => (
-                <div className="p-task" key={task.id}>
+                <div className="p-task attachment" key={task.id}>
                     <ProtocolTaskAttachment   task={task}
                                     tasksCollection={props.tasksCollection}
                                     addSaveAction={props.addSaveAction} />
-                    {
-                        task.image && <img src={task.image} style={{scale: "90%", height: "200px", width: "fit-content"}} />
-                    }
+                        {
+                            task.image && 
+                            <img 
+                                src={task.image} 
+                                style={{
+                                    scale: "90%", 
+                                    height: "200px", 
+                                    width: "fit-content",
+                                }} 
+                            />
+                        }
                 </div>
             ))}
         </div>

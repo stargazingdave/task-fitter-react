@@ -2,7 +2,7 @@ import { CollectionReference, DocumentData, DocumentReference, addDoc, collectio
 import { useState } from "react";
 import { useFirebaseApp, useFirestore, useFirestoreCollectionData } from "reactfire";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
-import { selectUser } from "../../redux/userSlice";
+import { selectUser, setIsAdmin } from "../../redux/userSlice";
 import { closeContacts, initContacts, openContactsToggle } from "../../redux/contactsSlice";
 import { databaseInit } from "../../redux/databaseSlice";
 import { userSettingsInit } from "../../redux/userSettingsSlice";
@@ -13,6 +13,20 @@ const AccountLoadderInternal = () => {
     const db = getFirestore(useFirebaseApp());
     dispatch(databaseInit(db));
     const user = useAppSelector(selectUser);
+
+    user.getIdTokenResult()
+    .then((idTokenResult) => {
+        // Confirm the user is an Admin.
+        if (!!idTokenResult.claims.admin) {
+        // Show admin UI.
+        } else {
+        // Show regular user UI.
+        }
+        dispatch(setIsAdmin(!!idTokenResult.claims.admin));
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 
     
     
@@ -42,14 +56,17 @@ const AccountLoadderInternal = () => {
         dispatch(userSettingsInit(userSettings[0]));
     }
     if (userSettings.length === 0) {
-
         const temp = {} as DocumentData;
         temp.user_id = user.uid;
+        temp.manager_email = user.email;
         temp.demo = true;
+        temp.admin = false;
         dispatch(userSettingsInit(temp));
         addDoc(userSettingsCollection, {
             user_id: temp.user_id,
+            manager_email: temp.user_id,
             demo: temp.demo,
+            admin: temp.admin,
         }).then((docRef) => {
             createDemoProjects()
             .then(() => {

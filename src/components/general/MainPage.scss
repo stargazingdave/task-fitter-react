@@ -6,19 +6,19 @@
     overflow: auto;
     max-height: calc(100vh - 80px);
     button {
-        background: #CEDDEF;
+        // background: #CEDDEF;
         border: none;
-        color: 1F3C88;
-        padding: 5px 8px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 14px;
-        margin: 4px;
-        border-radius: 3px;
-        width: fit-content;
+        // color: 1F3C88;
+        // padding: 5px 8px;
+        // text-align: center;
+        // text-decoration: none;
+        // display: inline-block;
+        // font-size: 14px;
+        // margin: 4px;
+        // border-radius: 3px;
+        // width: fit-content;
         &:hover {
-            background: #5893D4;
+        //     background: #5893D4;
             cursor: pointer;
         }
     }

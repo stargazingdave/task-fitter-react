@@ -41,6 +41,7 @@ export const Project = (props: ProjectProps) => {
 
 
     return <div className="project">
+        <div className="navigation-bar">
             <div className="projects-path">
                 פרויקט נוכחי:
                 {
@@ -61,53 +62,53 @@ export const Project = (props: ProjectProps) => {
                     ))
                 }
             </div>
-            <div className="project-container">
-                <div className="project-header">
-                    <div className="project-title">
-                        <h1>שם הפרויקט: {projectStack[projectStack.length-1].project_name}</h1>
-                        <h2>מנהל הפרויקט: {projectStack[projectStack.length-1].project_manager}</h2>
-                        <div className="buttons">
-                            <button 
-                                className='edit-button' 
-                                title="עריכת שם ומנהל הפרויקט" 
-                                onClick={() => props.setEditProject(projectStack[projectStack.length-1])} >
-                                    <BiEditAlt size={25}/>
-                            </button>
-                            {
-                                projectStack.length == 1 &&
-                                <a 
-                                    className="protocol-link" 
-                                    target="_blank" 
-                                    href={"/protocol/" + projectStack[projectStack.length-1].id}>
-                                        פרוטוקול
-                                </a>
-                            }
-                        </div>
+            <button 
+                className="exit-button" 
+                title="יציאה מהפרויקט לדף הבית" 
+                onClick={() => dispatch(setProjectStack([] as DocumentData[]))}>
+                    <AiOutlineClose size={30} />
+            </button>
+        </div>
+        <div className="project-container">
+            <div className="project-header">
+                <div className="project-title">
+                    <h1>שם הפרויקט: {projectStack[projectStack.length-1].project_name}</h1>
+                    <h2>מנהל הפרויקט: {projectStack[projectStack.length-1].project_manager}</h2>
+                    <div className="buttons">
+                        <button 
+                            className='edit-button' 
+                            title="עריכת שם ומנהל הפרויקט" 
+                            onClick={() => props.setEditProject(projectStack[projectStack.length-1])} >
+                                <BiEditAlt size={25}/>
+                        </button>
                         {
-                            props.editProject?.id 
-                            ? <EditProjectForm 
-                                editProject={props.editProject} 
-                                projectsCollection={parentCollection} 
-                                setEditProject={(project: DocumentData) => updateProject(project)} 
-                            /> 
-                            : <></>
+                            projectStack.length == 1 &&
+                            <a 
+                                className="protocol-link" 
+                                target="_blank" 
+                                href={"/protocol/" + projectStack[projectStack.length-1].id}>
+                                    פרוטוקול
+                            </a>
                         }
                     </div>
-                    <button 
-                            className="exit-button" 
-                            title="יציאה מהפרויקט לדף הבית" 
-                            onClick={() => dispatch(setProjectStack([] as DocumentData[]))}>
-                                <AiOutlineClose size={25} />
-                        </button>
-                </div>
-                <div className="content">
-                    <ProjectSubjects />
-                    <SubProjects 
-                        editProject={props.editProject}
-                        setEditProject={(editProject) => props.setEditProject(editProject)} 
-                    />
+                    {
+                        props.editProject?.id 
+                        ? <EditProjectForm 
+                            editProject={props.editProject} 
+                            projectsCollection={parentCollection} 
+                            setEditProject={(project: DocumentData) => updateProject(project)} 
+                        /> 
+                        : <></>
+                    }
                 </div>
             </div>
+            <div className="content">
+                <ProjectSubjects />
+                <SubProjects 
+                    editProject={props.editProject}
+                    setEditProject={(editProject) => props.setEditProject(editProject)} 
+                />
+            </div>
         </div>
-    
+    </div>
 }

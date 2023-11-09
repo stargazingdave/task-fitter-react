@@ -47,21 +47,30 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                         tasksCollection={props.tasksCollection}
                         addSaveAction={props.addSaveAction} 
                     />
-                    {
-                        task.image && <img src={task.image} style={{maxHeight: "200px"}} />
-                    }
-                    {
-                        task.image && 
-                        <button 
-                            className="delete-image-button" 
-                            onClick={() => {
-                                deleteImage(task.id);
-                                updateDoc(doc(props.tasksCollection, task.id), {
-                                    image: deleteField()
-                            })}} >
-                                מחיקת תמונה
-                        </button>
-                    }
+                    <div className="image">
+                        {
+                            task.image && 
+                            <img 
+                                src={task.image} 
+                                style={{
+                                    maxHeight: "200px",
+                                    margin: "20px",
+                                }} 
+                            />
+                        }
+                        {
+                            task.image && 
+                            <button 
+                                className="delete-image-button" 
+                                onClick={() => {
+                                    deleteImage(task.id);
+                                    updateDoc(doc(props.tasksCollection, task.id), {
+                                        image: deleteField()
+                                })}} >
+                                    מחיקת תמונה
+                            </button>
+                        }
+                    </div>
                 </div>
             ))}
             <button 

@@ -9,7 +9,7 @@ import { EditContactForm } from './EditContactForm';
 import { ConfirmationBox } from '../general/ConfirmationBox';
 import { FaTasks } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md'
-import { BiEditAlt } from 'react-icons/bi';
+import { BiEditAlt, BiUserPlus } from 'react-icons/bi';
 import { Contact } from './Contact';
 import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { selectSignedIn, selectUser } from '../../redux/userSlice';
@@ -46,7 +46,13 @@ export const ContactList = (props: ContactListProps) => {
                                 createContactFlag={createContactFlag} 
                                 onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>
                             </div>
-                        : <button onClick={() => setCreateContactFlag(!createContactFlag)}>איש קשר חדש</button>
+                        : <button 
+                            className='new-contact-button' 
+                            title='יצירת איש קשר חדש'
+                            onClick={() => setCreateContactFlag(!createContactFlag)}
+                            >
+                            <BiUserPlus size={25} />
+                        </button>
                     }
                 </div>
                 {contacts.map(contact => (

@@ -12,6 +12,7 @@ import { deleteImage, uploadImage } from "../../utils";
 import { MdDeleteForever } from "react-icons/md";
 import { useAppSelector } from "../../reduxHooks";
 import { selectContacts } from "../../redux/contactsSlice";
+import { RiImageAddLine, RiImageEditLine } from "react-icons/ri";
 
 
 type ProtocolTaskProps = {
@@ -60,11 +61,11 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
             <div className="protocol-task">
                 <div className="task-title">
                     <textarea className="title-input" 
-                                style={{background: "white",
-                                        width: "auto",
-                                        borderRadius: "4px",
-                                        fontSize: "20px",
-                                        fontFamily: "Segoe UI"
+                                style={{
+                                        outline: "none",
+                                        border: "none",
+                                        resize: "none",
+                                        fontWeight: "bold",
                                     }}
                                 id="title-input"
                                 value={taskTitle}
@@ -73,19 +74,25 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                                 rows={2}
                                 aria-multiline={true}
                                 overflow-wrap="anywhere"
-                                overflow-y="scroll" />
+                                overflow-y="scroll" 
+                                />
                 </div>
                 <div className="collaborators-selection">
                     <Select 
                         styles={{
                             control: (baseStyles, state) => ({
                                 ...baseStyles,
-                                borderColor: state.isFocused ? 'blue' : 'grey',
+                                border: "none",
+                                background: "none",
+                                borderRadius: "0",
+                                padding: "0",
+                                margin: "0",
                             }),
                             multiValue: (baseStyles, state) => ({
                                 ...baseStyles,
                                 fontSize: 14,
                                 width: "fit-content",
+                                border: "none",
                             }),
                         }}
                         options={contactsOptions} 
@@ -110,12 +117,36 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                                                                                     {status: !task.status})}/>
                     {props.task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}
                 </div>
-                <button 
-                    className="delete-button" 
-                    title="מחיקה"
-                    onClick={() => setDeleteTask(props.task)}>
-                    <MdDeleteForever />
-                </button>
+                <div className="buttons">
+                    <label className="image-upload">
+                        {
+                            image
+                            ? <div className="current-image"><h1>{image.name}</h1><RiImageEditLine size={25}/></div>
+                            : <RiImageAddLine size={25}/>
+                        }
+                        <input 
+                            id="image-upload"
+                            type="file" 
+                            accept="image/jpeg"
+                            onChange={e => {
+                                let files: FileList | null;
+                                e.target.files
+                                ? files = e.target.files
+                                : files = null;
+                                let tempImage = {} as File;
+                                files && (tempImage = files[0]);
+                                tempImage && setImage(tempImage);
+                            }} 
+                            hidden
+                        />
+                    </label>
+                    <button 
+                        className="delete-button" 
+                        title="מחיקה"
+                        onClick={() => setDeleteTask(props.task)}>
+                        <MdDeleteForever size={25}/>
+                    </button>
+                </div>
                 {
                     deleteTask?.id &&
                     <Popup 
@@ -131,22 +162,6 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                                 }} 
                                 onCancel={() => setDeleteTask({})} />
                     </Popup>
-                }
-                {
-                    <input 
-                    className="image-upload"
-                    id="image-upload"
-                    type="file" 
-                    accept="image/jpeg"
-                    onChange={e => {
-                        let files: FileList | null;
-                        e.target.files
-                        ? files = e.target.files
-                        : files = null;
-                        let tempImage = {} as File;
-                        files && (tempImage = files[0]);
-                        tempImage && setImage(tempImage);
-                    }} />
                 }
             </div>
         </>

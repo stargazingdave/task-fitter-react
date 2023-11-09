@@ -1,51 +1,75 @@
 .project {
     display: flex;
-    flex-grow: 10;
     overflow: hidden;
     flex-direction: column;
     background: none;
     justify-content: space-between;
-    width: auto;
+    width: 100%;
     position: relative;
     align-items: right;
     box-sizing: border-box;
-    .projects-path {
+    .navigation-bar {
         display: flex;
         flex-direction: row;
-        align-items: center;
         background: #CEDDEF;
-        width: 100%;
-        height: fit-content;
-        padding: 6px 4px 6px;
-        margin: 0;
-        gap: 8px;
-        font-weight: bold;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        right: 0;
-        .slash {
-            opacity: 1;
-            font-size: 20px;
-            padding: 0;
-            margin: 0;
+        .projects-path {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background: #CEDDEF;
+            width: 100%;
             height: fit-content;
-            &:last-child {
-                opacity: 0;
+            padding: 6px 4px 6px;
+            margin: 0;
+            gap: 8px;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            right: 0;
+            .slash {
+                opacity: 1;
+                font-size: 20px;
+                padding: 0;
+                margin: 0;
+                height: fit-content;
+                &:last-child {
+                    opacity: 0;
+                }
+            }
+            button {
+                padding: 0;
+                margin: 0;
+                border-radius: 0;
+                background: none;
+                color: #070D59;
+                height: fit-content;
+                font-size: 18px;
+                &:hover {
+                    color: #5893D4;
+                    cursor: pointer;
+                    background: none;
+                }
             }
         }
-        button {
-            padding: 0;
+        .exit-button {
+            display: flex;
+            background: #CEDDEF;
+            width: fit-content;
+            height: 100%;
+            padding: 4px;
             margin: 0;
-            border-radius: 0;
-            background: none;
-            color: #070D59;
-            height: fit-content;
-            font-size: 18px;
+            justify-content: center;
+            align-items: center;
+            svg {
+                fill: #f70000 !important;
+                &:hover {
+                    fill: #792d3a !important;
+                    cursor: pointer;
+                }
+            }
             &:hover {
-                color: #5893D4;
-                cursor: pointer;
-                background: none;
+                background: #5893D4;
             }
         }
     }
@@ -66,22 +90,7 @@
                     margin: 0;
                 }
             }
-            .exit-button {
-                display: flex;
-                background: #CEDDEF;
-                width: fit-content;
-                height: fit-content;
-                svg {
-                    fill: #8F384D !important;
-                    &:hover {
-                        fill: #792d3a !important;
-                        cursor: pointer;
-                    }
-                }
-                &:hover {
-                    background: #5893D4;
-                }
-            }
+            
             .buttons {
                 display: flex;
                 align-items: center;

@@ -9,6 +9,8 @@ import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectSignedIn } from "../../redux/userSlice";
 import { selectOpenContacts } from "../../redux/contactsSlice";
 import { selectProjectStack, setProjectStack } from "../../redux/projectsSlice";
+import { selectMenuOpen } from "../../redux/userSettingsSlice";
+import { Menu } from "./Menu";
 
 type MainPageProps = {
 }
@@ -16,6 +18,7 @@ type MainPageProps = {
 
 export const MainPage = (props: MainPageProps) => {
     const openContacts = useAppSelector(selectOpenContacts);
+    const menuOpen = useAppSelector(selectMenuOpen);
     const projectStack = useAppSelector(selectProjectStack);
     const dispatch = useAppDispatch();
     //const [projectStack, setProjectStack] = useState([] as DocumentData[]);
@@ -29,9 +32,11 @@ export const MainPage = (props: MainPageProps) => {
     
     if (signInCheckResult.signedIn && signedIn) {
       return (
-        <>
         <div className="main-page">
-        <>
+            {
+                menuOpen &&
+                <Menu />
+            }
             {
                 projectStack.length != 0
                 ? <Project 
@@ -43,13 +48,11 @@ export const MainPage = (props: MainPageProps) => {
                     setEditProject={(editProject) => setEditProject(editProject)}
                 /> 
             }
-        </>
         {
             openContacts &&
             <ContactList />
         }
         </div>
-      </>
       
     );
   }

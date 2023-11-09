@@ -1,28 +1,59 @@
 .protocol-task {
     display: grid;
-    grid-template-columns: 260px 260px 180px 150px;
+    grid-template-columns: 260px 260px 180px 150px 100px;
     width: 100%;
-    align-items: baseline;
+    align-items: start;
+    border-collapse: collapse;
     transition: 0.35s;
     &.attachment {
         grid-template-columns: 240px 200px 100px 100px;
     }
     &:hover {
-        .delete-button {
+        .buttons {
             opacity: 1;
         }
     }
-    .delete-button {
-        background: none;
-        width: fit-content;
-        border: none;
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        margin: 0;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
         opacity: 0;
         transition: opacity 0.3s;
-        svg {
-            fill: #7a0000;
-            &:hover {
-                fill: #f70000;
-                cursor: pointer;
+        .delete-button {
+            background: none;
+            width: fit-content;
+            border: none;
+            svg {
+                fill: #7a0000;
+                &:hover {
+                    fill: #f70000;
+                    cursor: pointer;
+                }
+            }
+        }
+        .image-upload {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            svg {
+                fill: #1F3C88;
+            }
+            background: none;
+            color: white;
+            padding: 0;
+            font-family: sans-serif;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            height: fit-content;
+            width: fit-content;
+            h1 {
+                text-align: center;
+                font-size: 14px;
+                color: #1F3C88;
             }
         }
     }
@@ -31,23 +62,23 @@
         flex-direction: column;
         width: auto;
         justify-items: center;
-        padding: 2px 10px;
+        padding: 0 10px;
         gap: 3px;
+        border-left: 1px solid #1F3C88;
+        height: 100%;
+        &.attachment {
+            border: none;
+        }
         .title-input {
-            font-size: 14px !important;
+            font-size: 16px !important;
+            background: none;
+            width: auto;
+            font-family: Segoe UI;
         }
     }
-    .task-status {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        align-content: center;
-        align-items: center;
-        justify-items: center;
-        padding: 4px 10px;
-        gap: 10px;
-        align-items: center;
-        justify-content: center;
+    .collaborators-selection {
+        border-left: 1px solid #1F3C88;
+        height: 100%;
     }
     .task-collaborators {
         padding: 4px 10px;
@@ -86,15 +117,32 @@
     .set-deadline {
         display: flex;
         flex-direction: column;
-        padding: 10px;
+        justify-content: center;
+        align-items: center;
+        border-left: 1px solid #1F3C88;
+        height: 100%;
         &.attachment {
             padding: 4px 10px;
+            border: none;
         }
     }
 
     .task-status {
-        padding: 4px 10px;
-        height: 1px;
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-content: center;
+        align-items: center;
+        justify-items: center;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+        &.attachment {
+            border: none;
+        }
         h3 {
             text-align: center;
             font-size: 14px;
@@ -106,7 +154,10 @@
             color: green;
         }
     }
+    
 }
+
+
 
 
 .datepicker-wrapper {
@@ -129,4 +180,5 @@
             outline: none;
         }
     }
-  }
+}
+  
