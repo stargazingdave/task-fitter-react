@@ -29,7 +29,7 @@ function MyRoutes() {
         ? <Routes>
                 <Route index element={<MainPage />} />
                 <Route path="protocol/:id" element={<Protocol />} />
-                <Route path="protocol-preview/:id" element={<ProtocolAttachment protocolOpen onClose={() => {}} />} />
+                <Route path="protocol-preview/:id" element={<ProtocolAttachment />} />
             </Routes>
         : <></>
     )

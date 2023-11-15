@@ -4,7 +4,7 @@ import './ProjectSubjects.scss';
 
 
 // Import the functions you need from the SDKs you need
-import { DocumentData, addDoc, collection, doc, orderBy, query, updateDoc, where } from 'firebase/firestore';
+import { DocumentData, addDoc, collection, doc, or, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { useFirestoreCollectionData} from 'reactfire';
 import { deleteSubject, getSubjectsPath } from '../../utils';
 import { ProjectTasks } from './ProjectTasks';
@@ -33,9 +33,11 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
     const subjectsPath = getSubjectsPath(projectStack);
     const db = useAppSelector(selectDb);
     const subjectsCollection = collection(db, subjectsPath);
+    
     const subjectsQuery = query(subjectsCollection,
-        where("user_id", "==", user.uid || 0),
-        orderBy("creation_time", "asc"));
+            where("top_project_id", "==", projectStack[0].id),
+            orderBy("creation_time", "asc"));
+    
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
     const [editSubject, setEditSubject] = useState({} as DocumentData);
     const [subjectName, setSubjectName] = useState('');
@@ -165,7 +167,8 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                             addDoc(collection(db, subjectsPath), {
                                 title: subjectName || '',
                                 creation_time: new Date().getTime(),
-                                user_id: user.uid
+                                user_id: user.uid,
+                                top_project_id: projectStack[0].id,
                             });
                             setSubjectName('');
                             setCreateSubjectFlag(!createSubjectFlag);

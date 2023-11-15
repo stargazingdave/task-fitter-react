@@ -1,10 +1,12 @@
-import { DocumentData, Firestore, collection, query, where } from "firebase/firestore";
+import { DocumentData, Firestore, collection, orderBy, query, where } from "firebase/firestore";
 import { useFirestoreCollectionData } from "reactfire";
 import '.././ProtocolProject.scss'
 import { ProtocolTasksAttachment } from "./ProtocolTasksAttachment";
 import { useAppSelector } from "../../../reduxHooks";
 import { selectUser } from "../../../redux/userSlice";
 import { selectDb } from "../../../redux/databaseSlice";
+import { useState } from "react";
+import { useParams } from "react-router";
 
 type ProtocolProjectAttachmentProps = {
     project: DocumentData;
@@ -13,14 +15,20 @@ type ProtocolProjectAttachmentProps = {
 }
 
 export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps) => {
+    const [isAscending, setIsAscending] = useState(true);
+    let { id } = useParams();
     const db = useAppSelector(selectDb);
-    const user = useAppSelector(selectUser);
-    const subProjectCollection = collection(db, props.path, 'projects');
-    const subProjectsQuery = query(subProjectCollection,
-        where("user_id", "==", user.uid || 0));
-    const projectSubjectsCollection = collection(db, props.path, 'subjects');
-    const subjectsQuery = query(projectSubjectsCollection,
-        where("user_id", "==", user.uid || 0));
+    const subProjectsCollection = collection(db, props.path, 'projects');
+    const subjectsCollection = collection(db, props.path, 'subjects');
+
+
+    const subProjectsQuery = query(subProjectsCollection,
+        where("top_project_id", "==", id),
+        orderBy('creation_time', isAscending ? 'asc' : 'desc'));
+    const subjectsQuery = query(subjectsCollection,
+        where("top_project_id", "==", id),
+        orderBy("creation_time", "asc"));
+
     const { status: statusP, data: projects } = useFirestoreCollectionData(subProjectsQuery, { idField: 'id',});
     const { status: statusS, data: subjects } = useFirestoreCollectionData(subjectsQuery, { idField: 'id',});
     // check the loading status
@@ -44,7 +52,9 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
                         </div>
                         <ProtocolTasksAttachment   
                             tasksCollection={collection(db, props.path, 'subjects', subject.id, 'tasks')}
-                            addSaveAction={props.addSaveAction} />
+                            addSaveAction={props.addSaveAction} 
+                            project={props.project}
+                        />
                     </div>
                 ))
             }

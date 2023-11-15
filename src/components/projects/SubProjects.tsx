@@ -6,7 +6,7 @@ import { EditProjectForm } from './EditProjectForm';
 
 
 // Import the functions you need from the SDKs you need
-import { DocumentData, collection, orderBy, query, where } from 'firebase/firestore';
+import { DocumentData, collection, or, orderBy, query, where } from 'firebase/firestore';
 import { useFirestoreCollectionData } from 'reactfire';
 import { CreateProjectForm } from './CreateProjectForm';
 import { deleteProject, getProjectsPath } from '../../utils';
@@ -47,9 +47,12 @@ export const SubProjects = (props: SubProjectsProps) =>  {
     const [createSubProject, setCreateSubProject] = useState(false);
     const [editSubProject, setEditSubProject] = useState({} as DocumentData);
     const [projectDeletePopup, setProjectDeletePopup] = useState('');
+    
+
     const projectsQuery = query(projectsCollection,
-        where("user_id", "==", user.uid || 0),
+        where("top_project_id", "==", projectStack[0].id),
         orderBy('creation_time', isAscending ? 'asc' : 'desc'));
+
     const { status, data: projects } = useFirestoreCollectionData(projectsQuery, { idField: 'id',});
     
     // check the loading status
@@ -127,11 +130,10 @@ export const SubProjects = (props: SubProjectsProps) =>  {
                 <CreateProjectForm 
                     projectsCollection={projectsCollection} 
                     createProjectFlag={createSubProject} 
-                    onProjectCreate={
-                        (createProjectFlag) => {
-                            setCreateSubProject(!createProjectFlag)
-                        }
-                    }
+                    onProjectCreate={(createProjectFlag) => {
+                        setCreateSubProject(!createProjectFlag)
+                    }}
+                    topProjectId={projectStack[0].id}
                 />
             </div>
         }

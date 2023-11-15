@@ -3,12 +3,12 @@ import { BsFillBuildingsFill } from 'react-icons/bs';
 import './Projects.scss';
 import { EditProjectForm } from './EditProjectForm';
 
-import { DocumentData, collection, orderBy, query, where } from 'firebase/firestore';
+import { DocumentData, collection, or, orderBy, query, where } from 'firebase/firestore';
 import { useFirestoreCollectionData} from 'reactfire';
 import { CreateProjectForm } from './CreateProjectForm';
 import Popup from 'reactjs-popup';
 import { MdDeleteForever } from 'react-icons/md';
-import { BiEditAlt } from 'react-icons/bi';
+import { BiEditAlt, BiSolidUserVoice } from 'react-icons/bi';
 import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { selectIsAdmin, selectUser } from '../../redux/userSlice';
 import { selectDb } from '../../redux/databaseSlice';
@@ -35,7 +35,6 @@ type ProjectsProps = {
 
 export const Projects = (props: ProjectsProps) =>  {
     const user = useAppSelector(selectUser);
-    // access the Firestore library
     const db = useAppSelector(selectDb);
     const isAdmin = useAppSelector(selectIsAdmin);
     console.log(isAdmin);
@@ -46,7 +45,8 @@ export const Projects = (props: ProjectsProps) =>  {
     const [isAscending, setIsAscending] = useState(false);
     const [createProjectFlag, setCreateProjectFlag] = useState(false);
     const projectsQuery = query(projectsCollection,
-                                where("user_id", "==", user.uid),
+                                or(where("user_id", "==", user.uid),
+                                where("shared_emails", "array-contains", user.email)),
                                 orderBy('creation_time', isAscending ? 'asc' : 'desc'));
     const { status, data: projects } = useFirestoreCollectionData(projectsQuery, { idField: 'id',});
     
@@ -83,12 +83,23 @@ export const Projects = (props: ProjectsProps) =>  {
                 createProjectFlag={createProjectFlag} 
                 onProjectCreate={(createProjectFlag) => {
                     setCreateProjectFlag(!createProjectFlag)
-                }}/>
+                }}
+                topProjectId={''}
+            />
         }  
             <div className="projects">
                 {
                     projects.map(project => (
                         <div className="project-tile" key={project.id}>
+                            {
+                                project.user_id !== user.uid &&
+                                <div 
+                                    className='shared-icon' 
+                                    title={"פרויקט זה שותף איתך על ידי: " + project.creator_name}
+                                    >
+                                    <BiSolidUserVoice size={20}/>
+                                </div>
+                            }
                             {
                                 props.editProject?.id != project.id
                                 ? <>

@@ -1,4 +1,4 @@
-import { CollectionReference, DocumentData, deleteDoc, doc, query, updateDoc, where } from "firebase/firestore";
+import { CollectionReference, DocumentData, deleteDoc, doc, or, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 import { getStorage, ref, deleteObject } from "firebase/storage";
@@ -36,8 +36,10 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
     const [newTask, setNewTask] = useState(false);
     const [editTask, setEditTask] = useState({} as DocumentData);
     const [taskDeletePopup, setTaskDeletePopup] = useState({} as DocumentData);
+
     const tasksQuery = query(props.tasksCollection,
-        where("user_id", "==", user.uid || 0));
+        where("top_project_id", "==", projectStack[0].id));
+    
 
 
     const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
@@ -77,7 +79,13 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                                     {
                                         task.collaborators?.map((collaborator: string) => (
                                             <div key={collaborator} className="collaborator">
-                                                <p>{contacts.find((contact) => contact.id == collaborator)?.name}</p><p className="comma">, </p>
+                                                <p>
+                                                    {
+                                                        contacts.find((contact) => contact.email == collaborator)
+                                                        ? contacts.find((contact) => contact.email == collaborator)?.name
+                                                        : collaborator
+                                                    }
+                                                </p><p className="comma">, </p>
                                             </div>
                                         ))
                                     }
@@ -115,12 +123,18 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
             }
             {
                 newTask
-                ? <CreateTaskForm tasksCollection={props.tasksCollection} 
-                                    createTaskSelected={newTask} 
-                                    onTaskCreate={() => setNewTask(false)} 
-                                    onCancel={() => setNewTask(false)} 
-                                    project={projectStack[projectStack.length - 1]} />
-                : <button className="new-task-button" onClick={() => setNewTask(true)}>
+                ? <CreateTaskForm 
+                    tasksCollection={props.tasksCollection} 
+                    createTaskSelected={newTask} 
+                    onTaskCreate={() => setNewTask(false)} 
+                    onCancel={() => setNewTask(false)} 
+                    projectId={projectStack[projectStack.length - 1].id} 
+                    topProjectId={projectStack[0].id} 
+                />
+                : <button 
+                    className="new-task-button" 
+                    onClick={() => setNewTask(true)}
+                    >
                     <div className="icons">
                         <AiOutlinePlus size={20} />
                         <BiTask size={24} />

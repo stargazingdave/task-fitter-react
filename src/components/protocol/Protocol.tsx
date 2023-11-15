@@ -48,10 +48,9 @@ export const Protocol = (props: ProtocolProps) => {
         <div className='protocol-container'>
             <div className="headers-container">
                 <div className="headers">
-                    <div className="full-height"></div>
-                    <div >משימה: </div>
-                    <div >משתתפים: </div>
-                    <div >דד-ליין: </div>
+                    <div className='tasks-header'>משימה: </div>
+                    <div className='collaborators-header'>משתתפים: </div>
+                    <div className='deadline-header'>דד-ליין: </div>
                 </div>
             </div>
             <h1>פרוטוקול פרויקט: {project.project_name}</h1>

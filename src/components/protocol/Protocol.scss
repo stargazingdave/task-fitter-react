@@ -6,6 +6,7 @@
 
 .protocol-container {
     width: 100%;
+    min-width: fit-content;
     overflow-y: auto;
     max-height: calc(100vh - 80px);
     position: relative;
@@ -18,15 +19,21 @@
             align-items: baseline;
             position: absolute;
             height: auto;
-            right: calc(50% - 440px);
+            right: calc(50% - 374px);
             top: 80px;
             z-index: 100;
             font-family: inherit;
             font-size: 20px;
             font-weight: bold;
             color: #070D59;
-            .full-height {
-                height: 100%;
+            &.attachment {
+                right: calc(50% - 440px);
+            }
+            .collaborators-header {
+                margin-right: 40px;
+            }
+            .deadline-header {
+                margin-right: 50px;
             }
         }
     }
@@ -80,6 +87,14 @@
             font-family: inherit;
             margin: 8px;
             border: none;
+            &:disabled {
+                background: #a5976b;
+                &:hover {
+                    color: #1F3C88;
+                    background: #a5976b;
+                    cursor: pointer;
+                }
+            }
             &.sending {
                 background: #a4a4a4;
                 &:hover {

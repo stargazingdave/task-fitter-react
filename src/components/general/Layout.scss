@@ -8,10 +8,7 @@
     background: #1F3C88;
     height: 60px;
     align-items: right;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    .app-logo {
+    h1 {
         margin: 0px;
         color: #ffffff;
         font-weight: 400;
@@ -19,7 +16,6 @@
         text-align: right;
         margin-right: 4px;
         margin-left: 4px;
-        text-decoration-line: none;
     }
     .info {
         display: flex;
@@ -45,25 +41,6 @@
             cursor: pointer;
         }
     }
-    .user-menu-button {
-        background: none;
-        display: flex;
-        flex-direction: row;
-        svg {
-            fill: white;
-        }
-        &:hover {
-            background: none;
-            svg {
-                fill: #CEDDEF;
-            }
-        }
-        &.open {
-            svg {
-                fill: #070D59;
-            }
-        }
-    }
     .contact-list-button {
         display: flex;
         flex-direction: row;
@@ -74,7 +51,8 @@
         border: 1px solid white;
         border-radius: 4px;
         color: white;
-        
+        position: absolute;
+        left: 26px;
         &.open {
             background: #070D59;
         }

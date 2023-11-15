@@ -27,13 +27,20 @@ const animatedComponents = makeAnimated();
 
 export const ProtocolTask = (props: ProtocolTaskProps) => {
     const contacts = useAppSelector(selectContacts);
-    let contactsOptions = contacts.map((contact) => ({value: contact.id, label: contact.name}));
+    let contactsOptions = contacts.map((contact) => ({value: contact.email, label: contact.name}));
     const [taskTitle, setTaskTitle] = useState(props.task.task);
     const [taskDeadline, setTaskDeadline] = useState(new Date(props.task.deadline));
     const [taskCollaborators, setTaskCollaborators] = useState(props.task.collaborators);
-    const selectedOptions = contacts
-        .filter((contact) => props.task.collaborators.includes(contact.id))
-        .map((collaborator) => ({value: collaborator.id, label: collaborator.name}));
+    const selectedOptions = props.task.collaborators
+        .map((collaborator) => {
+            const contact = contacts.find((contact) => contact.email === collaborator);
+            if (contact) {
+                return ({value: contact.email, label: contact.name});
+            }
+            else {
+                return ({value: collaborator, label: collaborator});
+            }
+        });
     const [deleteTask, setDeleteTask] = useState({} as DocumentData);
     const [image, setImage] = useState<File | null>(null);
 
@@ -117,7 +124,7 @@ export const ProtocolTask = (props: ProtocolTaskProps) => {
                                                                                     {status: !task.status})}/>
                     {props.task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}
                 </div>
-                <div className="buttons">
+                <div className="task-buttons">
                     <label className="image-upload">
                         {
                             image

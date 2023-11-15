@@ -19,7 +19,8 @@ type CreateTaskFormProps = {
     createTaskSelected: boolean;
     onTaskCreate: (onTaskCreate: boolean) => void;
     onCancel: () => void;
-    project: DocumentData;
+    projectId: string;
+    topProjectId: string;
 }
 
 
@@ -40,7 +41,8 @@ const addTask = async (props: CreateTaskFormProps,
             deadline: taskDeadline.getTime(),
             user_id: user.uid,
             collaborators: taskCollaborators,
-            project_id: props.project.id
+            project_id: props.projectId,
+            top_project_id: props.topProjectId,
         })
         .then (docRef => {
             uploadImage(docRef.id, image, props.tasksCollection);
@@ -57,7 +59,7 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
     const [selectedOptions, setSelectedOptions] = useState();
     const [taskDeadline, setTaskDeadline] = useState(new Date());
     const [image, setImage] = useState<File | null>(null);
-    let contactsOptions = contacts.map((contact) => ({value: contact.id, label: contact.name}));
+    let contactsOptions = contacts.map((contact) => ({value: contact.email, label: contact.name}));
 
     console.log('task: ', contacts);
 

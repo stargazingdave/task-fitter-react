@@ -1,0 +1,38 @@
+.permissions-manager {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    gap: 20px;
+    h1 {
+        font-family: inherit;
+        font-size: 26px;
+        font-weight: normal;
+        color: #1F3C88;
+        margin: 0;
+    }
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        .save-button {
+            background: #6aff83;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            &:hover {
+                background: #1bff56;
+                cursor: pointer;
+            }
+        }
+        .close-button {
+            background: #f70000;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            &:hover {
+                background: #b80000;
+                cursor: pointer;
+            }
+        }
+    }
+}

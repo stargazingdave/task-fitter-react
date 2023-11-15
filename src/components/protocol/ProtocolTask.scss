@@ -9,11 +9,11 @@
         grid-template-columns: 240px 200px 100px 100px;
     }
     &:hover {
-        .buttons {
+        .task-buttons {
             opacity: 1;
         }
     }
-    .buttons {
+    .task-buttons {
         display: flex;
         flex-direction: row;
         padding: 0;

@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { ProtocolProjectAttachment } from './ProtocolProjectAttachment';
 import { useAppSelector } from '../../../reduxHooks';
-import { selectUser } from '../../../redux/userSlice';
+import { selectIsAdmin, selectUser } from '../../../redux/userSlice';
 import { selectContacts, selectOpenContacts } from '../../../redux/contactsSlice';
 import { selectDb } from '../../../redux/databaseSlice';
 import { TbMailFast, TbMailForward, TbMailShare } from 'react-icons/tb';
@@ -18,8 +18,6 @@ import { ContactList } from '../../contacts/ContactList';
 
 
 type ProtocolAttachmentProps = {
-    protocolOpen: boolean;
-    onClose?: (protocolOpen: boolean) => void;
 }
 
 const actions = {}; // key-value map. key - task id, value - action(function)
@@ -103,6 +101,7 @@ const sendMail = async (
 }
 
 export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
+    const isAdmin = useAppSelector(selectIsAdmin);
     const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
     const contacts = useAppSelector(selectContacts);
@@ -110,13 +109,11 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
     const [sending, setSending] = useState(false);
 
     let { id } = useParams();
-
-    const { status: projectStatus, data: project } = useFirestoreDocData(doc(db, 'projects', id || ''), { idField: 'id', });
-    
+    const projectRef = doc(db, 'projects', id || '');
+    const { status: projectStatus, data: project } = useFirestoreDocData(projectRef, { idField: 'id', });
     const tasksCollection = collectionGroup(db, 'tasks');
-    const projectTasksQuery = query(tasksCollection, 
-        where("user_id", "==", user.uid || 0),
-        where('project_id', '==', id));
+    const projectTasksQuery = query(tasksCollection,
+        where("top_project_id", "==", id));
     const {status: tasksStatus, data: projectTasks} = useFirestoreCollectionData(projectTasksQuery, { idField: 'id', });
     
     
@@ -134,7 +131,7 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
     return <div className='protocol-page'>
         <div className='protocol-container'>
             <div className="headers-container">
-                <div className="headers">
+                <div className="headers attachment">
                     <div className="full-height"></div>
                     <div >משימה: </div>
                     <div >משתתפים: </div>
@@ -155,13 +152,16 @@ export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {
                     ? <button 
                         className='send-button sending' 
                         onClick={() => {}}
-                        disabled
                         >
                         מתבצעת שליחה <TbMailFast size={34} /><div className="loader"></div>
                     </button>
                     : <button 
                         className='send-button' 
                         onClick={() => sendMail(project, projectTasks, contacts, setSending, user)}
+                        disabled={!isAdmin}
+                        title={isAdmin 
+                            ? 'שליחת מייל לכל המשתתפים עם הפרוטוקול והמשימות האישיות.' 
+                            : 'אין לחשבון שלך גישה לשליחת מיילים'}
                         >
                         שליחה <TbMailShare size={34} />
                     </button>

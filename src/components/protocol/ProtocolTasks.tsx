@@ -9,7 +9,8 @@ import { deleteImage } from "../../utils";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
 import { AiOutlinePlus } from "react-icons/ai";
-import { BiTask } from "react-icons/bi";
+import { BiSolidLeftArrow, BiSolidPlusCircle, BiTask } from "react-icons/bi";
+import { useParams } from "react-router";
 
 type ProtocolTasksProps = {
     tasksCollection: CollectionReference;
@@ -19,8 +20,11 @@ type ProtocolTasksProps = {
 
 
 export const ProtocolTasks = (props: ProtocolTasksProps) => {
+    let { id } = useParams();
     const user = useAppSelector(selectUser);
-    const tasksQuery = query(props.tasksCollection, where("user_id", "==", user.uid || 0));
+
+    const tasksQuery = query(props.tasksCollection,
+        where("top_project_id", "==", id));
 
     useEffect(() => {
         async function getToken() {
@@ -73,6 +77,7 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                     </div>
                 </div>
             ))}
+            <div className="arrow"><BiSolidLeftArrow size={30} /></div>
             <button 
                 className="new-task-button"
                 title="משימה חדשה"
@@ -83,14 +88,12 @@ export const ProtocolTasks = (props: ProtocolTasksProps) => {
                         deadline: new Date().getTime(),
                         user_id: user.uid,
                         collaborators: [],
-                        project_id: props.project.id
+                        project_id: props.project.id,
+                        top_project_id: id,
                     });
                 }}
                 >
-                    <div className="icons">
-                        <AiOutlinePlus size={20} />
-                        <BiTask size={30} />
-                    </div>
+                    <BiSolidPlusCircle size={30} />
                     משימה חדשה
             </button>
         </div>

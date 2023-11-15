@@ -1,5 +1,5 @@
 import { CollectionReference, DocumentData, deleteField, doc, updateDoc } from "firebase/firestore";
-import { useRef, useState } from "react";
+import { KeyboardEventHandler, useRef, useState } from "react";
 import "./EditTaskForm.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -44,12 +44,19 @@ const updateTask = (props: EditTaskFormProps,
 
 export const EditTaskForm = (props: EditTaskFormProps) => {
     const contacts = useAppSelector(selectContacts);
-    let contactsOptions = contacts.map((contact) => ({value: contact.id, label: contact.name}));
+    let contactsOptions = contacts.map((contact) => ({value: contact.email, label: contact.name}));
 
     const selectContactRef = useRef<any>(null);
-    const [selectedOptions, setSelectedOptions] = useState(contacts
-        .filter((contact) => props.task.collaborators.includes(contact.id))
-        .map((collaborator) => ({value: collaborator.id, label: collaborator.name})));
+    const selectedOptions = props.task.collaborators
+        .map((collaborator) => {
+            const contact = contacts.find((contact) => contact.email === collaborator);
+            if (contact) {
+                return ({value: contact.email, label: contact.name});
+            }
+            else {
+                return ({value: collaborator, label: collaborator});
+            }
+        });
     const [taskTitle, setTaskTitle] = useState(props.task.task);
     const [taskDeadline, setTaskDeadline] = useState(new Date(props.task.deadline));
     const [image, setImage] = useState<File | null>(null);
@@ -102,6 +109,14 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                         components={animatedComponents}
                         isMulti
                         defaultValue={selectedOptions}
+                        onKeyDown={(e: any) => {
+                            if (e.key === 'Enter') {debugger
+                                const unknownContact = {value: e.target.value, label: e.target.value};
+                                contactsOptions.push(unknownContact);
+                                selectContactRef.current.selectOption(unknownContact);
+                                //setSelectedOptions([...selectedOptions, unknownContact]);
+                            }
+                        }}
                     />
                 </div>
                 <div className="image-select">

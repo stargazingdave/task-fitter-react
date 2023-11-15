@@ -1,4 +1,4 @@
-import { DocumentData, addDoc, collection, deleteDoc, doc, query, updateDoc, where } from "firebase/firestore";
+import { DocumentData, addDoc, collection, deleteDoc, doc, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { useFirestoreCollectionData } from "reactfire";
 import './ProtocolProject.scss'
 import { ProtocolTasks } from "./ProtocolTasks";
@@ -6,7 +6,9 @@ import { useState } from "react";
 import { CreateProjectForm } from "../projects/CreateProjectForm";
 import Popup from "reactjs-popup";
 import { ProtocolConfirmationBox } from "./ProtocolConfirmationBox";
-import { BiEditAlt } from "react-icons/bi";
+import { BiDotsVerticalRounded, BiEditAlt, BiListPlus } from "react-icons/bi";
+import { IoIosArrowDropdownCircle } from "react-icons/io";
+
 import { EditProjectForm } from "../projects/EditProjectForm";
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
@@ -15,6 +17,8 @@ import { selectUser } from "../../redux/userSlice";
 import { selectDb } from "../../redux/databaseSlice";
 import { deleteProject, deleteSubject } from "../../utils";
 import { store } from "../../store";
+import { useParams } from "react-router";
+import { BsBuildingFillAdd, BsFillPlusCircleFill } from "react-icons/bs";
 
 type ProtocolProjectProps = {
     project: DocumentData;
@@ -23,15 +27,22 @@ type ProtocolProjectProps = {
 }
 
 export const ProtocolProject = (props: ProtocolProjectProps) => {
-    debugger
+    const [isAscending, setIsAscending] = useState(false);
     const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
     const subProjectsCollection = collection(db, props.path, 'projects');
+    let { id } = useParams();
+    
+
     const subProjectsQuery = query(subProjectsCollection,
-        where("user_id", "==", user.uid || 0));
-    const projectSubjectsCollection = collection(db, props.path, 'subjects');
-    const projectSubjectsQuery = query(projectSubjectsCollection,
-        where("user_id", "==", user.uid || 0));
+        where("top_project_id", "==", id),
+        orderBy('creation_time', isAscending ? 'asc' : 'desc'));
+    const subjectsCollection = collection(db, props.path, 'subjects');
+    const subjectsQuery = query(subjectsCollection,
+        where("top_project_id", "==", id),
+        orderBy("creation_time", "asc"));
+
+    const [projectButtonsOpen, setProjectButtonsOpen] = useState(false);
     const [editProject, setEditProject] = useState({} as DocumentData);
     const [createSubjectFlag, setCreateSubjectFlag] = useState(false);
     const [createSubProject, setCreateSubProject] = useState(false);
@@ -40,7 +51,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
     const [editSubject, setEditSubject] = useState({} as DocumentData);
     const [subjectName, setSubjectName] = useState('');
     const { status: statusP, data: projects } = useFirestoreCollectionData(subProjectsQuery, { idField: 'id',});
-    const { status: statusS, data: subjects } = useFirestoreCollectionData(projectSubjectsQuery, { idField: 'id',});
+    const { status: statusS, data: subjects } = useFirestoreCollectionData(subjectsQuery, { idField: 'id',});
     // check the loading status
     if (statusP === 'loading') {
         return <p>טוען פרויקטים...</p>;
@@ -52,61 +63,49 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
     return (<div className="form" id="protocol-project">
 
         <div className="form-tasks">
+            <button
+                    className="add-button"
+                    onClick={() => setProjectButtonsOpen(!projectButtonsOpen)}
+                    >
+                    <IoIosArrowDropdownCircle size={40}/>
+                </button>
             {
-                !createSubjectFlag && !createSubProject
-                ? <div className="buttons">
+                projectButtonsOpen
+                ? <div className="project-buttons">
                     <button 
-                        onClick={() => setCreateSubjectFlag(!createSubjectFlag)}
-                        className="new-subject-button" >
-                            נושא חדש
+                        onClick={() => {
+                            setCreateSubProject(!createSubProject);
+                            setProjectButtonsOpen(!projectButtonsOpen);
+                        }}
+                        className="new-subproject-button" >
+                            <BsBuildingFillAdd size={20}/>
+                            <p style={{margin: "0",}}>תת פרויקט חדש</p>
                     </button>
                     <button 
-                        onClick={() => setCreateSubProject(!createSubProject)}
-                        className="new-subproject-button" >
-                            תת פרויקט חדש
+                        onClick={() => {
+                            setCreateSubjectFlag(!createSubjectFlag);
+                            setProjectButtonsOpen(!projectButtonsOpen);
+                        }}
+                        className="new-subject-button" >
+                            <BiListPlus size={20}/>
+                            <p style={{margin: "0",}}>נושא חדש בפרויקט</p>
+                    </button>
+                    <button 
+                        title='עריכת שם ומנהל הפרויקט'
+                        className="edit-subproject-button" 
+                        onClick={() => setEditProject(props.project)}>
+                        <BiEditAlt size={20} />
+                        <p style={{margin: "0",}}>עריכת שם ומנהל הפרויקט</p>
+                    </button>
+                    <button 
+                        title='מחיקת הפרויקט' 
+                        className="delete-subproject-button" 
+                        onClick={() => setSelectedProject(props.project)} >
+                        <MdDeleteForever size={20} />
+                        <p style={{margin: "0",}}>מחיקת הפרויקט</p>
                     </button>
                 </div>
                 : <></>
-            }
-            {
-                createSubjectFlag &&
-                <div>
-                    <label>
-                        כותרת:
-                        <input
-                            value={subjectName}
-                            onChange={e => setSubjectName(e.target.value)}
-                            type="string" />
-                    </label>
-                    <button onClick={() => {
-                        if (subjectName == '') {
-                            alert('לא ניתן ליצור נושא ללא כותרת');
-                            return;
-                        }
-                        addDoc(projectSubjectsCollection, 
-                            {
-                                title: subjectName, 
-                                creation_time: new Date().getTime(),
-                                user_id: user.uid,
-                            });
-                        setCreateSubjectFlag(false);
-                    }}>
-                        שמירה
-                    </button>
-                    <button onClick={() => setCreateSubjectFlag(false)}>
-                        ביטול
-                    </button>
-                </div>
-            }
-            {
-                createSubProject && 
-                <CreateProjectForm 
-                    createProjectFlag={createSubProject}
-                    onProjectCreate={(createSubProject) => {
-                        setCreateSubProject(false)
-                    }}
-                    projectsCollection={subProjectsCollection}
-                    />
             }
             {
                 subjects.map(subject => (
@@ -116,7 +115,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                             <h1>{subject.title}</h1>
                             {
                                 editSubject?.id != subject.id
-                                ? <div className='buttons'>
+                                ? <div className='subject-buttons'>
                                     <button 
                                         className="delete-button"
                                         title="מחיקת נושא"
@@ -144,7 +143,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                                             <button 
                                                 onClick={() => {
                                                     setSubjectName(subject.title);
-                                                    updateDoc(doc(projectSubjectsCollection, editSubject.id), {
+                                                    updateDoc(doc(subjectsCollection, editSubject.id), {
                                                         title: subjectName,
                                                         });
                                                     editSubject.title = subjectName;
@@ -177,19 +176,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
             {
                 projects.map(project => ( 
                     <div className="sub-project" key={project.id}>
-                        <h1>{project.project_name}</h1>
-                        <div className="buttons">
-                            <button 
-                                title='מחיקת הפרויקט' 
-                                className="delete-subproject-button" 
-                                onClick={() => setSelectedProject(project)} >
-                                <MdDeleteForever size="24" />
-                            </button>
-                            <button 
-                                title='עריכת שם ומנהל הפרויקט'className="edit-subproject-button" onClick={() => setEditProject(project)}>
-                                <BiEditAlt size="24" />
-                            </button>
-                        </div>
+                        <h1 className="project-name">{project.project_name}</h1>
                         {
                             editProject?.id &&
                             <EditProjectForm 
@@ -217,7 +204,7 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                                 //deleteDoc(doc(projectSubjectsCollection, selectedSubject.id));
                                 // delete subject and nested data (tasks)
                                 deleteSubject(store.getState(), 
-                                    doc(projectSubjectsCollection, selectedSubject.id), 
+                                    doc(subjectsCollection, selectedSubject.id), 
                                     props.path + '/subjects/');
                                 setSelectedSubject({});
                             }} 
@@ -242,5 +229,51 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                 </Popup>
             }
         </div>
+        <Popup 
+            open={createSubjectFlag}
+            closeOnDocumentClick={false}
+            >
+            <div>
+                    <label>
+                        כותרת:
+                        <input
+                            value={subjectName}
+                            onChange={e => setSubjectName(e.target.value)}
+                            type="string" />
+                    </label>
+                    <button onClick={() => {
+                        if (subjectName == '') {
+                            alert('לא ניתן ליצור נושא ללא כותרת');
+                            return;
+                        }
+                        addDoc(subjectsCollection, 
+                            {
+                                title: subjectName, 
+                                creation_time: new Date().getTime(),
+                                user_id: user.uid,
+                                top_project_id: id,
+                            });
+                        setCreateSubjectFlag(false);
+                    }}>
+                        שמירה
+                    </button>
+                    <button onClick={() => setCreateSubjectFlag(false)}>
+                        ביטול
+                    </button>
+                </div>
+        </Popup>
+        <Popup 
+            open={createSubProject}
+            closeOnDocumentClick={false}
+            >
+            <CreateProjectForm 
+                createProjectFlag={createSubProject}
+                onProjectCreate={(createSubProject) => {
+                    setCreateSubProject(false)
+                }}
+                projectsCollection={subProjectsCollection}
+                topProjectId={id || ''}
+                />
+        </Popup>
     </div>)
 }

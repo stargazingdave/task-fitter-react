@@ -4,31 +4,49 @@ import { useState } from "react";
 import "./CreateProjectForm.scss"
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
+import { selectProjectStack } from "../../redux/projectsSlice";
 
 type CreateProjectFormProps = {
   projectsCollection: CollectionReference;
   createProjectFlag: boolean;
   onProjectCreate: (onProjectCreate: boolean) => void;
+  topProjectId: string;
 }
   
 
 
-const addProject = (props: CreateProjectFormProps, 
-                    projectName: string, 
-                    managerName: string,
-                    user: User) => {
+const addProject = (
+        props: CreateProjectFormProps, 
+        projectName: string, 
+        managerName: string,
+        user: User,
+    ) => {
     if (projectName == '') {
         alert('לא ניתן ליצור פרויקט ללא שם');
         return;
     }
-    addDoc(props.projectsCollection, {
-        project_name: projectName,
-        creation_time: Date.now(),
-        project_manager: managerName,
-        creator_name: user.displayName,
-        user_id: user.uid,
-        shared_emails: [user.uid],
-    });
+    if (props.topProjectId === '') {
+        addDoc(props.projectsCollection, {
+            project_name: projectName,
+            creation_time: Date.now(),
+            project_manager: managerName,
+            creator_name: user.displayName,
+            user_id: user.uid,
+            shared_emails: [user.email],
+        });
+    }
+    else {
+        addDoc(props.projectsCollection, {
+            project_name: projectName,
+            creation_time: Date.now(),
+            project_manager: managerName,
+            creator_name: user.displayName,
+            user_id: user.uid,
+            shared_emails: [user.email],
+            top_project_id: props.topProjectId,
+        });
+    }
+    
     props.onProjectCreate(props.createProjectFlag);
 }
 
@@ -36,6 +54,7 @@ const addProject = (props: CreateProjectFormProps,
 
 export const CreateProjectForm = (props: CreateProjectFormProps) => {
     const user = useAppSelector(selectUser);
+    const projectStack = useAppSelector(selectProjectStack);
     const [projectName, setProjectName] = useState('');
     const [managerName, setManagerName] = useState('');
     return (

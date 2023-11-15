@@ -11,40 +11,167 @@
         flex-direction: column;
         overflow: visible;
         align-items: center;
-        .new-subject-button {
-            background: #CEDDEF;
-            border: none;
-            color: 1F3C88;
-            padding: 5px 8px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px;
-            margin-right: 20px;
-            border-radius: 3px;
+        position: relative;
+        .add-button {
+            display: flex;
+            align-items: center;
             width: fit-content;
+            height: fit-content;
+            padding: 0;
+            margin: 0;
+            background: none;
+            // background: #0072ff;
+            // border: 1px dashed #1F3C88;
+            border: none;
+            color: #0072ff;
+            // font-size: 24px;
+            font-size: 16px;
+            font-family: inherit;
+            border-radius: 16px;
+            position: absolute;
+            top: -34px;
+            right: calc(50% - 600px);
+            z-index: 99;
+            svg {
+                fill: #0072ff;
+            }
             &:hover {
-                background: #5893D4;
                 cursor: pointer;
+                color: #0052b6;
+                svg {
+                    fill: #0052b6;
+                }
             }
         }
-        .new-subproject-button {
-            background: #CEDDEF;
-            border: none;
-            color: 1F3C88;
-            padding: 5px 8px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            margin: 4px;
-            margin-right: 20px;
-            border-radius: 3px;
-            width: fit-content;
-            &:hover {
-                background: #5893D4;
-                cursor: pointer;
+        .project-buttons {
+            position: absolute;
+            padding: 10px 4px;
+            top: 26px;
+            right: calc(50% - 600px);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            height: min-content;
+            z-index: 100;
+            background: white;
+            border: 1px solid #0072ff;
+            border-radius: 4px;
+            box-shadow: 0.5px 0.5px 10px #0073ff77;
+            .new-subject-button {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 2px;
+                // width: 850px;
+                width: fit-content;
+                height: fit-content;
+                // padding: 7px 5px;
+                background: none;
+                // background: #0072ff;
+                // border: 1px dashed #1F3C88;
+                border: none;
+                color: #0072ff;
+                // font-size: 24px;
+                font-size: 16px;
+                font-family: inherit;
+                border-radius: 4px;
+                svg {
+                    fill: #0072ff;
+                }
+                &:hover {
+                    cursor: pointer;
+                    color: #0052b6;
+                    svg {
+                        fill: #0052b6;
+                    }
+                }
+            }
+            .new-subproject-button {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 2px;
+                // width: 850px;
+                width: fit-content;
+                height: fit-content;
+                // padding: 7px 5px;
+                background: none;
+                // background: #0072ff;
+                // border: 1px dashed #1F3C88;
+                border: none;
+                color: #0072ff;
+                // font-size: 24px;
+                font-size: 16px;
+                font-family: inherit;
+                border-radius: 4px;
+                svg {
+                    fill: #0072ff;
+                }
+                &:hover {
+                    cursor: pointer;
+                    color: #0052b6;
+                    svg {
+                        fill: #0052b6;
+                    }
+                }
+            }
+            .delete-subproject-button {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 2px;
+                // width: 850px;
+                width: fit-content;
+                height: fit-content;
+                // padding: 7px 5px;
+                background: none;
+                // background: #0072ff;
+                // border: 1px dashed #1F3C88;
+                border: none;
+                color: #0072ff;
+                // font-size: 24px;
+                font-size: 16px;
+                font-family: inherit;
+                border-radius: 4px;
+                svg {
+                    fill: #0072ff;
+                }
+                &:hover {
+                    cursor: pointer;
+                    color: #0052b6;
+                    svg {
+                        fill: #0052b6;
+                    }
+                }
+            }
+            .edit-subproject-button {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 2px;
+                // width: 850px;
+                width: fit-content;
+                height: fit-content;
+                // padding: 7px 5px;
+                background: none;
+                // background: #0072ff;
+                // border: 1px dashed #1F3C88;
+                border: none;
+                color: #0072ff;
+                // font-size: 24px;
+                font-size: 16px;
+                font-family: inherit;
+                border-radius: 4px;
+                svg {
+                    fill: #0072ff;
+                }
+                &:hover {
+                    cursor: pointer;
+                    color: #0052b6;
+                    svg {
+                        fill: #0052b6;
+                    }
+                }
             }
         }
     }
@@ -53,68 +180,30 @@
         flex-direction: column;
         justify-content: center;
         margin: 0;
+        margin-top: 50px;
         padding: 0;
         gap: 4px;
-        h1 {
-            margin: 0;
-            padding-right: 20px;
-            width: fit-content;
-            height: fit-content;
-            font-size: 26px;
-            font-family: inherit;
-            text-align: center;
-        }
         .sub-project {
             display: flex;
             flex-direction: column;
             align-items: center;
             &:hover {
-                .buttons {
+                .sub-project-buttons {
                     opacity: 1;
                     transition: 0.3s;
                 }
             }
-            .buttons {
-                width: fit-content;
+            .project-name {
+                position: absolute;
+                right: calc(50% - 570px);
+                margin: 0;
+                margin-top: -30px;
                 padding-right: 20px;
-                opacity: 0;
-                transition: 0.3s;
-                .delete-subproject-button {
-                    border: none;
-                    width: fit-content;
-                    &:hover {
-                        background: none;
-                        cursor: pointer;
-                    }
-                    background: none;
-                    svg {
-                        fill: #7a0000;
-                        &:hover {
-                            fill: #f70000;
-                            cursor: pointer;
-                        }
-                    }
-                }
-                .edit-subproject-button {
-                    border: none;
-                    width: fit-content;
-                    &:hover {
-                        background: none;
-                        cursor: pointer;
-                    }
-                    background: none;
-                    svg {
-                        fill: #058432;
-                        &:hover {
-                            fill: #36e047;
-                            cursor: pointer;
-                        }
-                    }
-                }
+                font-size: 30px;
+                font-family: inherit;
+                text-align: right;
             }
         }
-        
-        
     }
 }
 
@@ -125,15 +214,16 @@
     overflow: visible;
     justify-items: stretch;
     height: fit-content;
+    margin: 10px;
     .subject-title {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        background: #EEEDED;
+        background: #CEDDEF;
         border-top-right-radius: 20px;
         border-bottom-right-radius: 20px;
-        margin: 10px;
+        // margin: 10px;
         margin-left: 0;
         border: 2px solid #5C6E91;
         border-left: none;
@@ -147,17 +237,17 @@
             }
         }
         &:hover {
-            .buttons {
+            .subject-buttons {
                 opacity: 1;
                 transition: 0.3s;
             }
         }
         h1 {
             font-size: 20px;
-            color: #5C6E91;
+            color: #070D59;
             padding-right: 0;
         }
-        .buttons {
+        .subject-buttons {
             position: absolute;
             bottom: 5px;
             opacity: 0;

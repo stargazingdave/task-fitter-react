@@ -1,4 +1,4 @@
-import { CollectionReference, getFirestore, query, where } from "firebase/firestore";
+import { CollectionReference, DocumentData, getFirestore, query, where } from "firebase/firestore";
 import { useFirestoreCollectionData } from "reactfire";
 
 import '.././ProtocolTasks.scss'
@@ -6,17 +6,21 @@ import '.././ProtocolTasks.scss'
 import { ProtocolTaskAttachment } from "./ProtocolTaskAttachment";
 import { useAppSelector } from "../../../reduxHooks";
 import { selectUser } from "../../../redux/userSlice";
+import { useParams } from "react-router";
 
 type ProtocolTasksAttachmentProps = {
     tasksCollection: CollectionReference;
     addSaveAction: (taskId: string, action: () => void) => void;
+    project: DocumentData;
 }
 
 
 export const ProtocolTasksAttachment = (props: ProtocolTasksAttachmentProps) => {
-    const user = useAppSelector(selectUser);
+    let { id } = useParams();
+
     const tasksQuery = query(props.tasksCollection,
-        where("user_id", "==", user.uid || 0));
+        where("top_project_id", "==", id));
+    
     const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
     
     if (status === 'loading') {

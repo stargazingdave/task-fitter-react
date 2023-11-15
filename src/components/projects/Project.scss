@@ -78,47 +78,107 @@
         margin: 0;
         .project-header {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             justify-content: space-between;
             height: fit-content;
             gap: 0;
             padding: 10px;
             .project-title {
+                display: flex;
+                flex-direction: row;
+                &:hover {
+                    .edit-button {
+                        opacity: 1;
+                        transition: 0.3s;
+                    }
+                }
                 h1 {
                     font-size: 26px;
                     color: #1F3C88;
                     margin: 0;
                 }
+                .edit-button {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    background: none;
+                    margin: 0;
+                    width: fit-content;
+                    height: fit-content;
+                    padding: 6px 10px;
+                    border-radius: 4px;
+                    opacity: 0;
+                    transition: 0.3s;
+                    svg {
+                        fill: #5893D4;
+                    }
+                    p {
+                        font-family: inherit;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: #5893D4;
+                    }
+                    &:hover {
+                        svg {
+                            fill: #1F3C88;
+                        }
+                        p {
+                            color: #1F3C88;
+                        }
+                        cursor: pointer;
+                    }
+                }
             }
-            
             .buttons {
                 display: flex;
                 align-items: center;
-                .edit-button {
-                    background: none;
-                    padding: 0;
-                    margin: 0;
-                    svg {
-                        fill: #5893D4 !important;
+                .shared-emails-button {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 4px;
+                    width: fit-content;
+                    height: 32px;
+                    padding: 6px 10px;
+                    border-radius: 4px;
+                    text-decoration: none;
+                    color: #1F3C88;
+                    background: #6aff83;
+                    font-weight: bold;
+                    font-size: 14px;
+                    font-family: inherit;
+                    margin: 8px;
+                    &:disabled {
+                        background: #5c8c64;
                         &:hover {
-                            fill: #1F3C88 !important;
+                            color: #1F3C88;
+                            background: #5c8c64;
                             cursor: pointer;
                         }
                     }
-                    width: fit-content;
-                    height: fit-content;
+                    p {
+                        margin: 0;
+                    }
+                    &:hover {
+                        color: #070D59;
+                        background: #1bff56;
+                        cursor: pointer;
+                    }
                 }
                 .protocol-link {
                     width: fit-content;
-                    height: fit-content;
-                    padding: 10px;
-                    padding-bottom: 6px;
-                    padding-top: 6px;
+                    height: 32px;
+                    padding: 6px 10px;
+                    box-sizing: border-box;
                     border-radius: 4px;
                     text-decoration: none;
                     color: #1F3C88;
                     background: #FFDE7D;
                     font-weight: bold;
+                    font-size: 14px;
+                    font-family: inherit;
                     margin: 8px;
                     &:hover {
                         color: #070D59;

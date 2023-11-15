@@ -52,7 +52,11 @@ export const ProtocolTaskAttachment = (props: ProtocolTaskAttachmentProps) => {
                         {props.task.collaborators?.map((collaborator: string, index: number) => (
                             <div key={collaborator} className="contact">
                                 <h1>
-                                    {contacts.find((contact) => contact.id == collaborator)?.name}
+                                    {
+                                        contacts.find((contact) => contact.email == collaborator)
+                                        ? contacts.find((contact) => contact.email == collaborator)?.name
+                                        : collaborator
+                                    }
                                 </h1>
                             </div>
                         ))}

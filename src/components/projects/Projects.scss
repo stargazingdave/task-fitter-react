@@ -67,6 +67,14 @@
     border-radius: 8px;
     box-sizing: border-box;
     transition: transform 0.35s;
+    .shared-icon {
+        position: absolute;
+        left: 4px;
+        top: 4px;
+        svg {
+            fill: #1F3C88;
+        }
+    }
     button {
         opacity: 0;
         background: none;
