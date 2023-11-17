@@ -4,7 +4,7 @@ import { SubProjects } from "./SubProjects";
 import { getProjectsPath } from "../../utils";
 import { ProjectSubjects } from "./ProjectSubjects";
 import { AiOutlineClose } from "react-icons/ai";
-import { BiEditAlt, BiUserPlus } from "react-icons/bi";
+import { BiEditAlt, BiSolidHome, BiUserPlus } from "react-icons/bi";
 import { EditProjectForm } from "./EditProjectForm";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectDb } from "../../redux/databaseSlice";
@@ -45,6 +45,12 @@ export const Project = (props: ProjectProps) => {
 
     return <div className="project">
         <div className="navigation-bar">
+            <button 
+                className="exit-button" 
+                title="יציאה מהפרויקט לדף הבית" 
+                onClick={() => dispatch(setProjectStack([] as DocumentData[]))}>
+                    <BiSolidHome size={30} />
+            </button>
             <div className="projects-path">
                 פרויקט נוכחי:
                 {
@@ -65,12 +71,6 @@ export const Project = (props: ProjectProps) => {
                     ))
                 }
             </div>
-            <button 
-                className="exit-button" 
-                title="יציאה מהפרויקט לדף הבית" 
-                onClick={() => dispatch(setProjectStack([] as DocumentData[]))}>
-                    <AiOutlineClose size={30} />
-            </button>
         </div>
         <div className="project-container">
             <div className="project-header">

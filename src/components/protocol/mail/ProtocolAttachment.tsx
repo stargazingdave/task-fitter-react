@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { getDownloadURL, getStorage, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { User } from 'firebase/auth';
 import { ContactList } from '../../contacts/ContactList';
+import emailjs from "@emailjs/browser";
 
 
 type ProtocolAttachmentProps = {
@@ -45,8 +46,7 @@ const sendMail = async (
     const storage = getStorage();
 
     // Create a child reference
-    const imageRef = ref(storage, 'images/' + project.id + '.png');
-    // imagesRef now points to 'images'
+    const imageRef = ref(storage, 'images/' + project.id + '.png'); // imagesRef now points to 'images'
 
     setSending(true);
     const linkToProtocolProject = document.getElementById("protocol-project");
@@ -54,50 +54,78 @@ const sendMail = async (
     const canvas = await html2canvas(linkToProtocolProject, { scale: 1.5 })
     const base64 = canvas.toDataURL("image/jpeg", 1.0);
     let file = await getCanvasBlob(canvas);
-    debugger; 
     // upload file to firebase storage
     await uploadBytes(imageRef, file)
     const imageLink = await getDownloadURL(imageRef);
     
     
-    
-    const collaborators = {}; // key (collaboratorId) => value ({collaborator, tasks})
+    // key (collaboratorEmail) => value ({contact, tasks})
+    const collaborators = {};
+    let collaboratorsLength = 0;
     tasks.forEach((task) => {
-        task.collaborators.forEach((collaboratorId) => {
-            if (!collaborators[collaboratorId]) {
-                const collaborator = contacts.find((contact) => contact.id == collaboratorId);
-                collaborators[collaboratorId] = {collaborator, tasks: []};
+        task.collaborators.forEach((collaboratorEmail) => {
+            if (!collaborators[collaboratorEmail]) {
+                const contact = contacts.find((contact) => contact.email == collaboratorEmail);
+                collaborators[collaboratorEmail] = {contact, tasks: []};
+                collaboratorsLength++;
             }
-            collaborators[collaboratorId].tasks.push(task);
+            collaborators[collaboratorEmail].tasks.push(task);
         })
     });
     
-    Object.values(collaborators).forEach((instance) => {
-        debugger;
-        //@ts-ignore
-        emailjs.send("task-fitter", "template_kqmklat", {
-            //attachment: base64,
-            project_name: project.project_name,
-            reply_to: user.email,
-            from_name: user.displayName,
-            protocol_link: imageLink,
-            //@ts-ignore
-            contact_mail: instance.collaborator.email,
-            //@ts-ignore
-            contact_name: instance.collaborator.name,
-            //@ts-ignore
-            task_list: instance.tasks.map((task) => task.task).join('<br>')
-        }, "vtVkQrnc2d67CfVRb")
-            .then((response) => {
-                alert('הצלחה! הפרוטוקול נשלח בהצלחה לכל המשתתפים' + response.status + response.text);
-                setSending(false);
-            },
-            (error) => {
-                alert('שגיאה!' + error.status + error.text);
-                setSending(false);
-            });
+    // let sentCount = 0;
+    // let responses = [] as string[];
+    // Object.values<DocumentData>(collaborators).forEach(async (collaborator) => {
+    //     debugger;
+    //     await emailjs.send("task-fitter", "template_kqmklat", {
+    //         //attachment: base64,
+    //         project_name: project.project_name,
+    //         reply_to: user.email,
+    //         from_name: user.displayName,
+    //         protocol_link: imageLink,
+    //         contact_mail: collaborator.contact.email,
+    //         contact_name: collaborator.contact.name,
+    //         task_list: collaborator.tasks.map((task) => task.task).join('<br>')
+    //     }, "vtVkQrnc2d67CfVRb")
+    //         .then((response) => {
+    //             sentCount++;
+    //             responses.push(collaborator.contact.email + response.status + response.text);
+    //         },
+    //         (error) => {
+    //             alert('שגיאה!' + error.status + error.text);
+    //         });
+    // })
+    // alert('הצלחה! הפרוטוקול נשלח בהצלחה ל' + sentCount + '/' + collaboratorsLength + 'משתתפים' + responses);
+    // setSending(false);
+    let sentCount = 0;
+    let responses = [] as string[];
+
+    // Use `map` to create an array of promises
+    const emailPromises = Object.values<DocumentData>(collaborators).map(async (collaborator) => {
+        try {
+            const response = await emailjs.send("task-fitter", "template_kqmklat", {
+                project_name: project.project_name,
+                reply_to: user.email,
+                from_name: user.displayName,
+                protocol_link: imageLink,
+                contact_mail: collaborator.contact.email,
+                contact_name: collaborator.contact.name,
+                task_list: collaborator.tasks.map((task) => task.task).join('<br>')
+            }, "vtVkQrnc2d67CfVRb");
             
-    })
+            sentCount++;
+            responses.push('\n' + collaborator.contact.email + '\t' + response.status + '\t' + response.text);
+        } catch (error: any) {
+            alert('שגיאה!' + error.status + error.text);
+        }
+    });
+
+    // Wait for all promises to resolve before showing the alert
+    await Promise.all(emailPromises);
+
+    // Now, you can safely display the alert
+    alert('הצלחה! הפרוטוקול נשלח בהצלחה ל' + sentCount + '/' + collaboratorsLength + 'משתתפים' + responses);
+    setSending(false);
 }
 
 export const ProtocolAttachment = (props: ProtocolAttachmentProps) => {

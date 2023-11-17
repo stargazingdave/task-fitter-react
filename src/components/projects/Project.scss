@@ -62,14 +62,13 @@
             justify-content: center;
             align-items: center;
             svg {
-                fill: #f70000 !important;
-                &:hover {
-                    fill: #792d3a !important;
-                    cursor: pointer;
-                }
+                fill: #1F3C88;
             }
             &:hover {
-                background: #5893D4;
+                svg {
+                    fill: #070D59;
+                }
+                cursor: pointer;
             }
         }
     }
@@ -204,7 +203,7 @@
         }
         .sub-projects-container {
             width: 380px;
-            max-height: calc(100vh - 257px);
+            max-height: calc(100vh - 238px);
             overflow-x: hidden;
             overflow-y: auto;
             h1 {

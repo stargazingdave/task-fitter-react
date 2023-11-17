@@ -25,7 +25,9 @@ const UserPanel = () => {
             <h1>Task Fitter</h1>
             <div className='info'>
                 <div title="Sign Out">
-                    <button onClick={() => dispatch(signOut(auth))} >
+                    <button 
+                        className='logout-button'
+                        onClick={() => dispatch(signOut(auth))} >
                         יציאה מהחשבון
                     </button>
                 </div>
@@ -38,7 +40,7 @@ const UserPanel = () => {
                 title='רשימת אנשי הקשר'
                 onClick={() => dispatch(openContactsToggle())}
                 >
-                    <ImUsers size={24} />
+                    <ImUsers size={18} />
                     אנשי קשר
             </button>
         </div>

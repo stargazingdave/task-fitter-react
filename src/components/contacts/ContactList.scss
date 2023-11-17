@@ -5,10 +5,10 @@
     background: #ffffff;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    align-content: center;
-    align-items: right;
+    align-items: flex-start;
     flex-direction: column;
     width: 235px;
+    min-width: 235px;
     box-sizing: border-box;
     overflow-y: auto;
     height: calc(100vh - 80px);
@@ -20,7 +20,7 @@
     }
     .contact {
         border: none;
-        width: auto;
+        width: 100%;
         height: fit-content;
         position: relative;
         background: #fff;

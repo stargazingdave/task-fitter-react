@@ -1,7 +1,7 @@
 .user-panel {
     display: flex;
     gap: 10px;
-    padding: 10px;
+    // padding: 10px;
     flex-wrap: wrap;
     justify-content: right;
     align-items: center;
@@ -24,7 +24,7 @@
         gap: 10px;
         align-items: center;
     }
-    button {
+    .logout-button {
         background: #CEDDEF;
         border: none;
         color: 1F3C88;
@@ -53,18 +53,19 @@
         color: white;
         position: absolute;
         left: 26px;
+        svg {
+            fill: #ffffff;
+        }
         &.open {
             background: #070D59;
         }
         &:hover {
-            background: none;
+            background: #0a2569;
             color: #CEDDEF;
+            cursor: pointer;
             svg {
                 fill: #CEDDEF;
             }
-        }
-        svg {
-            fill: #ffffff;
         }
     }
 }
