@@ -7,21 +7,23 @@
     align-items: center;
 
     .close-button {
+        position: absolute;
+        top: -10px;
+        right: -15px;
         display: flex;
-        padding: 0;
+        padding: 4px;
         margin: 0;
         justify-content: center;
         align-items: center;
-        width: 60px;
-        height: 30px;
-        padding: 10px 16px;
+        width: fit-content;
+        height: fit-content;
         border: none;
         border-radius: 4px;
-        background: #1F3C88;
-        color: white;
+        background: #CEDDEF;
+        color: #1F3C88;
         font-weight: bold;
         &:hover {
-            background: #122860;
+            background: #5893D4;
             cursor: pointer;
         }
     }

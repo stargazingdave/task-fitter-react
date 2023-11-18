@@ -1,3 +1,4 @@
+import { FaRegWindowClose } from 'react-icons/fa';
 import './DeveloperInfo.scss'
 
 type DeveloperInfoProps = {
@@ -12,7 +13,7 @@ export const DeveloperInfo = (props: DeveloperInfoProps) => {
             title="סגירה"
             onClick={() => props.setOpen(!props.open)}
             >
-            סגירה
+            <FaRegWindowClose size={30}/>
         </button>
         <div className='app-info'>
             <h1>מה זה Task Fitter?</h1>
@@ -25,8 +26,8 @@ export const DeveloperInfo = (props: DeveloperInfoProps) => {
                 </ul>
                 <h2>חשבונות בעלי גישת מנהל יכולים:</h2>
                 <ul className="admin-list">
-                    <li>ליצור פרויקט ולשתף עם חשבונות אחרים.</li>
-                    <li>לשלוח אימיילים אישיים לכל המשתתפים בפרויקט בקליק. כל אמייל מכיל רשימה של המשימות שאיש הקשר משתתף בהם בפרויקט וקישור לפרוטוקול שמפרט את כל המשימות בפרויקט.</li>
+                    <li>ליצור פרויקט ולשתף אותו עם חשבונות אחרים.</li>
+                    <li>לשלוח אימיילים אישיים לכל המשתתפים בפרויקט בקליק. כל אימייל מכיל רשימה של המשימות שאיש הקשר משתתף בהם בפרויקט וקישור לפרוטוקול שמפרט את כל המשימות בפרויקט.</li>
                 </ul>
                 <h2>חשבונות ללא גישת מנהל יכולים:</h2>
                 <ul className="non-admin-list">
