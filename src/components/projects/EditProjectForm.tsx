@@ -2,6 +2,8 @@ import { CollectionReference, DocumentData, doc, updateDoc } from "firebase/fire
 import { useState } from "react";
 import "./EditProjectForm.scss"
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
+import { useAppDispatch, useAppSelector } from "../../reduxHooks";
+import { selectProjectStack, setProjectStack } from "../../redux/projectsSlice";
 
 type EditProjectFormProps = {
     editProject: DocumentData;
@@ -18,6 +20,9 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
 
     const [projectName, setProjectName] = useState(props.editProject.project_name);
     const [managerName, setManagerName] = useState(props.editProject.project_manager);
+
+    const projectStack = useAppSelector(selectProjectStack);
+    const dispatch = useAppDispatch();
     
     return (
         <div className="edit-project-form">
@@ -41,7 +46,7 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
             />
             <div className="buttons">
                 <button 
-                    onClick={() => {
+                    onClick={() => {debugger
                         const date = new Date().getTime();
                         if (projectName == '') {
                             alert('לא ניתן ליצור פרויקט ללא שם');
@@ -52,9 +57,17 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
                             update_time: date,
                             project_manager: managerName,
                             });
-                        props.editProject.project_name = projectName;
-                        props.editProject.update_time = date;
-                        props.editProject.project_manager = managerName;
+                        let tempProject = {...props.editProject};
+                        tempProject.project_name = projectName;
+                        tempProject.update_time = date;
+                        tempProject.project_manager = managerName;
+                        // check if editing from project page
+                        if (projectStack[projectStack.length - 1]?.id === props.editProject.id) {
+                            let tempStack = [...projectStack];
+                            tempStack.pop();
+                            tempStack.push(tempProject);
+                            dispatch(setProjectStack(tempStack));
+                        }
                         props.setEditProject({});
                     }}
                     className="save-button" 
