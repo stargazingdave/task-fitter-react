@@ -6,6 +6,10 @@ import { LiaHandPointer } from 'react-icons/lia';
 import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { signIn, signOut, onSignStateChanged, selectUser, selectSignedIn } from '../../redux/userSlice';
 import { openContactsToggle, selectOpenContacts } from '../../redux/contactsSlice';
+import { BiSolidInfoCircle } from 'react-icons/bi';
+import { useState } from 'react';
+import Popup from 'reactjs-popup';
+import { DeveloperInfo } from './DeveloperInfo';
 
 export const LoadingSpinner = () => {
     return (
@@ -20,10 +24,20 @@ const UserPanel = () => {
     const user = useAppSelector(selectUser);
     const openContacts = useAppSelector(selectOpenContacts);
     const auth = useAuth();
+    const [appInfoOpen, setAppInfoOpen] = useState(false);
     return (
         <div className='user-panel'>
-            <h1>Task Fitter</h1>
-            <div className='info'>
+            <div className='app-logo'>
+                <button 
+                    className='developer-info-button'
+                    title='מידע על האפליקציה'
+                    onClick={() => setAppInfoOpen(!appInfoOpen)}
+                    >
+                    <BiSolidInfoCircle size={24}/>
+                </button>
+                <h1>Task Fitter</h1>
+            </div>
+            <div className='user-info'>
                 <div title="Sign Out">
                     <button 
                         className='logout-button'
@@ -43,6 +57,15 @@ const UserPanel = () => {
                     <ImUsers size={18} />
                     אנשי קשר
             </button>
+            <Popup 
+                open={appInfoOpen}
+                closeOnDocumentClick={false}
+                >
+                <DeveloperInfo 
+                    open={appInfoOpen}
+                    setOpen={setAppInfoOpen}
+                />
+            </Popup>
         </div>
     );
 };

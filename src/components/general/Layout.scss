@@ -8,16 +8,38 @@
     background: #1F3C88;
     height: 60px;
     align-items: right;
-    h1 {
-        margin: 0px;
-        color: #ffffff;
-        font-weight: 400;
-        font-size: 26px;
-        text-align: right;
-        margin-right: 4px;
-        margin-left: 4px;
+    .app-logo {
+        margin: 10px;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        align-items: center;
+        .developer-info-button {
+            margin: 0;
+            padding: 0;
+            border: none;
+            background: none;
+            display: flex;
+            svg {
+                fill: white;
+            }
+            &:hover {
+                cursor: pointer;
+            }
+        }
+        h1 {
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            font-weight: 400;
+            font-size: 26px;
+            text-align: right;
+            margin-right: 4px;
+            margin-left: 4px;
+        }
     }
-    .info {
+    .user-info {
         display: flex;
         flex-direction: row;
         padding: 10px;
@@ -116,4 +138,8 @@
 
 .display-name {
     color: white;
+}
+
+.popup-content {
+    background: #CEDDEF !important;
 }

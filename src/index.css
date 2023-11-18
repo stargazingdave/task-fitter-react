@@ -18,31 +18,6 @@ code {
         monospace;
 }
 
-.protocol-popup-content {
-    margin: auto;
-    background: rgb(255, 255, 255);
-    padding: 5px;
-    width: 80% !important;
-}
-
-.protocol-popup-arrow {
-    color: rgb(255, 255, 255);
-}
-
-[role='tooltip'].popup-content {
-    width: 200px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
-}
-
-.protocol-popup-overlay {
-    background: rgba(255, 255, 255, 0.5);
-    overflow-y: auto;
-}
-
-[data-popup='tooltip'].popup-overlay {
-    background: transparent;
-}
-
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
