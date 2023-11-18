@@ -63,6 +63,22 @@ export const SubProjects = (props: SubProjectsProps) =>  {
 
     return <div className='sub-projects-container'>
         <h1>תת-פרויקטים</h1>
+        <button 
+            className='new-subproject-button'
+            onClick={() => setCreateSubProject(!createSubProject)}
+            >
+            תת פרויקט חדש
+        </button>
+        {createSubProject &&
+                <CreateProjectForm 
+                    projectsCollection={projectsCollection} 
+                    createProjectFlag={createSubProject} 
+                    onProjectCreate={(createProjectFlag) => {
+                        setCreateSubProject(!createProjectFlag)
+                    }}
+                    topProjectId={projectStack[0].id}
+                />
+        }
         <div className="sub-projects">
         {projects.map(project => (<>
             <div className="sub-project-tile" key={project.id}>
@@ -120,29 +136,8 @@ export const SubProjects = (props: SubProjectsProps) =>  {
                     </div>
                 }
             </div>
-            
         </>
         ))}
-        </div>
-        <div className="create-sub-project">
-        {createSubProject &&
-            <div className="create-sub-project-form">
-                <CreateProjectForm 
-                    projectsCollection={projectsCollection} 
-                    createProjectFlag={createSubProject} 
-                    onProjectCreate={(createProjectFlag) => {
-                        setCreateSubProject(!createProjectFlag)
-                    }}
-                    topProjectId={projectStack[0].id}
-                />
-            </div>
-        }
-        
-        {
-            !createSubProject && !editSubProject?.id
-            ? <button onClick={() => setCreateSubProject(!createSubProject)}>תת פרויקט חדש</button>
-            : <></>
-        }
         </div>
     </div>
 }

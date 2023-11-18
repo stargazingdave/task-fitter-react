@@ -11,6 +11,7 @@ import { uploadImage } from "../../utils";
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
 import { selectContacts } from "../../redux/contactsSlice";
+import { RiImageAddLine, RiImageEditLine } from "react-icons/ri";
 
 const animatedComponents = makeAnimated();
 
@@ -84,52 +85,57 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
                     placeholder="משימה ריקה" 
                     autoFocus />
             </div>
-            <div className="set-deadline">
-                <label>
-                    דד-ליין:
-                </label>
-                <DatePicker 
-                    wrapperClassName={"datepicker-wrapper"} 
-                    dateFormat={"dd/MM/yyyy"} 
-                    showIcon 
-                    selected={taskDeadline} 
-                    onChange={(date) => date ? setTaskDeadline(date) : setTaskDeadline(taskDeadline)}
-                />
-            </div>
-            <div className="collaborators-container">
-                <div className="collaborators-selection">
+            <div className="deadline_collaborators_image">
+                <div className="set-deadline">
                     <label>
-                        משתתפים:
+                        דד-ליין:
                     </label>
-                    <Select 
-                        ref={selectContactRef}
-                        options={contactsOptions} 
-                        closeMenuOnSelect={false}
-                        components={animatedComponents}
-                        isMulti
-                        defaultValue={selectedOptions}
+                    <DatePicker 
+                        wrapperClassName={"datepicker-wrapper"} 
+                        dateFormat={"dd/MM/yyyy"} 
+                        showIcon 
+                        selected={taskDeadline} 
+                        onChange={(date) => date ? setTaskDeadline(date) : setTaskDeadline(taskDeadline)}
                     />
                 </div>
-            </div>
-            <div>
-                <label htmlFor="image-upload">
-                    בחירת תמונה:
+                <div className="collaborators-container">
+                    <div className="collaborators-selection">
+                        <label>
+                            משתתפים:
+                        </label>
+                        <Select 
+                            ref={selectContactRef}
+                            options={contactsOptions} 
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti
+                            defaultValue={selectedOptions}
+                        />
+                    </div>
+                </div>
+                <label className="image-upload">
+                    {
+                        image
+                        ? <div className="current-image"><h1>{image.name}</h1><RiImageEditLine size={25}/></div>
+                        : <RiImageAddLine size={25}/>
+                    }
+                    <br></br>
+                    <input 
+                        id="image-upload"
+                        type="file" 
+                        accept="image/jpeg"
+                        onChange={e => {
+                            let files: FileList | null;
+                            e.target.files
+                            ? files = e.target.files
+                            : files = null;
+                            let tempImage = {} as File;
+                            files && (tempImage = files[0]);
+                            tempImage && setImage(tempImage);
+                        }} 
+                        hidden
+                    />
                 </label>
-                <br></br>
-                <input 
-                    className="image-upload"
-                    id="image-upload"
-                    type="file" 
-                    accept="image/jpeg"
-                    onChange={e => {
-                        let files: FileList | null;
-                        e.target.files
-                        ? files = e.target.files
-                        : files = null;
-                        let tempImage = {} as File;
-                        files && (tempImage = files[0]);
-                        tempImage && setImage(tempImage);
-                    }} />
             </div>
             <div className="confirmation-buttons">
                 <button onClick={() => {

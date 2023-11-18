@@ -1,4 +1,5 @@
 .create-project-form {
+    width: 90%;
     max-width: 300px;
     display: flex;
     flex-direction: column;
@@ -17,5 +18,16 @@
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+        button {
+            color: white;
+            width: fit-content;
+            padding: 8px 16px;
+            border-radius: 4px;
+            background: #5893D4;
+            &:hover {
+                cursor: pointer;
+                background: #1F3C88;
+            }
+        }
     }
 }

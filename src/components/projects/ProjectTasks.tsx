@@ -19,6 +19,8 @@ import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
 import { selectContacts } from "../../redux/contactsSlice";
 import { selectProjectStack } from "../../redux/projectsSlice";
+import { FcImageFile } from "react-icons/fc";
+import { ProjectTask } from "./ProjectTask";
 
 type ProjectTasksProps = {
     tasksCollection: CollectionReference;
@@ -27,11 +29,9 @@ type ProjectTasksProps = {
 
 
 export const ProjectTasks = (props: ProjectTasksProps) => {
-    const user = useAppSelector(selectUser);
     const storage = getStorage();
     const contacts = useAppSelector(selectContacts);
     const projectStack = useAppSelector(selectProjectStack);
-    const dispatch = useAppDispatch();
 
     const [newTask, setNewTask] = useState(false);
     const [editTask, setEditTask] = useState({} as DocumentData);
@@ -40,10 +40,7 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
     const tasksQuery = query(props.tasksCollection,
         where("top_project_id", "==", projectStack[0].id));
     
-
-
     const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
-    
 
     if (status === 'loading') {
         return <p>טוען משימות...</p>;
@@ -60,65 +57,78 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                 }
                 return 0;
             }).map(task => (
-                <div className="task" key={task.id}>
-                    {
-                        editTask?.id == task.id
-                        ? <EditTaskForm 
-                            tasksCollection={props.tasksCollection} 
-                            setEditTask={setEditTask} 
-                            task={editTask} 
-                        />
-                        : <div className="task-details">
-                            <div className="task-visible">
-                                <h1>{task.task}</h1>
-                            </div>
-                            <div className="task-invisible">
+                // <div className="task" key={task.id}>
+                //     {
+                //         editTask?.id == task.id
+                //         ? <EditTaskForm 
+                //             tasksCollection={props.tasksCollection} 
+                //             setEditTask={setEditTask} 
+                //             task={editTask} 
+                //         />
+                //         : <div className="task-details">
+                //             <div className="task-visible">
+                //                 <h1>{task.task}</h1>
+                //             </div>
+                //             <div className="task-invisible">
                                 
-                                <h2 className="task-deadline">{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
-                                <div className="collaborators">
-                                    {
-                                        task.collaborators?.map((collaborator: string) => (
-                                            <div key={collaborator} className="collaborator">
-                                                <p>
-                                                    {
-                                                        contacts.find((contact) => contact.email == collaborator)
-                                                        ? contacts.find((contact) => contact.email == collaborator)?.name
-                                                        : collaborator
-                                                    }
-                                                </p><p className="comma">, </p>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                                    <div className="task-buttons">
-                                        <button title='עריכת המשימה' className='edit-button' 
-                                                        onClick={() => setEditTask(task)}>
-                                            <BiEditAlt size={25}/>
-                                        </button>
-                                        <button 
-                                            title='מחיקת המשימה'
-                                            className='delete-button' 
-                                            onClick={() => {
-                                                setTaskDeletePopup(task);
-                                            }}>
-                                            <MdDeleteForever size={25}/>
-                                        </button>
+                //                 <h2 className="task-deadline">{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
+                //                 <div className="collaborators">
+                //                     {
+                //                         task.collaborators?.map((collaborator: string) => (
+                //                             <div key={collaborator} className="collaborator">
+                //                                 <p>
+                //                                     {
+                //                                         contacts.find((contact) => contact.email == collaborator)
+                //                                         ? contacts.find((contact) => contact.email == collaborator)?.name
+                //                                         : collaborator
+                //                                     }
+                //                                 </p><p className="comma">, </p>
+                //                             </div>
+                //                         ))
+                //                     }
+                //                 </div>
+                //                     <div className="task-buttons">
+                //                         {
+                //                             task.image &&
+                //                             <button
+                //                                 className="view-image-button"
+                //                                 title="הצגת התמונה"
+                //                                 >
+                //                                 <FcImageFile size={25}/>
+                //                             </button>
+                //                         }
+                //                         <button title='עריכת המשימה' className='edit-button' 
+                //                                         onClick={() => setEditTask(task)}>
+                //                             <BiEditAlt size={25}/>
+                //                         </button>
+                //                         <button 
+                //                             title='מחיקת המשימה'
+                //                             className='delete-button' 
+                //                             onClick={() => {
+                //                                 setTaskDeletePopup(task);
+                //                             }}>
+                //                             <MdDeleteForever size={25}/>
+                //                         </button>
                                         
-                                    </div>
-                            </div>
-                            <div className="task-status">
-                                <Checkbox task={task} updateFunc={(task) => updateDoc(doc(props.tasksCollection,
-                                                                                            task.id), 
-                                                                                            {status: !task.status})}/>
-                                {task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}
-                            </div>
-                        </div>
-                        }
-                        {
-                            task.image &&
-                            <ImageContainer imageURL={task.image} />
-                        }
-                    </div>
+                //                     </div>
+                //             </div>
+                //             <div className="task-status">
+                //                 <Checkbox task={task} updateFunc={(task) => updateDoc(doc(props.tasksCollection,
+                //                                                                             task.id), 
+                //                                                                             {status: !task.status})}/>
+                //                 {task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}
+                //             </div>
+                //         </div>
+                //         }
+                //         {
+                //             task.image &&
+                //             <ImageContainer imageURL={task.image} />
+                //         }
+                //     </div>
+                <ProjectTask 
+                    task={task}
+                    taskCollection={props.tasksCollection}
+                />
                 ))
             }
             {
@@ -141,28 +151,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                     </div>
                     משימה חדשה
                 </button>
-            }
-            {
-                taskDeletePopup?.id &&
-                <Popup 
-                    contentStyle={{width: "300px"}}
-                    open={taskDeletePopup?.id}
-                    modal={true}>
-                    <ConfirmationBox 
-                        onConfirm={() => {
-                            // Create a reference to the file to delete
-                            const imageRef = ref(storage, 'images/' + taskDeletePopup.id);
-                            // Delete the file
-                            deleteObject(imageRef).then(() => {
-                                // File deleted successfully
-                            }).catch((error) => {
-                                // Uh-oh, an error occurred!
-                            });
-                            deleteDoc(doc(props.tasksCollection, taskDeletePopup.id));
-                            setTaskDeletePopup({});
-                        }}
-                        onCancel={() => setTaskDeletePopup({})} />
-                </Popup>
             }
         </div>
     </div>
