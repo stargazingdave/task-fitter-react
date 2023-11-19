@@ -1,17 +1,28 @@
 .form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    // justify-content: center;
     width: 100%;
-    overflow: visible;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    .form-tasks {
+    overflow-y: visible;
+    // padding-top: 10px;
+    margin-top: 10px;
+    border-right: 12px solid #0052b6;
+    box-sizing: border-box;
+    // margin: 0 5px 0 0;
+    // padding: 0 5px 0 0;
+    background: #0073ff30;
+    .project-header {
         display: flex;
-        flex-direction: column;
-        overflow: visible;
+        flex-direction: row;
         align-items: center;
-        position: relative;
+        justify-content: flex-start;
+        .project-name {
+            margin: 0;
+            padding: 0;
+            font-size: 32px;
+            font-family: inherit;
+            text-align: right;
+        }
         .add-button {
             display: flex;
             align-items: center;
@@ -20,17 +31,8 @@
             padding: 0;
             margin: 0;
             background: none;
-            // background: #0072ff;
-            // border: 1px dashed #1F3C88;
             border: none;
             color: #0072ff;
-            // font-size: 24px;
-            font-size: 16px;
-            font-family: inherit;
-            border-radius: 16px;
-            position: absolute;
-            top: -34px;
-            right: calc(50% - 600px);
             z-index: 99;
             svg {
                 fill: #0072ff;
@@ -43,6 +45,44 @@
                 }
             }
         }
+    }
+    .headers-container {
+        position: relative;
+        box-sizing: border-box;
+        height: 20px;
+        .headers {
+            box-sizing: border-box;
+            display: grid;
+            grid-template-columns: 220px 250px 180px 100px;
+            width: fit-content;
+            align-items: baseline;
+            position: absolute;
+            right: calc(50% - 374px);
+            height: auto;
+            z-index: 100;
+            font-family: inherit;
+            font-size: 20px;
+            font-weight: bold;
+            color: #070D59;
+            &.attachment {
+                right: calc(50% - 440px);
+            }
+            .collaborators-header {
+                margin-right: 40px;
+            }
+            .deadline-header {
+                margin-right: 50px;
+            }
+        }
+    }
+    .form-tasks {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        overflow-y: visible;
+        align-items: center;
+        position: relative;
+        width: inherit;
         .project-buttons {
             position: absolute;
             padding: 10px 4px;
@@ -176,32 +216,26 @@
         }
     }
     .form-sub-project {
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        margin: 0;
-        margin-top: 50px;
+        // justify-content: center;
+        margin: 10px 0;
+        // margin-top: 50px;
         padding: 0;
         gap: 4px;
+        width: inherit;
         .sub-project {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
+            box-sizing: border-box;
+            width: inherit;
             &:hover {
                 .sub-project-buttons {
                     opacity: 1;
                     transition: 0.3s;
                 }
-            }
-            .project-name {
-                position: absolute;
-                right: calc(50% - 570px);
-                margin: 0;
-                margin-top: -30px;
-                padding-right: 20px;
-                font-size: 30px;
-                font-family: inherit;
-                text-align: right;
             }
         }
     }
@@ -211,10 +245,12 @@
 .p-subject {
     display: flex;
     flex-direction: row;
-    overflow: visible;
-    justify-items: stretch;
+    // overflow: visible;
+    // justify-items: stretch;
     height: fit-content;
+    width: fit-content;
     margin: 10px;
+    box-sizing: border-box;
     .subject-title {
         display: flex;
         flex-direction: column;
@@ -229,6 +265,7 @@
         border-left: none;
         position: relative;
         width: 180px;
+        box-sizing: border-box;
         &.attachment {
             background: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);

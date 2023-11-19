@@ -57,7 +57,7 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
                             update_time: date,
                             project_manager: managerName,
                             });
-                        let tempProject = {...props.editProject};
+                        let tempProject = { ...props.editProject } as DocumentData;
                         tempProject.project_name = projectName;
                         tempProject.update_time = date;
                         tempProject.project_manager = managerName;

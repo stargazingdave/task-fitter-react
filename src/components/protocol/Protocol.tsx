@@ -46,18 +46,11 @@ export const Protocol = (props: ProtocolProps) => {
 
     return <div className='protocol-page'>
         <div className='protocol-container'>
-            <div className="headers-container">
-                <div className="headers">
-                    <div className='tasks-header'>משימה: </div>
-                    <div className='collaborators-header'>משתתפים: </div>
-                    <div className='deadline-header'>דד-ליין: </div>
-                </div>
-            </div>
-            <h1>פרוטוקול פרויקט: {project.project_name}</h1>
             <ProtocolProject 
                 project={project}
                 path={'projects/' + project.id}
-                addSaveAction={addSaveAction} />
+                addSaveAction={addSaveAction} 
+            />
             <div className="buttons">
                 <button 
                     title='שמירת כל השינויים בפרויקט'

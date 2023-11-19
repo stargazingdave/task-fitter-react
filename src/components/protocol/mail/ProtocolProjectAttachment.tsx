@@ -40,7 +40,15 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
     }
 
     return (<div className="form">
-        
+        <h1>{props.project.project_name}</h1>
+        <div className="headers-container">
+            <div className="headers attachment">
+                <div className="full-height"></div>
+                <div >משימה: </div>
+                <div >משתתפים: </div>
+                <div >דד-ליין: </div>
+            </div>
+        </div>
         <div className="form-tasks">
         
             {
@@ -63,7 +71,6 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
             {
                 projects.map(project => ( 
                     <div className="sub-project" key={project.id}>
-                        <h1>{project.project_name}</h1>
                         <ProtocolProjectAttachment    
                             project={project}
                             path={props.path + '/projects/' + project.id}

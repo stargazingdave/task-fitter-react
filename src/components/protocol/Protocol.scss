@@ -1,49 +1,30 @@
 .protocol-page {
     display: flex;
     flex-direction: row;
-    overflow-y: auto;
+    box-sizing: border-box;
+    align-items: center;
+    // justify-content: center;
 }
 
 .protocol-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    min-width: fit-content;
     overflow-y: auto;
+    overflow-x: auto;
     max-height: calc(100vh - 60px);
     position: relative;
-    .headers-container {
-        position: relative;
-        .headers {
-            display: grid;
-            grid-template-columns: 220px 250px 180px 100px;
-            width: fit-content;
-            align-items: baseline;
-            position: absolute;
-            height: auto;
-            right: calc(50% - 374px);
-            top: 80px;
-            z-index: 100;
-            font-family: inherit;
-            font-size: 20px;
-            font-weight: bold;
-            color: #070D59;
-            &.attachment {
-                right: calc(50% - 440px);
-            }
-            .collaborators-header {
-                margin-right: 40px;
-            }
-            .deadline-header {
-                margin-right: 50px;
-            }
-        }
-    }
+    box-sizing: border-box;
+    
     h1 {
         color: #1F3C88;
         padding-right: 20px;
     }
+
     .buttons {
         display: flex;
-        justify-content: center;
+        // justify-content: center;
         .preview-link {
             display: flex;
             flex-direction: row;

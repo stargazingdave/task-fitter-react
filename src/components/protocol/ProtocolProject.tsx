@@ -27,6 +27,10 @@ type ProtocolProjectProps = {
 }
 
 export const ProtocolProject = (props: ProtocolProjectProps) => {
+    let parentPathArray = props.path.split('/');
+    parentPathArray.pop();
+    let parentPath = parentPathArray.join('/');
+    
     const [isAscending, setIsAscending] = useState(false);
     const db = useAppSelector(selectDb);
     const user = useAppSelector(selectUser);
@@ -61,14 +65,35 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
     }
 
     return (<div className="form" id="protocol-project">
-
+        <div>
+            {
+                editProject?.id === props.project.id
+                ? <EditProjectForm 
+                    editProject={editProject} 
+                    projectsCollection={collection(db, parentPath)}
+                    setEditProject={(editProject) => setEditProject(editProject)}
+                    />
+                : <div className="project-header">
+                    <button
+                        className="add-button"
+                        onClick={() => setProjectButtonsOpen(!projectButtonsOpen)}
+                        >
+                        <IoIosArrowDropdownCircle size={40}/>
+                    </button>
+                    <h1 className="project-name">{props.project.project_name}</h1>
+                </div>
+            }
+            
+        </div>
+        <div className="headers-container">
+            <div className="headers">
+                <div className='tasks-header'>משימה: </div>
+                <div className='collaborators-header'>משתתפים: </div>
+                <div className='deadline-header'>דד-ליין: </div>
+            </div>
+        </div>
         <div className="form-tasks">
-            <button
-                    className="add-button"
-                    onClick={() => setProjectButtonsOpen(!projectButtonsOpen)}
-                    >
-                    <IoIosArrowDropdownCircle size={40}/>
-                </button>
+            
             {
                 projectButtonsOpen
                 ? <div className="project-buttons">
@@ -93,14 +118,20 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
                     <button 
                         title='עריכת שם ומנהל הפרויקט'
                         className="edit-subproject-button" 
-                        onClick={() => setEditProject(props.project)}>
+                        onClick={() => {
+                            setEditProject(props.project);
+                            setProjectButtonsOpen(!projectButtonsOpen);
+                            }}>
                         <BiEditAlt size={20} />
                         <p style={{margin: "0",}}>עריכת שם ומנהל הפרויקט</p>
                     </button>
                     <button 
                         title='מחיקת הפרויקט' 
                         className="delete-subproject-button" 
-                        onClick={() => setSelectedProject(props.project)} >
+                        onClick={() => {
+                            setSelectedProject(props.project);
+                            setProjectButtonsOpen(!projectButtonsOpen);
+                            }} >
                         <MdDeleteForever size={20} />
                         <p style={{margin: "0",}}>מחיקת הפרויקט</p>
                     </button>
@@ -176,19 +207,11 @@ export const ProtocolProject = (props: ProtocolProjectProps) => {
             {
                 projects.map(project => ( 
                     <div className="sub-project" key={project.id}>
-                        <h1 className="project-name">{project.project_name}</h1>
-                        {
-                            editProject?.id &&
-                            <EditProjectForm 
-                                editProject={editProject} 
-                                projectsCollection={subProjectsCollection}
-                                setEditProject={(editProject) => setEditProject(editProject)}
-                                />
-                        }
                         <ProtocolProject    
                             project={project}
                             path={props.path + '/projects/' + project.id}
-                            addSaveAction={props.addSaveAction} />
+                            addSaveAction={props.addSaveAction} 
+                        />
                     </div>
                 ))
             }
