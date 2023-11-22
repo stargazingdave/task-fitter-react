@@ -2,7 +2,7 @@ import { DocumentData, DocumentReference, updateDoc } from "firebase/firestore";
 import "./ProjectPermissionsManager.scss";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectContacts } from "../../redux/contactsSlice";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Select from "react-select";
 import makeAnimated from 'react-select/animated';
 import { selectProjectStack, setProjectStack } from "../../redux/projectsSlice";
@@ -20,12 +20,17 @@ const updateProject = (
         props: ProjectPermissionsManagerProps, 
         newPermissions: string[],
         dispatch: any,
-        projectStack: DocumentData[]
-    ) => {debugger
+        projectStack: DocumentData[],
+        setSaving: (boolean) => void
+    ) => {
     let tempProjectStack = [...projectStack];
     tempProjectStack[0] = {...tempProjectStack[0], shared_emails: newPermissions};
     dispatch(setProjectStack(tempProjectStack));
-    updateDoc(props.projectReference, {shared_emails: newPermissions});
+    updateDoc(props.projectReference, {shared_emails: newPermissions})
+        .then(() => {
+            setSaving(false);
+            alert('הרשאות הגישה לפרויקט עודכנו בהצלחה')
+        });
 }
 
 export const ProjectPermissionsManager = (props: ProjectPermissionsManagerProps) => {
@@ -33,11 +38,13 @@ export const ProjectPermissionsManager = (props: ProjectPermissionsManagerProps)
     const contacts = useAppSelector(selectContacts);
     const projectStack = useAppSelector(selectProjectStack);
     let contactsOptions = contacts.map((contact) => ({value: contact.email, label: contact.name}));
-    debugger
+    
     const selectedOptions = contacts
         .filter((contact) => props.project.shared_emails?.includes(contact.email))
         .map((contact) => ({value: contact.email, label: contact.name}));
     const selectContactRef = useRef<any>(null);
+
+    const [saving, setSaving] = useState(false);
 
     return (
         <div className="permissions-manager">
@@ -56,7 +63,8 @@ export const ProjectPermissionsManager = (props: ProjectPermissionsManagerProps)
                     onClick={() => {
                     const comp = selectContactRef.current;
                     const newPermissions = comp.getValue().map((value) => value.value);
-                    updateProject(props, newPermissions, dispatch, projectStack);
+                    updateProject(props, newPermissions, dispatch, projectStack, setSaving);
+                    props.setOpen(false);
                 }}>
                     שמירת שינויים
                 </button>

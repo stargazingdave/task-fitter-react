@@ -19,10 +19,10 @@ export const ContactTasks = (props: ContactTasksProps) => {
     const db = getFirestore();
     // const tasksCollection = collectionGroup(db, 'tasks');
     const tasksCollection = collectionGroup(db, 'tasks');
-    
+    debugger
     const tasksQuery = query(tasksCollection, 
         where("user_id", '==', user.uid),
-        where("collaborators", 'array-contains', props.contact.id),
+        where("collaborators", 'array-contains', props.contact.email),
         orderBy('deadline', isAscending ? 'asc' : 'desc'));
 
 
@@ -45,7 +45,7 @@ export const ContactTasks = (props: ContactTasksProps) => {
                 <div className="contact-task" key={task.id}>
                     
                     <h1>{task.task}</h1>
-                    <h2>{task.deadline}</h2>
+                    <h2>{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
                     <p>{task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}</p>                    
                 </div>
             ))}

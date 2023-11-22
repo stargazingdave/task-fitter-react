@@ -96,14 +96,17 @@ export const CreateTaskForm = (props: CreateTaskFormProps) => {
                         showIcon 
                         selected={taskDeadline} 
                         onChange={(date) => date ? setTaskDeadline(date) : setTaskDeadline(taskDeadline)}
+                        portalId="popper-calendar"
                     />
                 </div>
                 <div className="collaborators-container">
                     <div className="collaborators-selection">
                         <label>
-                            משתתפים:
+                            אחראיים:
                         </label>
                         <Select 
+                            menuPortalTarget={document.body} 
+                            styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                             ref={selectContactRef}
                             options={contactsOptions} 
                             closeMenuOnSelect={false}

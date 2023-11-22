@@ -36,6 +36,7 @@
             display: flex;
             flex-direction: row;
             gap: 6px;
+            z-index: 100;
             h1 {
                 font-family: inherit;
                 font-size: 14px;
@@ -119,4 +120,14 @@
             }
         }
     }
+}
+
+.react-datepicker {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.189);
+    border: none !important;
+    font-family: "Inter" !important;
+}
+
+.popper-calendar {
+    z-index: 9999;
 }

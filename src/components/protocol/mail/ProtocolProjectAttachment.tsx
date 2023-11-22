@@ -45,7 +45,7 @@ export const ProtocolProjectAttachment = (props: ProtocolProjectAttachmentProps)
             <div className="headers attachment">
                 <div className="full-height"></div>
                 <div >משימה: </div>
-                <div >משתתפים: </div>
+                <div >אחראיים: </div>
                 <div >דד-ליין: </div>
             </div>
         </div>

@@ -98,13 +98,16 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                                 ? setTaskDeadline(date) 
                                 : setTaskDeadline(new Date(props.task.deadline))
                             }
+                            portalId="popper-calendar"
                         />
                     </div>
                     <div className="collaborators-selection">
                         <label>
-                            משתתפים:
+                            אחראיים:
                         </label>
                         <Select 
+                            menuPortalTarget={document.body} 
+                            styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                             ref={selectContactRef}
                             options={contactsOptions} 
                             closeMenuOnSelect={false}
@@ -132,7 +135,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                                     updateDoc(doc(props.tasksCollection, props.task.id), {
                                         image: deleteField()
                                 })}} >
-                                    <FcRemoveImage size={25}/>
+                                    <FcRemoveImage size={40}/>
                             </button>
                         }
                         <label className="image-upload">
@@ -142,13 +145,13 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
                                     className="current-image"
                                     title='החלפת התמונה הקיימת'
                                     >
-                                    <h1>{image?.name}</h1><FcEditImage size={25}/>
+                                    <h1>{image?.name}</h1><FcEditImage size={40}/>
                                 </div>
                                 : <div 
                                     className="new-image"
                                     title='הוספת תמונה למשימה'
                                     >
-                                    <FcAddImage size={25}/>
+                                    <FcAddImage size={50}/>
                                 </div>
                             }
                             <br></br>
