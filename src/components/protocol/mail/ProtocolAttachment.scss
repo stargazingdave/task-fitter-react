@@ -1,0 +1,148 @@
+.protocol-attachment-page {
+    box-sizing: border-box;
+    max-width: 100%;
+    // justify-content: center;
+    .pdf-header {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        height: fit-content;
+        h1 {
+            color: #1F3C88;
+            padding: 10px 20px;
+            margin: 0;
+            font-size: 20px;
+            height: fit-content;
+        }
+        .send-button {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            gap: 16px;
+            width: fit-content;
+            height: fit-content;
+            padding: 10px;
+            padding-bottom: 6px;
+            padding-top: 6px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #1F3C88;
+            background: #FFDE7D;
+            font-weight: bold;
+            font-size: 20px;
+            font-family: inherit;
+            margin: 8px;
+            border: none;
+            &:disabled {
+                background: #a5976b;
+                &:hover {
+                    color: #1F3C88;
+                    background: #a5976b;
+                    cursor: pointer;
+                }
+            }
+            &.sending {
+                background: #a4a4a4;
+                &:hover {
+                    background: #a4a4a4;
+                }
+            }
+            &:hover {
+                color: #070D59;
+                background: #fdcf45;
+                cursor: pointer;
+            }
+            .loader {
+                border: 6px solid #f3f3f3;
+                border-top: 6px solid #fdcf45;
+                border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                animation: spin 2s linear infinite;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        }
+    }
+    .email {
+        display: flex;
+        flex-direction: row;
+        height: fit-content;
+        width: 100%;
+        justify-content: space-around;
+        .protocol-container-attachment {
+            align-items: center;
+            max-height: calc(100vh - 60px);
+            position: relative;
+            box-sizing: border-box;
+            
+            h1 {
+                color: #1F3C88;
+                padding-right: 20px;
+            }
+        }        
+        .email-parameters {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 16px;
+            .send-button {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-end;
+                gap: 16px;
+                width: fit-content;
+                height: fit-content;
+                padding: 10px;
+                padding-bottom: 6px;
+                padding-top: 6px;
+                border-radius: 4px;
+                text-decoration: none;
+                color: #1F3C88;
+                background: #FFDE7D;
+                font-weight: bold;
+                font-size: 28px;
+                font-family: inherit;
+                margin: 8px;
+                border: none;
+                &:disabled {
+                    background: #a5976b;
+                    &:hover {
+                        color: #1F3C88;
+                        background: #a5976b;
+                        cursor: pointer;
+                    }
+                }
+                &.sending {
+                    background: #a4a4a4;
+                    &:hover {
+                        background: #a4a4a4;
+                    }
+                }
+                &:hover {
+                    color: #070D59;
+                    background: #fdcf45;
+                    cursor: pointer;
+                }
+                .loader {
+                    border: 6px solid #f3f3f3;
+                    border-top: 6px solid #fdcf45;
+                    border-radius: 50%;
+                    width: 28px;
+                    height: 28px;
+                    animation: spin 2s linear infinite;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            }
+        }
+    }
+}
+

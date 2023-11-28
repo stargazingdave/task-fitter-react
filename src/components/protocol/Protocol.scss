@@ -1,54 +1,14 @@
 .protocol-page {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     box-sizing: border-box;
     align-items: center;
     // justify-content: center;
-}
-
-.protocol-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: auto;
-    max-height: calc(100vh - 60px);
-    position: relative;
-    box-sizing: border-box;
-    
-    h1 {
-        color: #1F3C88;
-        padding-right: 20px;
-    }
-
-    .buttons {
+    .pdf-header {
         display: flex;
-        // justify-content: center;
-        .preview-link {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 16px;
-            width: fit-content;
-            height: fit-content;
-            padding: 10px;
-            padding-bottom: 6px;
-            padding-top: 6px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #1F3C88;
-            background: #FFDE7D;
-            font-weight: bold;
-            font-size: 18px;
-            font-family: inherit;
-            margin: 8px;
-            &:hover {
-                color: #070D59;
-                background: #fdcf45;
-                cursor: pointer;
-            }
-        }
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
         .send-button {
             display: flex;
             flex-direction: row;
@@ -94,12 +54,64 @@
                 width: 28px;
                 height: 28px;
                 animation: spin 2s linear infinite;
-              }
-              
-              @keyframes spin {
+            }
+            
+            @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
-              }
+            }
+        }
+        h1 {
+            color: #1F3C88;
+            padding: 10px 20px;
+            margin: 0;
+            
+        }
+    }
+}
+
+.protocol-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: calc(100vh - 60px);
+    position: relative;
+    box-sizing: border-box;
+    
+    h1 {
+        color: #1F3C88;
+        padding-right: 20px;
+    }
+
+    .buttons {
+        display: flex;
+        // justify-content: center;
+        .preview-link {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 16px;
+            width: fit-content;
+            height: fit-content;
+            padding: 10px;
+            padding-bottom: 6px;
+            padding-top: 6px;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #1F3C88;
+            background: #FFDE7D;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: inherit;
+            margin: 8px;
+            &:hover {
+                color: #070D59;
+                background: #fdcf45;
+                cursor: pointer;
+            }
         }
         .save-button {
             display: flex;
