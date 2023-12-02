@@ -5,7 +5,7 @@ import { useState } from "react";
 import './CreateTaskForm.scss'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import Select, { GroupBase } from 'react-select'
+import Select, { GroupBase } from 'react-select';
 import makeAnimated from 'react-select/animated';
 import { uploadImage } from "../../utils";
 import { useAppSelector } from "../../reduxHooks";

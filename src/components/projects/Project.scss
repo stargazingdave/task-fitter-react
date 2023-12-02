@@ -132,6 +132,40 @@
             .buttons {
                 display: flex;
                 align-items: center;
+                .project-participants-button {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 4px;
+                    width: fit-content;
+                    height: 32px;
+                    padding: 6px 10px;
+                    border-radius: 4px;
+                    text-decoration: none;
+                    color: #1F3C88;
+                    background: violet;
+                    font-weight: bold;
+                    font-size: 14px;
+                    font-family: inherit;
+                    margin: 8px;
+                    &:disabled {
+                        background: plum;
+                        &:hover {
+                            color: #1F3C88;
+                            background: plum;
+                            cursor: pointer;
+                        }
+                    }
+                    p {
+                        margin: 0;
+                    }
+                    &:hover {
+                        color: #070D59;
+                        background: palevioletred;
+                        cursor: pointer;
+                    }
+                }
                 .shared-emails-button {
                     display: flex;
                     flex-direction: row;
@@ -213,6 +247,92 @@
             .sub-projects {
                 display: flex;
                 flex-direction: column;
+            }
+        }
+    }
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    .popup-close-button {
+        position: absolute;
+        top: -10px;
+        right: -15px;
+        display: flex;
+        padding: 4px;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        height: fit-content;
+        border: none;
+        border-radius: 4px;
+        background: #CEDDEF;
+        color: #1F3C88;
+        font-weight: bold;
+        &:hover {
+            background: #5893D4;
+            cursor: pointer;
+        }
+    }
+    .popup-container {
+        display: flex;
+        flex-direction: column;
+        h1 {
+            color: #1F3C88;
+            font-family: inherit;
+            font-size: 20px;
+            margin: 30px;
+        }
+        h2 {
+            color: #1F3C88;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: normal;
+            text-align: center;
+        }
+        .unknown-contacts-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .unknown-contacts {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 30px;
+                width: fit-content;
+                .unknown-contact {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 10px;
+                    button {
+                        display: flex;
+                        padding: 4px;
+                        margin: 0;
+                        justify-content: center;
+                        align-items: center;
+                        width: fit-content;
+                        height: fit-content;
+                        border: none;
+                        border-radius: 4px;
+                        background: #ffffff;
+                        color: #1F3C88;
+                        font-weight: bold;
+                        box-shadow: 1.5px 1.5px 2px 0.5px #070D59, -0.5px -0.5px #070D59;
+                        &:hover {
+                            background: #CEDDEF;
+                            cursor: pointer;
+                        }
+                    }
+                    p {
+                        margin: 0;
+                        padding: 0;
+                        font-family: inherit;
+                        font-size: 18px;
+                        color: #070D59;
+                    }
+                }
             }
         }
     }

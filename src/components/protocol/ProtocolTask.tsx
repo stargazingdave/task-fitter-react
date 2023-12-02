@@ -1,6 +1,6 @@
 import { CollectionReference, DocumentData, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import './ProtocolTask.scss'
+import './ProtocolTask.scss';
 import { Checkbox } from "../general/Checkbox";
 import DatePicker from "react-datepicker";
 import Select, { GroupBase } from 'react-select';

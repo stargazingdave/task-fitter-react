@@ -1,4 +1,4 @@
-import { CollectionReference, DocumentData, deleteDoc, doc, or, query, updateDoc, where } from "firebase/firestore";
+import { CollectionReference, DocumentData, collection, deleteDoc, doc, or, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 
@@ -15,6 +15,9 @@ import { useAppSelector } from "../../reduxHooks";
 import { selectContacts } from "../../redux/contactsSlice";
 import { FcImageFile } from "react-icons/fc";
 import { EditTaskForm } from "./EditTaskForm";
+import { CreateContactForm } from "../contacts/CreateContactForm";
+import { selectDb } from "../../redux/databaseSlice";
+import { GoPersonAdd } from "react-icons/go";
 
 type ProjectTaskProps = {
     task: DocumentData;
@@ -26,10 +29,12 @@ type ProjectTaskProps = {
 export const ProjectTask = (props: ProjectTaskProps) => {
     const storage = getStorage();
     const contacts = useAppSelector(selectContacts);
+    const db = useAppSelector(selectDb);
 
     const [imageOpen, setImageOpen] = useState(false);
     const [editTask, setEditTask] = useState(false);
     const [taskDeletePopup, setTaskDeletePopup] = useState({} as DocumentData);
+    const [createContact, setCreateContact] = useState('');
 
     
 
@@ -55,11 +60,22 @@ export const ProjectTask = (props: ProjectTaskProps) => {
                                 <div key={collaborator} className="collaborator">
                                     <p>
                                         {
-                                            contacts.find((contact) => contact.email == collaborator)
-                                            ? contacts.find((contact) => contact.email == collaborator)?.name
-                                            : collaborator
+                                            contacts.find((contact) => contact.email === collaborator)
+                                            ? contacts.find((contact) => contact.email === collaborator)?.name
+                                            : <div className="unknown-contact">
+                                                <button
+                                                    onClick={() => {
+                                                        setCreateContact(collaborator);
+                                                    }}
+                                                    title="הוספה לאנשי הקשר"
+                                                    >
+                                                    <GoPersonAdd size={20}/>
+                                                </button>
+                                                <p>{collaborator}</p>
+                                            </div>
                                         }
-                                    </p><p className="comma">, </p>
+                                    </p>
+                                    <p className="comma">, </p>
                                 </div>
                             ))
                         }
@@ -124,5 +140,14 @@ export const ProjectTask = (props: ProjectTaskProps) => {
                         onCancel={() => setTaskDeletePopup({})} />
                 </Popup>
             }
+            <Popup
+                open={createContact !== ''}>
+                <CreateContactForm 
+                    contactsCollection={collection(db, 'contacts')}
+                    createContactFlag={createContact !== ''}
+                    email={createContact}
+                    onContactCreate={(createContact) => {setCreateContact('')}}
+                />
+            </Popup>
     </div>
 }

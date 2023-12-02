@@ -11,7 +11,7 @@ import { ProjectTasks } from './ProjectTasks';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Popup from 'reactjs-popup';
 import { ConfirmationBox } from '../general/ConfirmationBox';
-import { BiEditAlt } from 'react-icons/bi';
+import { BiEditAlt, BiListPlus } from 'react-icons/bi';
 import { MdDeleteForever } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../reduxHooks';
 import { selectUser } from '../../redux/userSlice';
@@ -53,6 +53,49 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
     return <div className='tasks-area'>
         <div className='tasks-header'>
             <h1>משימות</h1>
+            <div className='create-subject'>
+                {
+                    !createSubjectFlag 
+                    ? <button 
+                        className='new-subject-button' 
+                        onClick={() => setCreateSubjectFlag(!createSubjectFlag)}>
+                            <BiListPlus size={30}/>
+                            נושא חדש בפרויקט
+                        </button>
+                    : <div className='form'>
+                        <h1>נושא חדש</h1>
+                        <label>
+                            כותרת:
+                            <input
+                                value={subjectName}
+                                onChange={e => setSubjectName(e.target.value)}
+                                type="string" />
+                        </label>
+                        <div className='buttons'>
+                            <button onClick={() => {
+                                    if (subjectName == '') {
+                                        alert('לא ניתן ליצור נושא ללא כותרת');
+                                        return;
+                                    }
+                                    addDoc(collection(db, subjectsPath), {
+                                        title: subjectName || '',
+                                        creation_time: new Date().getTime(),
+                                        user_id: user.uid,
+                                        top_project_id: projectStack[0].id,
+                                    });
+                                    setSubjectName('');
+                                    setCreateSubjectFlag(!createSubjectFlag);
+                                }}>
+                                שמירה
+                            </button>
+                            <button onClick={() => {
+                                    setSubjectName('');
+                                    setCreateSubjectFlag(!createSubjectFlag);
+                            }}>ביטול</button>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
         <>
             {subjects.map(subject => (
@@ -139,49 +182,6 @@ export const ProjectSubjects = (props: ProjectSubjectsProps) =>  {
                 </Popup>
             }
         </>
-        <div className='create-subject'>
-            {
-                !createSubjectFlag 
-                ? <button 
-                    className='new-subject-button' 
-                    onClick={() => setCreateSubjectFlag(!createSubjectFlag)}>
-                        {
-                            subjects.length === 0
-                            ? <p>להוספת משימות יש ליצור נושא חדש</p>
-                            : <p>נושא חדש</p>
-                        }
-                    </button>
-                : <div className='form'>
-                    <label>
-                        כותרת:
-                        <input
-                            value={subjectName}
-                            onChange={e => setSubjectName(e.target.value)}
-                            type="string" />
-                    </label>
-                    <button onClick={() => {
-                            if (subjectName == '') {
-                                alert('לא ניתן ליצור נושא ללא כותרת');
-                                return;
-                            }
-                            addDoc(collection(db, subjectsPath), {
-                                title: subjectName || '',
-                                creation_time: new Date().getTime(),
-                                user_id: user.uid,
-                                top_project_id: projectStack[0].id,
-                            });
-                            setSubjectName('');
-                            setCreateSubjectFlag(!createSubjectFlag);
-                        }}>
-                        שמירה
-                    </button>
-                    <button onClick={() => {
-                            setSubjectName('');
-                            setCreateSubjectFlag(!createSubjectFlag);
-                    }}>ביטול</button>
-                </div>
-            }
-        </div>
     </div>
 }
 

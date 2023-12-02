@@ -7,7 +7,7 @@ import Select from "react-select";
 import makeAnimated from 'react-select/animated';
 import { selectProjectStack, setProjectStack } from "../../redux/projectsSlice";
 
-type ProjectPermissionsManagerProps = {
+type ProjectParticipantsManagerProps = {
     project: DocumentData;
     projectReference: DocumentReference;
     setOpen: (boolean) => void;
@@ -16,30 +16,30 @@ type ProjectPermissionsManagerProps = {
 const animatedComponents = makeAnimated();
 
 const updateProject = (
-        props: ProjectPermissionsManagerProps, 
-        newPermissions: string[],
+        props: ProjectParticipantsManagerProps, 
+        newParticipants: string[],
         dispatch: any,
         projectStack: DocumentData[],
         setSaving: (boolean) => void
     ) => {
     let tempProjectStack = [...projectStack];
-    tempProjectStack[0] = {...tempProjectStack[0], shared_emails: newPermissions};
+    tempProjectStack[0] = {...tempProjectStack[0], participants: newParticipants};
     dispatch(setProjectStack(tempProjectStack));
-    updateDoc(props.projectReference, {shared_emails: newPermissions})
+    updateDoc(props.projectReference, {participants: newParticipants})
         .then(() => {
             setSaving(false);
-            alert('הרשאות הגישה לפרויקט עודכנו בהצלחה')
+            alert('רשימת המשתתפים עודכנה בהצלחה')
         });
 }
 
-export const ProjectPermissionsManager = (props: ProjectPermissionsManagerProps) => {
+export const ProjectParticipantsManager = (props: ProjectParticipantsManagerProps) => {
     const dispatch = useAppDispatch();
     const contacts = useAppSelector(selectContacts);
     const projectStack = useAppSelector(selectProjectStack);
     let contactsOptions = contacts.map((contact) => ({value: contact.email, label: contact.name}));
     
     const selectedOptions = contacts
-        .filter((contact) => props.project.shared_emails?.includes(contact.email))
+        .filter((contact) => props.project.participants?.includes(contact.email))
         .map((contact) => ({value: contact.email, label: contact.name}));
     const selectContactRef = useRef<any>(null);
 
@@ -47,7 +47,7 @@ export const ProjectPermissionsManager = (props: ProjectPermissionsManagerProps)
 
     return (
         <div className="permissions-manager">
-            <h1>חשבונות בעלי גישה לפרויקט:</h1>
+            <h1>רשימת המשתתפים בפרויקט:</h1>
             <Select 
                 ref={selectContactRef}
                 options={contactsOptions} 

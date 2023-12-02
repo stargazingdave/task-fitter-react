@@ -52,10 +52,10 @@ const AccountLoadderInternal = () => {
     }
 
     // check if new user and initiate settings
-    if (userSettings.length === 1) {
+    if (userSettings?.length === 1) {
         dispatch(userSettingsInit(userSettings[0]));
     }
-    if (userSettings.length === 0) {
+    if (userSettings?.length === 0) {
         const temp = {} as DocumentData;
         temp.user_id = user.uid;
         temp.manager_email = user.email;

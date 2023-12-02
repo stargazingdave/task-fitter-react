@@ -1,77 +1,67 @@
 .protocol-attachment-page {
     box-sizing: border-box;
     max-width: 100%;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: row;
     // justify-content: center;
-    .pdf-header {
+    .send-button {
         display: flex;
         flex-direction: row;
-        align-items: flex-start;
-        justify-content: flex-start;
+        align-items: flex-end;
+        gap: 16px;
+        width: fit-content;
         height: fit-content;
-        h1 {
-            color: #1F3C88;
-            padding: 10px 20px;
-            margin: 0;
-            font-size: 20px;
-            height: fit-content;
-        }
-        .send-button {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-end;
-            gap: 16px;
-            width: fit-content;
-            height: fit-content;
-            padding: 10px;
-            padding-bottom: 6px;
-            padding-top: 6px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: #1F3C88;
-            background: #FFDE7D;
-            font-weight: bold;
-            font-size: 20px;
-            font-family: inherit;
-            margin: 8px;
-            border: none;
-            &:disabled {
-                background: #a5976b;
-                &:hover {
-                    color: #1F3C88;
-                    background: #a5976b;
-                    cursor: pointer;
-                }
-            }
-            &.sending {
-                background: #a4a4a4;
-                &:hover {
-                    background: #a4a4a4;
-                }
-            }
+        padding: 10px;
+        padding-bottom: 6px;
+        padding-top: 6px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #1F3C88;
+        background: #FFDE7D;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: inherit;
+        margin: 8px;
+        border: none;
+        &:disabled {
+            background: #a5976b;
             &:hover {
-                color: #070D59;
-                background: #fdcf45;
+                color: #1F3C88;
+                background: #a5976b;
                 cursor: pointer;
             }
-            .loader {
-                border: 6px solid #f3f3f3;
-                border-top: 6px solid #fdcf45;
-                border-radius: 50%;
-                width: 28px;
-                height: 28px;
-                animation: spin 2s linear infinite;
+        }
+        &.sending {
+            background: #a4a4a4;
+            &:hover {
+                background: #a4a4a4;
             }
-            
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
+        }
+        &:hover {
+            color: #070D59;
+            background: #fdcf45;
+            cursor: pointer;
+        }
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #fdcf45;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     }
     .email {
         display: flex;
         flex-direction: row;
-        height: fit-content;
+        height: 100%;
         width: 100%;
         justify-content: space-around;
         .protocol-container-attachment {
@@ -79,17 +69,93 @@
             max-height: calc(100vh - 60px);
             position: relative;
             box-sizing: border-box;
-            
+            height: 100%;
             h1 {
                 color: #1F3C88;
                 padding-right: 20px;
             }
+            .protocol-loader {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                height: 100%;
+                min-height: 200px;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                .loader {
+                    border: 6px solid #f3f3f3;
+                    border-top: 6px solid #fdcf45;
+                    border-radius: 50%;
+                    width: 28px;
+                    height: 28px;
+                    animation: spin 2s linear infinite;
+                }
+                
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            }
         }        
-        .email-parameters {
+        .email-form {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            gap: 16px;
+            height: 100%;
+            h1 {
+                color: #1F3C88;
+                font-family: inherit;
+                font-size: 20px;
+                margin: 10px;
+            }
+            .parameters {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                gap: 40px;
+                align-items: center;
+                // justify-content: space-between;
+                width: 100%;
+                height: 100%;
+                label {
+                    color: #1F3C88;
+                    font-family: inherit;
+                    font-size: 16px;
+                    margin: 0 10px;
+                    font-weight: normal;
+                }
+                .select-recipients {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    justify-content: center;
+                    width: 100%;
+                    height: 100%;
+                    h2 {
+                        color: #1F3C88;
+                        font-family: inherit;
+                        font-size: 20px;
+                        margin: 0 10px;
+                        font-weight: normal;
+                    }
+                    label {
+                        color: #1F3C88;
+                        font-family: inherit;
+                        font-size: 16px;
+                        margin: 0 10px;
+                        font-weight: normal;
+                        max-width: 70%;
+                    }
+                }
+                .parameter-inputs {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    gap: 4px;
+                    height: 100%;
+                }
+            }
             .send-button {
                 display: flex;
                 flex-direction: row;

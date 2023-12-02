@@ -44,7 +44,9 @@ export const ContactList = (props: ContactListProps) => {
                             <CreateContactForm 
                                 contactsCollection={contactsCollection} 
                                 createContactFlag={createContactFlag} 
-                                onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}/>
+                                onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}
+                                email=''
+                                />
                             </div>
                         : <button 
                             className='new-contact-button' 

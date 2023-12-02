@@ -4,6 +4,30 @@
     padding: 20px;
     overflow-y: auto;
     width: 100%;
+    .create-company-button {
+        background: #CEDDEF;
+        border: none;
+        color: 1F3C88;
+        padding: 5px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px;
+        border-radius: 3px;
+        width: fit-content;
+        &:hover {
+            background: #5893D4;
+            cursor: pointer;
+        }
+        &:disabled {
+            background: #9b9b9b;
+        }
+    }
+    h1 {
+        font-size: 26px;
+        color: #1F3C88;
+    }
     .create-project-button {
         background: #CEDDEF;
         border: none;

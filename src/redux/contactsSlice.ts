@@ -8,6 +8,7 @@ interface ContactsState {
     openContacts: boolean,
     contacts: DocumentData[],
     contactsCollection: CollectionReference,
+    unknownContactsRedux: string[],
 }
 
 // Define the initial state using that type
@@ -15,6 +16,7 @@ const initialState: ContactsState = {
     openContacts: false,
     contacts: [],
     contactsCollection: {} as CollectionReference,
+    unknownContactsRedux: [] as string[],
 }
 
 export const contactsSlice = createSlice({
@@ -39,8 +41,7 @@ export const contactsSlice = createSlice({
         state.contacts = temp;
     },
     onAddContact: (state, action: PayloadAction<DocumentData>) => {
-        const temp = [...state.contacts];
-        temp.push(action.payload);
+        const temp = [...state.contacts, action.payload];
         state.contacts = temp;
     },
     onDeleteContact: (state, action: PayloadAction<DocumentData>) => {
@@ -48,6 +49,9 @@ export const contactsSlice = createSlice({
         const index = temp.findIndex((contact) => contact.id == action.payload.id);
         temp.splice(index, 1);
         state.contacts = temp;
+    },
+    setUnknownContactsRedux: (state, action: PayloadAction<string[]>) => {
+        state.unknownContactsRedux = action.payload;
     },
   },
 })
@@ -58,12 +62,14 @@ export const {
     onUpdateContact, 
     onAddContact, 
     onDeleteContact, 
-    closeContacts 
+    closeContacts, 
+    setUnknownContactsRedux, 
 } = contactsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectOpenContacts = (state: RootState) => state.contacts.openContacts;
 export const selectContacts = (state: RootState) => state.contacts.contacts;
 export const selectContactsCollection = (state: RootState) => state.contacts.contactsCollection;
+export const selectUnknownContactsRedux = (state: RootState) => state.contacts.unknownContactsRedux;
 
 export default contactsSlice.reducer

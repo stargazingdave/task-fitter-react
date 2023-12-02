@@ -43,28 +43,27 @@
     .new-task-button {
         display: flex;
         flex-direction: row;
-        justify-content: center;
         align-items: center;
-        gap: 8px;
-        width: calc(100% - 22px);
+        gap: 2px;
+        width: fit-content;
         height: fit-content;
-        margin: 0;
-        margin-top: 8px;
-        padding: 10px 5px;
-        background: #ffffffa2;
-        border: 1px dashed #1F3C88;
-        color: #1F3C88;
-        font-size: 18px;
+        margin: 6px 14px;
+        padding: 7px 5px;
+        background: none;
+        border: none;
+        color: #0072ff;
+        font-size: 16px;
         font-family: inherit;
-        .icons {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+        border-radius: 4px;
+        svg {
+            fill: #0072ff;
         }
         &:hover {
-            background: #ffffff;
+            cursor: pointer;
+            color: #0052b6;
+            svg {
+                fill: #0052b6;
+            }
         }
     }
 }
@@ -91,7 +90,7 @@
         justify-content: flex-start;
         align-items: center;
         border: none;
-        width: calc(100%);
+        width: 100%;
         height: fit-content;
         overflow: visible;
         position: relative;
@@ -183,6 +182,39 @@
                 &:not(:last-child) {
                     .comma {
                         opacity: 1;
+                    }
+                }
+                .unknown-contact {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 2px 4px;
+                    border-radius: 4px;
+                    button {
+                        display: flex;
+                        padding: 4px;
+                        margin: 0;
+                        justify-content: center;
+                        align-items: center;
+                        width: fit-content;
+                        height: fit-content;
+                        border: none;
+                        border-radius: 4px;
+                        background: #ffffff;
+                        color: #1F3C88;
+                        font-weight: bold;
+                        box-shadow: 1.5px 1.5px 2px 0.5px #070D59, -0.5px -0.5px #070D59;
+                        &:hover {
+                            background: #CEDDEF;
+                            cursor: pointer;
+                        }
+                    }
+                    p {
+                        margin: 0 4px;
+                        padding: 0;
+                        font-family: inherit;
+                        color: #f70000;
                     }
                 }
             }

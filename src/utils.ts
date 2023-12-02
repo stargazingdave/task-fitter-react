@@ -217,7 +217,7 @@ export const createProtocol = async (
     console.log(tasksTable);
     
     // Create a new jsPDF instance
-    let pdf = new jsPDF();
+    let pdf = new jsPDF({compress: true});
 
     // Set font and font size
     pdf.setFont('segoeuib', 'bold');

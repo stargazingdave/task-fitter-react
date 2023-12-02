@@ -1,0 +1,54 @@
+.create-company-form {
+    width: 90%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #747474;
+    border-radius: 8px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    h1 {
+        font-family: inherit;
+        font-size: 20px;
+        color: #1F3C88;
+    }
+    .logo-upload {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        svg {
+            fill: #1F3C88;
+        }
+        background: none;
+        color: white;
+        padding: 0;
+        font-family: sans-serif;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        height: fit-content;
+        width: fit-content;
+        h1 {
+            text-align: center;
+            font-size: 14px;
+            color: #1F3C88;
+        }
+    }
+    .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        button {
+            color: white;
+            width: fit-content;
+            padding: 8px 16px;
+            border-radius: 4px;
+            background: #5893D4;
+            &:hover {
+                cursor: pointer;
+                background: #1F3C88;
+            }
+        }
+    }
+}

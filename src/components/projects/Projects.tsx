@@ -15,6 +15,7 @@ import { selectDb } from '../../redux/databaseSlice';
 import { deleteProject } from '../../utils';
 import { store } from '../../store';
 import { pushProject, selectProjectStack, setProjectStack } from '../../redux/projectsSlice';
+import { CreateCompanyForm } from './CreateCompanyForm';
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -37,13 +38,12 @@ export const Projects = (props: ProjectsProps) =>  {
     const user = useAppSelector(selectUser);
     const db = useAppSelector(selectDb);
     const isAdmin = useAppSelector(selectIsAdmin);
-    console.log(isAdmin);
-    const projectStack = useAppSelector(selectProjectStack);
     const dispatch = useAppDispatch();
-    
-    const projectsCollection = collection(db, 'projects');
     const [isAscending, setIsAscending] = useState(false);
     const [createProjectFlag, setCreateProjectFlag] = useState(false);
+    const [createCompanyFlag, setCreateCompanyFlag] = useState(false);
+    
+    const projectsCollection = collection(db, 'projects');
     const projectsQuery = query(projectsCollection,
                                 or(where("user_id", "==", user.uid),
                                 where("shared_emails", "array-contains", user.email)),
@@ -59,26 +59,26 @@ export const Projects = (props: ProjectsProps) =>  {
     
     return <div className='projects-container'>
         <h1>פרויקטים</h1>
-        <div>
-            {projectStack.map(project => (
-                <div>{project.project_name}</div>
-            ))}
-        </div>
         {
-            !createProjectFlag
-            ? <button 
-                className='create-project-button'
-                onClick={() => setCreateProjectFlag(!createProjectFlag)}
+            createCompanyFlag
+            ? <CreateCompanyForm  
+                createCompanyFlag={createCompanyFlag} 
+                onCompanyCreate={(createCompanyFlag) => {
+                    setCreateCompanyFlag(!createCompanyFlag)
+                }}
+            />
+            : <button 
+                className='create-company-button'
+                onClick={() => setCreateCompanyFlag(!createCompanyFlag)}
                 disabled={!isAdmin}
-                title={isAdmin ? 'יצירת פרויקט חדש' : 'אין לחשבון שלך גישה ליצירת פרויקטים'}
+                title={isAdmin ? 'יצירת חברה חדשה' : 'אין לחשבון שלך גישה ליצירת חברות'}
                 >
-                    יצירת פרויקט חדש
-                </button>
-            : <></>
+                יצירת חברה חדשה
+            </button>
         }
         {
-            createProjectFlag &&
-            <CreateProjectForm  
+            createProjectFlag
+            ? <CreateProjectForm  
                 projectsCollection={projectsCollection} 
                 createProjectFlag={createProjectFlag} 
                 onProjectCreate={(createProjectFlag) => {
@@ -86,7 +86,15 @@ export const Projects = (props: ProjectsProps) =>  {
                 }}
                 topProjectId={''}
             />
-        }  
+            : <button 
+                className='create-project-button'
+                onClick={() => setCreateProjectFlag(!createProjectFlag)}
+                disabled={!isAdmin}
+                title={isAdmin ? 'יצירת פרויקט חדש' : 'אין לחשבון שלך גישה ליצירת פרויקטים'}
+                >
+                יצירת פרויקט חדש
+            </button>
+        }
             <div className="projects">
                 {
                     projects.map(project => (
