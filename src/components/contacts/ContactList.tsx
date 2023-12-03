@@ -93,8 +93,8 @@ export const ContactList = (props: ContactListProps) => {
                         <Popup trigger={
                             <button title='רשימת משימות של איש הקשר' className='tasks-button'>
                                 <FaTasks  size={20} />
-                        </button>} position="right center">
-                            <ContactTasks contact={contact} />
+                            </button>} modal>
+                        <ContactTasks contact={contact} />
                         </Popup>
                         </div>
                         {
@@ -124,7 +124,7 @@ export const ContactList = (props: ContactListProps) => {
                 <Popup 
                     contentStyle={{width: "300px"}}
                     open={contactDeletePopup?.id}
-                    modal={true}>
+                    modal={false}>
                     <ConfirmationBox 
                         onConfirm={() => {
                             deleteDoc(doc(db, "contacts", contactDeletePopup.id));

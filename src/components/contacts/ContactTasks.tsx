@@ -1,5 +1,5 @@
 import { User } from "firebase/auth";
-import { DocumentData, collectionGroup, getDocs, getFirestore, orderBy, query, where } from "firebase/firestore";
+import { DocumentData, collectionGroup, doc, getDoc, getDocs, getFirestore, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 
@@ -16,6 +16,7 @@ type ContactTasksProps = {
 export const ContactTasks = (props: ContactTasksProps) => {
     const user = useAppSelector(selectUser);
     const [isAscending, setIsAscending] = useState(false);
+    const [projects, setProjects] = useState([] as any[]);
     const db = getFirestore();
     // const tasksCollection = collectionGroup(db, 'tasks');
     const tasksCollection = collectionGroup(db, 'tasks');
@@ -25,30 +26,69 @@ export const ContactTasks = (props: ContactTasksProps) => {
         where("collaborators", 'array-contains', props.contact.email),
         orderBy('deadline', isAscending ? 'asc' : 'desc'));
 
+    const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
 
     useEffect(() => {
-        async function getToken() {
-            const querySnapshot = await getDocs(tasksQuery);
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, ' => ', doc.data());
-            });
+        async function init() {
+            const newProjects = [...projects];
+            
+            // Use Promise.all to wait for all asynchronous tasks
+            await Promise.all(tasks?.map(async (task) => {
+                const existingProject = newProjects.find((project) => project.id === task.top_project_id);
+    
+                if (existingProject) {
+                    existingProject.tasks.push(task);
+                } else {
+                    const newProject = { id: task.top_project_id, tasks: [task] };
+                    newProjects.push(newProject);
+                }
+            }));
+    
+            setProjects(newProjects);
         }
-    }, [])
-
-    const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
+    
+        status !== 'loading' && init();
+    }, [status, tasks]); // Include tasks in the dependency array
+    
+    useEffect(() => {
+        projects.forEach(async (project) => {
+            const projectData = await getDoc(doc(db, 'projects', project.id));
+            project.name = projectData.data()?.project_name;
+        })
+        console.log("contact tasks: ", projects);
+    }, [projects]);
+    
     if (status === 'loading') {
         return <p>טוען משימות...</p>;
     }
+
     return <div className="contact-tasks">
         <div className="contact-tasks-container">
-            {tasks?.map(task => (
+        {
+            projects.map((project) => (
+                <div>
+                    <h1>{project.name}</h1>
+                    {
+                        project.tasks?.map(task => (
+                            <div className="contact-task" key={task.id}>
+                                
+                                <h1>{task.task}</h1>
+                                <h2>{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
+                                <p>{task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}</p>                    
+                            </div>
+                        ))
+                    }
+                </div>
+            ))
+        }
+            {/* {tasks?.map(task => (
                 <div className="contact-task" key={task.id}>
                     
                     <h1>{task.task}</h1>
                     <h2>{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
                     <p>{task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}</p>                    
                 </div>
-            ))}
+            ))} */}
         </div>
     </div>
 }
