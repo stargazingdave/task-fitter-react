@@ -1,11 +1,9 @@
-import { User } from "firebase/auth";
 import { DocumentData, collectionGroup, doc, getDoc, getDocs, getFirestore, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useFirestoreCollectionData } from "reactfire";
 
 import './ContactTasks.scss'
 import { useAppSelector } from "../../reduxHooks";
-import { selectUser } from "../../redux/userSlice";
 import { selectProjects } from "../../redux/projectsSlice";
 
 
@@ -22,7 +20,9 @@ export const ContactTasks = (props: ContactTasksProps) => {
     // const tasksCollection = collectionGroup(db, 'tasks');
     const projects = useAppSelector(selectProjects);
     const projectIds = [] as string[];
-    const [projectObjects, setProjectObjects] = useState([] as any)
+    const [projectObjects, setProjectObjects] = useState([] as any);
+    const [loading, setLoading] = useState(true);
+
     projects.forEach((project) => projectIds.push(project.id));
 
     const tasksCollection = collectionGroup(db, 'tasks');
@@ -31,10 +31,11 @@ export const ContactTasks = (props: ContactTasksProps) => {
         where("collaborators", 'array-contains', props.contact.email),
         orderBy('deadline', isAscending ? 'asc' : 'desc'));
 
-    const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
+    const { status: tasksStatus, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
 
     useEffect(() => {
         async function init() {
+            setLoading(true);
             const newProjectObjects = [...projectObjects];
             
             // Use Promise.all to wait for all asynchronous tasks
@@ -53,36 +54,44 @@ export const ContactTasks = (props: ContactTasksProps) => {
                 projectObject.name = await projectData.data()?.project_name;
             }));
             setProjectObjects(newProjectObjects);
+            setLoading(false);
         }
-        debugger
-        console.log("blablabla")
-        status !== 'loading' && init();
-    }, [status]); // Include tasks in the dependency array
+        tasksStatus !== 'loading' && init();
+    }, [tasksStatus]); // Include tasks in the dependency array
     
     
-    if (status === 'loading') {
+    if (tasksStatus === 'loading') {
         return <p>טוען משימות...</p>;
     }
 
+    if (loading) {
+        return <div className="loader"></div>;
+    }
+
     return <div className="contact-tasks">
+        <h1 className="title">המשימות של {props.contact.name}</h1>
         <div className="contact-tasks-container">
-        {
-            projectObjects.map((project) => (
-                <div>
-                    <h1>{project.name}</h1>
-                    {
-                        project.tasks?.map(task => (
-                            <div className="contact-task" key={task.id}>
-                                
-                                <h1>{task.task}</h1>
-                                <h2>{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
-                                <p>{task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}</p>                    
-                            </div>
-                        ))
-                    }
-                </div>
-            ))
-        }
+            {
+                projectObjects.length > 0
+                ? projectObjects.map((project: any) => (
+                    <div className="project">
+                        <h1 className="project-title">{project.name}</h1>
+                        {
+                            project.tasks?.map(task => (
+                                <div className="contact-task" key={task.id}>
+                                    
+                                    <h1>{task.task}</h1>
+                                    <div className="deadline-and-status">
+                                        <h2>{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
+                                        {task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>} 
+                                    </div>                 
+                                </div>
+                            ))
+                        }
+                    </div>
+                ))
+                : <p>לא קיימות משימות באחריות איש קשר זה.</p>
+            }
         </div>
     </div>
 }

@@ -90,11 +90,23 @@ export const ContactList = (props: ContactListProps) => {
                             }}>
                                 <MdDeleteForever size={20} />
                         </button>
-                        <Popup trigger={
-                            <button title='רשימת משימות של איש הקשר' className='tasks-button'>
-                                <FaTasks  size={20} />
-                            </button>} modal>
-                        <ContactTasks contact={contact} />
+                        <Popup 
+                            trigger={
+                                <button title='רשימת משימות של איש הקשר' className='tasks-button'>
+                                    <FaTasks  size={20} />
+                                </button>
+                            } 
+                            modal
+                            contentStyle={{
+                                width: "800px",
+                                height: "300px",
+                                overflow: "auto",
+                                display: "flex",
+                                position: "relative",
+                                justifyContent: "flex-start"
+                            }}
+                            >
+                            <ContactTasks contact={contact} />
                         </Popup>
                         </div>
                         {
