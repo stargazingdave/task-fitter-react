@@ -33,7 +33,7 @@ export const ContactTasks = (props: ContactTasksProps) => {
             const newProjects = [...projects];
             
             // Use Promise.all to wait for all asynchronous tasks
-            await Promise.all(tasks?.map(async (task) => {
+            tasks?.map((task) => {
                 const existingProject = newProjects.find((project) => project.id === task.top_project_id);
     
                 if (existingProject) {
@@ -42,19 +42,20 @@ export const ContactTasks = (props: ContactTasksProps) => {
                     const newProject = { id: task.top_project_id, tasks: [task] };
                     newProjects.push(newProject);
                 }
+            });
+            await Promise.all(newProjects.map(async (project) => {
+                const projectData = await getDoc(doc(db, 'projects', project.id));
+                project.name = await projectData.data()?.project_name;
             }));
-    
             setProjects(newProjects);
         }
-    
+        debugger
+        console.log("blablabla")
         status !== 'loading' && init();
-    }, [status, tasks]); // Include tasks in the dependency array
+    }, [status]); // Include tasks in the dependency array
     
     useEffect(() => {
-        projects.forEach(async (project) => {
-            const projectData = await getDoc(doc(db, 'projects', project.id));
-            project.name = projectData.data()?.project_name;
-        })
+        
         console.log("contact tasks: ", projects);
     }, [projects]);
     
