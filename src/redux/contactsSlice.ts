@@ -8,7 +8,7 @@ interface ContactsState {
     openContacts: boolean,
     contacts: DocumentData[],
     contactsCollection: CollectionReference,
-    unknownContactsRedux: string[],
+    unknownContacts: string[],
 }
 
 // Define the initial state using that type
@@ -16,7 +16,7 @@ const initialState: ContactsState = {
     openContacts: false,
     contacts: [],
     contactsCollection: {} as CollectionReference,
-    unknownContactsRedux: [] as string[],
+    unknownContacts: [] as string[],
 }
 
 export const contactsSlice = createSlice({
@@ -50,8 +50,18 @@ export const contactsSlice = createSlice({
         temp.splice(index, 1);
         state.contacts = temp;
     },
-    setUnknownContactsRedux: (state, action: PayloadAction<string[]>) => {
-        state.unknownContactsRedux = action.payload;
+    setUnknownContacts: (state, action: PayloadAction<string[]>) => {
+        state.unknownContacts = action.payload;
+    },
+    addUnknownContacts: (state, action: PayloadAction<string[]>) => {
+        const temp = [...state.unknownContacts];
+        action.payload.forEach(email => {
+            if (!temp.includes(email)) {
+                temp.push(email);
+            }
+        })
+        debugger
+        state.unknownContacts = temp;
     },
   },
 })
@@ -63,13 +73,14 @@ export const {
     onAddContact, 
     onDeleteContact, 
     closeContacts, 
-    setUnknownContactsRedux, 
+    setUnknownContacts, 
+    addUnknownContacts
 } = contactsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectOpenContacts = (state: RootState) => state.contacts.openContacts;
 export const selectContacts = (state: RootState) => state.contacts.contacts;
 export const selectContactsCollection = (state: RootState) => state.contacts.contactsCollection;
-export const selectUnknownContactsRedux = (state: RootState) => state.contacts.unknownContactsRedux;
+export const selectUnknownContactsRedux = (state: RootState) => state.contacts.unknownContacts;
 
 export default contactsSlice.reducer

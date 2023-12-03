@@ -10,7 +10,7 @@ import { BiSolidPlusCircle, BiTask } from "react-icons/bi";
 import { AiOutlinePlus } from "react-icons/ai";
 import Popup from "reactjs-popup";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
-import { selectContacts, selectUnknownContactsRedux, setUnknownContactsRedux } from "../../redux/contactsSlice";
+import { addUnknownContacts, selectContacts, selectUnknownContactsRedux, setUnknownContacts } from "../../redux/contactsSlice";
 import { selectProjectStack } from "../../redux/projectsSlice";
 import { ProjectTask } from "./ProjectTask";
 import { GoPersonAdd } from "react-icons/go";
@@ -24,15 +24,10 @@ type ProjectTasksProps = {
 
 
 export const ProjectTasks = (props: ProjectTasksProps) => {
-    const projectStack = useAppSelector(selectProjectStack);
-    const unknownContactsRedux = useAppSelector(selectUnknownContactsRedux);
     const dispatch = useAppDispatch();
-    // const [unknownContacts, setUnknownContacts] = useState([] as string[]);
-    // const [unknownContactsCount, setUnknownContactsCount] = useState(0);
-
+    const projectStack = useAppSelector(selectProjectStack);
+    const contacts = useAppSelector(selectContacts);
     const [newTask, setNewTask] = useState(false);
-    // const [createContact, setCreateContact] = useState('');
-    // const [unknownContactsPopupEnabled, setUnknownContactsPopupEnabled] = useState(true);
 
     const tasksQuery = query(props.tasksCollection,
         where("top_project_id", "==", projectStack[0].id));
@@ -40,22 +35,26 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
     const { status, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
 
     useEffect(() => {
-        const uniqueEmailsSet = new Set<string>(unknownContactsRedux);
 
-        tasks?.forEach((task) => {
-            task.collaborators?.forEach((collaborator) => {
-                uniqueEmailsSet.add(collaborator);
+        if (tasks?.length) {
+            const newUnknownContacts = [] as string[];
+            tasks?.forEach((task) => {
+                task.collaborators?.forEach((collaborator: string) => {
+                    const existingContact = contacts.find((contact) => contact.email === collaborator);
+                    if (!existingContact) {
+                        newUnknownContacts.push(collaborator);
+                    }
+                });
             });
-        });
-
-        // Convert Set back to an array
-        const updatedUnknownContacts = Array.from(uniqueEmailsSet);
+            debugger
+            dispatch(addUnknownContacts(newUnknownContacts));
+        }
 
         // Check if the state needs to be updated
-        if (!arraysEqual(unknownContactsRedux, updatedUnknownContacts)) {
-            dispatch(setUnknownContactsRedux(updatedUnknownContacts));
-        }
-    }, [tasks, unknownContactsRedux, dispatch]);
+        // if (!arraysEqual(unknownContactsRedux, updatedUnknownContacts)) {
+        //     dispatch(setUnknownContactsRedux(updatedUnknownContacts));
+        // }
+    }, [tasks]);
 
     // Helper function to compare arrays
     const arraysEqual = (a: string[], b: string[]) => {
@@ -107,53 +106,5 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                 </button>
             }
         </div>
-        {/* <Popup
-            open={unknownContacts.length !== 0 && unknownContactsPopupEnabled}>
-            <button onClick={() => {
-                dispatch(setUnknownContacts([]));
-                setUnknownContactsPopupEnabled(false);
-            }}>
-                סגירה
-            </button>
-            <div>
-                
-                <br/>
-                {
-                    createContact === ''
-                    ? <div>
-                        קיימות בפרויקט משימות באחריות אנשים שאינם ברשימת אנשי הקשר:
-                        {
-                            unknownContacts.map((contactEmail) => 
-                            <div className="unknown-contact">
-                                {contactEmail}
-                                <button
-                                    onClick={() => {
-                                        setCreateContact(contactEmail);
-                                    }}
-                                    title="הוספה לאנשי הקשר"
-                                    >
-                                    <GoPersonAdd size={20}/>
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                    : <CreateContactForm 
-                        contactsCollection={collection(db, 'contacts')}
-                        createContactFlag={createContact !== ''}
-                        email={createContact}
-                        onContactCreate={(newContact) => {
-                            setCreateContact('');
-                            let tempCount = unknownContactsCount;
-                            tempCount--;
-                            setUnknownContactsCount(tempCount);
-                            const prevContacts = [...unknownContacts];
-                            // Remove the newly added contact from unknownContacts
-                            dispatch(setUnknownContacts(prevContacts.filter((contact: string) => contact !== newContact)
-                            ));
-                        }}
-                    />
-                }
-            </div>
-        </Popup> */}
     </div>
 }

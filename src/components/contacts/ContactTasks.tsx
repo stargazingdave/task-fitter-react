@@ -6,6 +6,7 @@ import { useFirestoreCollectionData } from "reactfire";
 import './ContactTasks.scss'
 import { useAppSelector } from "../../reduxHooks";
 import { selectUser } from "../../redux/userSlice";
+import { selectProjects } from "../../redux/projectsSlice";
 
 
 type ContactTasksProps = {
@@ -14,15 +15,19 @@ type ContactTasksProps = {
 
 
 export const ContactTasks = (props: ContactTasksProps) => {
-    const user = useAppSelector(selectUser);
     const [isAscending, setIsAscending] = useState(false);
-    const [projects, setProjects] = useState([] as any[]);
+    // const [projects, setProjects] = useState([] as any[]);
+    
     const db = getFirestore();
     // const tasksCollection = collectionGroup(db, 'tasks');
+    const projects = useAppSelector(selectProjects);
+    const projectIds = [] as string[];
+    const [projectObjects, setProjectObjects] = useState([] as any)
+    projects.forEach((project) => projectIds.push(project.id));
+
     const tasksCollection = collectionGroup(db, 'tasks');
-    debugger
     const tasksQuery = query(tasksCollection, 
-        where("user_id", '==', user.uid),
+        where("top_project_id", 'in', projectIds),
         where("collaborators", 'array-contains', props.contact.email),
         orderBy('deadline', isAscending ? 'asc' : 'desc'));
 
@@ -30,34 +35,30 @@ export const ContactTasks = (props: ContactTasksProps) => {
 
     useEffect(() => {
         async function init() {
-            const newProjects = [...projects];
+            const newProjectObjects = [...projectObjects];
             
             // Use Promise.all to wait for all asynchronous tasks
             tasks?.map((task) => {
-                const existingProject = newProjects.find((project) => project.id === task.top_project_id);
+                const existingProjectObject = newProjectObjects.find((projectObject) => projectObject.id === task.top_project_id);
     
-                if (existingProject) {
-                    existingProject.tasks.push(task);
+                if (existingProjectObject) {
+                    existingProjectObject.tasks.push(task);
                 } else {
-                    const newProject = { id: task.top_project_id, tasks: [task] };
-                    newProjects.push(newProject);
+                    const newProjectObject = { id: task.top_project_id, tasks: [task] };
+                    newProjectObjects.push(newProjectObject);
                 }
             });
-            await Promise.all(newProjects.map(async (project) => {
-                const projectData = await getDoc(doc(db, 'projects', project.id));
-                project.name = await projectData.data()?.project_name;
+            await Promise.all(newProjectObjects.map(async (projectObject) => {
+                const projectData = await getDoc(doc(db, 'projects', projectObject.id));
+                projectObject.name = await projectData.data()?.project_name;
             }));
-            setProjects(newProjects);
+            setProjectObjects(newProjectObjects);
         }
         debugger
         console.log("blablabla")
         status !== 'loading' && init();
     }, [status]); // Include tasks in the dependency array
     
-    useEffect(() => {
-        
-        console.log("contact tasks: ", projects);
-    }, [projects]);
     
     if (status === 'loading') {
         return <p>טוען משימות...</p>;
@@ -66,7 +67,7 @@ export const ContactTasks = (props: ContactTasksProps) => {
     return <div className="contact-tasks">
         <div className="contact-tasks-container">
         {
-            projects.map((project) => (
+            projectObjects.map((project) => (
                 <div>
                     <h1>{project.name}</h1>
                     {
@@ -82,14 +83,6 @@ export const ContactTasks = (props: ContactTasksProps) => {
                 </div>
             ))
         }
-            {/* {tasks?.map(task => (
-                <div className="contact-task" key={task.id}>
-                    
-                    <h1>{task.task}</h1>
-                    <h2>{new Date(task.deadline).toLocaleDateString("he-IL")}</h2>
-                    <p>{task.status ? <h4>בוצע</h4> : <h3>לא בוצע</h3>}</p>                    
-                </div>
-            ))} */}
         </div>
     </div>
 }

@@ -1,14 +1,16 @@
-import { CollectionReference, DocumentData, DocumentReference, addDoc, collection, doc, getFirestore, orderBy, query, updateDoc, where } from "firebase/firestore";
+import { CollectionReference, DocumentData, DocumentReference, addDoc, collection, doc, getFirestore, or, orderBy, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";
 import { useFirebaseApp, useFirestore, useFirestoreCollectionData } from "reactfire";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { selectUser, setIsAdmin } from "../../redux/userSlice";
-import { closeContacts, initContacts, openContactsToggle } from "../../redux/contactsSlice";
+import { closeContacts, initContacts, openContactsToggle, setUnknownContacts } from "../../redux/contactsSlice";
 import { databaseInit } from "../../redux/databaseSlice";
 import { userSettingsInit } from "../../redux/userSettingsSlice";
+import { initProjects } from "../../redux/projectsSlice";
 
 const AccountLoadderInternal = () => {
     const [isAscending, setIsAscending] = useState(true);
+    const [isAscendingProjects, setIsAscendingProjects] = useState(false);
     const dispatch = useAppDispatch();
     const db = getFirestore(useFirebaseApp());
     dispatch(databaseInit(db));
@@ -28,7 +30,16 @@ const AccountLoadderInternal = () => {
         console.log(error);
     });
 
+    dispatch(setUnknownContacts([]));
+
+    const projectsCollection = collection(db, 'projects');
+    const projectsQuery = query(projectsCollection,
+                                or(where("user_id", "==", user.uid),
+                                where("shared_emails", "array-contains", user.email)),
+                                orderBy('creation_time', isAscendingProjects ? 'asc' : 'desc'));
+    const { status: projectsStatus, data: projects } = useFirestoreCollectionData(projectsQuery, { idField: 'id',});
     
+    dispatch(initProjects(projects));
     
     const contactsCollection = collection(db, 'contacts');
     const contactsQuery = query(contactsCollection,
@@ -44,9 +55,14 @@ const AccountLoadderInternal = () => {
     const { status: userSettingsStatus, data: userSettings } = useFirestoreCollectionData(UserSettingsQuery, { idField: 'id',});
 
     // check the loading status
+    if (projectsStatus === 'loading') {
+        return <p>הפרויקטים בטעינה...</p>;
+    }
+
     if (contactsStatus === 'loading') {
         return <p>אנשי הקשר בטעינה...</p>;
     }
+
     if (userSettingsStatus === 'loading') {
         return <p>הגדרות בטעינה...</p>;
     }

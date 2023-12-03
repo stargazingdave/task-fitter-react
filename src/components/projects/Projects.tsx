@@ -14,7 +14,7 @@ import { selectIsAdmin, selectUser } from '../../redux/userSlice';
 import { selectDb } from '../../redux/databaseSlice';
 import { deleteProject } from '../../utils';
 import { store } from '../../store';
-import { pushProject, selectProjectStack, setProjectStack } from '../../redux/projectsSlice';
+import { pushProject, selectProjectStack, selectProjects, setProjectStack } from '../../redux/projectsSlice';
 import { CreateCompanyForm } from './CreateCompanyForm';
 
 
@@ -43,19 +43,21 @@ export const Projects = (props: ProjectsProps) =>  {
     const [createProjectFlag, setCreateProjectFlag] = useState(false);
     const [createCompanyFlag, setCreateCompanyFlag] = useState(false);
     
-    const projectsCollection = collection(db, 'projects');
-    const projectsQuery = query(projectsCollection,
-                                or(where("user_id", "==", user.uid),
-                                where("shared_emails", "array-contains", user.email)),
-                                orderBy('creation_time', isAscending ? 'asc' : 'desc'));
-    const { status, data: projects } = useFirestoreCollectionData(projectsQuery, { idField: 'id',});
+    // const projectsCollection = collection(db, 'projects');
+    // const projectsQuery = query(projectsCollection,
+    //                             or(where("user_id", "==", user.uid),
+    //                             where("shared_emails", "array-contains", user.email)),
+    //                             orderBy('creation_time', isAscending ? 'asc' : 'desc'));
+    // const { status, data: projects } = useFirestoreCollectionData(projectsQuery, { idField: 'id',});
+
+    const projects = useAppSelector(selectProjects);
     
     const [projectDeletePopup, setProjectDeletePopup] = useState('');
 
     // check the loading status
-    if (status === 'loading') {
-        return <p>טוען פרויקטים...</p>;
-    }
+    // if (status === 'loading') {
+    //     return <p>טוען פרויקטים...</p>;
+    // }
     
     return <div className='projects-container'>
         <h1>פרויקטים</h1>
@@ -79,7 +81,7 @@ export const Projects = (props: ProjectsProps) =>  {
         {
             createProjectFlag
             ? <CreateProjectForm  
-                projectsCollection={projectsCollection} 
+                projectsCollection={collection(db, 'projects')} 
                 createProjectFlag={createProjectFlag} 
                 onProjectCreate={(createProjectFlag) => {
                     setCreateProjectFlag(!createProjectFlag)
@@ -97,7 +99,7 @@ export const Projects = (props: ProjectsProps) =>  {
         }
             <div className="projects">
                 {
-                    projects.map(project => (
+                    projects?.map(project => (
                         <div className="project-tile" key={project.id}>
                             {
                                 project.user_id !== user.uid &&
@@ -158,7 +160,7 @@ export const Projects = (props: ProjectsProps) =>  {
                                 : <div className="edit-project-form">
                                     <EditProjectForm 
                                         editProject={props.editProject} 
-                                        projectsCollection={projectsCollection} 
+                                        projectsCollection={collection(db, 'projects')} 
                                         setEditProject={(editProject) => props.setEditProject(editProject)} 
                                     />
                                 </div>

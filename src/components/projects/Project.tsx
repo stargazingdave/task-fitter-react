@@ -15,7 +15,7 @@ import { ProjectPermissionsManager } from "./ProjectPermissionsManager";
 import { useEffect, useState } from "react";
 import { selectIsAdmin } from "../../redux/userSlice";
 import { ProjectParticipantsManager } from "./ProjectParticipantsManager";
-import { selectUnknownContactsRedux, setUnknownContactsRedux } from "../../redux/contactsSlice";
+import { selectUnknownContactsRedux, setUnknownContacts as setUnknownContactsRedux } from "../../redux/contactsSlice";
 import { CreateContactForm } from "../contacts/CreateContactForm";
 import { FaRegWindowClose } from "react-icons/fa";
 

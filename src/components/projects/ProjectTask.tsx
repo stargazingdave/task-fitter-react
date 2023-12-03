@@ -103,7 +103,6 @@ export const ProjectTask = (props: ProjectTaskProps) => {
                                 }}>
                                 <MdDeleteForever size={25}/>
                             </button>
-                            
                         </div>
                 </div>
                 <div className="task-status">
