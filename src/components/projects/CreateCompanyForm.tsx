@@ -80,7 +80,6 @@ export const CreateCompanyForm = (props: CreateCompanyFormProps) => {
                 <br></br>
                 <input
                     type="file" 
-                    accept="image/jpeg"
                     onChange={e => {
                         let files: FileList | null;
                         e.target.files

@@ -1,9 +1,10 @@
 import { CollectionReference, DocumentData, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
+import Select from 'react-select';
 import "./EditProjectForm.scss"
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
-import { selectProjectStack, setProjectStack } from "../../redux/projectsSlice";
+import { selectCompanies, selectProjectStack, setProjectStack } from "../../redux/projectsSlice";
 
 type EditProjectFormProps = {
     editProject: DocumentData;
@@ -20,6 +21,12 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
 
     const [projectName, setProjectName] = useState(props.editProject.project_name);
     const [managerName, setManagerName] = useState(props.editProject.project_manager);
+    const companies = useAppSelector(selectCompanies);
+    const currentCompany = companies.find((company) => company.id === props.editProject.company_id);
+    const [selectedCompany, setSelectedCompany] = useState({value: currentCompany?.id, label: currentCompany?.company_name});
+    const companiesOptions = companies.map((company) => {
+        return {value: company.id, label: company.company_name}
+    });
 
     const projectStack = useAppSelector(selectProjectStack);
     const dispatch = useAppDispatch();
@@ -44,6 +51,12 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
                 onChange={e => setManagerName(e.target.value)}
                 type="string"
             />
+            <label>חברה:</label>
+            <Select 
+                options={companiesOptions}
+                defaultValue={selectedCompany}
+                onChange={(selection) => {selection && setSelectedCompany(selection)}}
+            />
             <div className="buttons">
                 <button 
                     onClick={() => {debugger
@@ -56,6 +69,7 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
                             project_name: projectName,
                             update_time: date,
                             project_manager: managerName,
+                            company_id: selectedCompany,
                             });
                         let tempProject = { ...props.editProject } as DocumentData;
                         tempProject.project_name = projectName;
@@ -82,5 +96,5 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
                 </button>
             </div>
         </div>
-        )
+    )
 }

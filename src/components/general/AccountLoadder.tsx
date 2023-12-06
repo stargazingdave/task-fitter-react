@@ -6,7 +6,7 @@ import { selectUser, setIsAdmin } from "../../redux/userSlice";
 import { closeContacts, initContacts, openContactsToggle, setUnknownContacts } from "../../redux/contactsSlice";
 import { databaseInit } from "../../redux/databaseSlice";
 import { userSettingsInit } from "../../redux/userSettingsSlice";
-import { initProjects } from "../../redux/projectsSlice";
+import { initCompanies, initProjects } from "../../redux/projectsSlice";
 
 const AccountLoadderInternal = () => {
     const [isAscending, setIsAscending] = useState(true);
@@ -40,6 +40,15 @@ const AccountLoadderInternal = () => {
     const { status: projectsStatus, data: projects } = useFirestoreCollectionData(projectsQuery, { idField: 'id',});
     
     dispatch(initProjects(projects));
+
+    const companiesCollection = collection(db, 'companies');
+    const companiesQuery = query(companiesCollection,
+                                or(where("user_id", "==", user.uid),
+                                where("shared_emails", "array-contains", user.email)),
+                                orderBy('creation_time', isAscendingProjects ? 'asc' : 'desc'));
+    const { status: companiesStatus, data: companies } = useFirestoreCollectionData(companiesQuery, { idField: 'id',});
+    
+    dispatch(initCompanies(companies));
     
     const contactsCollection = collection(db, 'contacts');
     const contactsQuery = query(contactsCollection,
@@ -57,6 +66,10 @@ const AccountLoadderInternal = () => {
     // check the loading status
     if (projectsStatus === 'loading') {
         return <p>הפרויקטים בטעינה...</p>;
+    }
+
+    if (companiesStatus === 'loading') {
+        return <p>החברות בטעינה...</p>;
     }
 
     if (contactsStatus === 'loading') {
