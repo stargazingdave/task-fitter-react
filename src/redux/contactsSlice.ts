@@ -60,7 +60,6 @@ export const contactsSlice = createSlice({
                 temp.push(email);
             }
         })
-        debugger
         state.unknownContacts = temp;
     },
   },

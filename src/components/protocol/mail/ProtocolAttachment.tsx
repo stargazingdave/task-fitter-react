@@ -28,7 +28,6 @@ const sendMail = async (
     recipients: any
     ) => {
     setSending(true);
-    debugger
     // key (collaboratorEmail) => value ({contact, tasks})
     // const recipients = {};
     tasks.forEach((task) => {

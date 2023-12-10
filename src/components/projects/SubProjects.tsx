@@ -113,7 +113,6 @@ export const SubProjects = (props: SubProjectsProps) =>  {
                                     <p>פעולה זו תמחק את הפרויקט לתמיד <b>כולל כל התוכן שלו, ללא אפשרות שחזור</b>. להמשיך במחיקה?</p>
                                     <div className='buttons'>
                                         <button onClick={() => {
-                                            debugger
                                                 // delete project and nested data
                                                 deleteProject(store.getState(), 
                                                     path + projectDeletePopup);

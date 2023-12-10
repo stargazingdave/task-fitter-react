@@ -57,7 +57,7 @@ export const Project = (props: ProjectProps) => {
     }
 
     console.log("Unknown: ", unknownContactsRedux)
-    debugger
+    
 
     return <div className="project">
         <div className="navigation-bar">
@@ -210,9 +210,6 @@ export const Project = (props: ProjectProps) => {
                         email={createContact}
                         onContactCreate={(newContact) => {
                             setCreateContact('');
-                            // let tempCount = unknownContactsCount;
-                            // tempCount--;
-                            // setUnknownContactsCount(tempCount);
                             const prevContacts = [...unknownContacts];
                             // Remove the newly added contact from unknownContacts
                             dispatch(setUnknownContactsRedux(prevContacts.filter((contact: string) => contact !== newContact)

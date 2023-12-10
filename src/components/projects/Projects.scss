@@ -8,7 +8,7 @@
 }
 
 .projects-container {
-    background: #CEDDEF;
+    background: #ffffff;
     overflow: auto;
     padding: 0;
     width: 100%;
@@ -18,8 +18,8 @@
         font-size: 26px;
         font-weight: 450;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #1F3C88;
-        background: #82abd6;
+        color: #ffffff;
+        background: #5893D4;
         padding: 0;
         margin: 0;
         width: 100%;
@@ -66,8 +66,8 @@
         }
         .project-tile {
             inline-size: 150px;
-            overflow: hidden;
             display: flex;
+            z-index: 1;
             flex-direction: column;
             padding: 10px;
             gap: 10px;
@@ -75,8 +75,10 @@
             border: 1px solid #9b9b9b;
             justify-content: space-between;
             box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
-            width: 230px;
-            height: 230px;
+            width: fit-content;
+            height: fit-content;
+            min-width: 230px;
+            min-height: 230px;
             position: relative;
             align-items: center;
             border-radius: 8px;
@@ -268,7 +270,7 @@
     .create-company-button {
         background: none;
         border: none;
-        color: #CEDDEF;
+        color: #ffffff;
         display: flex;
         gap: 4px;
         width: 100%;
@@ -309,7 +311,7 @@
                 text-wrap: nowrap;
             }
             &.selected {
-                background: #CEDDEF;
+                background: #ffffff;
             }
         }
     }

@@ -46,7 +46,6 @@ export const ProjectTasks = (props: ProjectTasksProps) => {
                     }
                 });
             });
-            debugger
             dispatch(addUnknownContacts(newUnknownContacts));
         }
 

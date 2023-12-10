@@ -22,9 +22,9 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
     const [projectName, setProjectName] = useState(props.editProject.project_name);
     const [managerName, setManagerName] = useState(props.editProject.project_manager);
     const companies = useAppSelector(selectCompanies);
-    const currentCompany = companies.find((company) => company.id === props.editProject.company_id);
+    const currentCompany = companies?.find((company) => company.id === props.editProject.company_id);
     const [selectedCompany, setSelectedCompany] = useState({value: currentCompany?.id, label: currentCompany?.company_name});
-    const companiesOptions = companies.map((company) => {
+    const companiesOptions = companies?.map((company) => {
         return {value: company.id, label: company.company_name}
     });
 
@@ -54,12 +54,15 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
             <label>חברה:</label>
             <Select 
                 options={companiesOptions}
+                styles={{ 
+                    menuPortal: base => ({ ...base, zIndex: 999 }),
+                }}
                 defaultValue={selectedCompany}
                 onChange={(selection) => {selection && setSelectedCompany(selection)}}
             />
             <div className="buttons">
                 <button 
-                    onClick={() => {debugger
+                    onClick={() => {
                         const date = new Date().getTime();
                         if (projectName == '') {
                             alert('לא ניתן ליצור פרויקט ללא שם');
@@ -69,7 +72,7 @@ export const EditProjectForm = (props: EditProjectFormProps) => {
                             project_name: projectName,
                             update_time: date,
                             project_manager: managerName,
-                            company_id: selectedCompany,
+                            company_id: selectedCompany ? selectedCompany.value : '',
                             });
                         let tempProject = { ...props.editProject } as DocumentData;
                         tempProject.project_name = projectName;

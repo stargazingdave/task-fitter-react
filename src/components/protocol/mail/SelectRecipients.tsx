@@ -32,7 +32,6 @@ export const SelectRecipients = (props: SelectRecipientsProps) => {
     let taskCollaborators = [] as {value: 'string', label: 'string'}[];
     useEffect(() => {
         
-        debugger
         props.tasks.forEach((task) => {
             task.collaborators?.map((collaborator) => {
                 const contact = contacts.find((contact) => contact.email === collaborator);
