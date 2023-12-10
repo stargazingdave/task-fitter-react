@@ -1,3 +1,105 @@
+.protocol-creation-from {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px;
+    margin: 0;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 60px);
+    box-sizing: border-box;
+    h1 {
+        color: #1F3C88;
+        font-family: inherit;
+        font-size: 30px;
+        margin: 10px;
+    }
+    .inputs {
+        display: flex;
+        flex-direction: row;
+        gap: 100px;
+        align-items: center;
+        .text {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .checkmarks {
+            display: flex;
+            flex-direction: column;
+            .checkmark-input {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: flex-end;
+                gap: 10px;
+            }
+        }
+    }
+    .input-label {
+        padding-top: 20px;
+        font-size: 18px;
+    }
+    .generate-pdf-button {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 16px;
+        width: fit-content;
+        height: fit-content;
+        padding: 10px;
+        padding-bottom: 6px;
+        padding-top: 6px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: #1F3C88;
+        background: #FFDE7D;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: inherit;
+        margin: 8px;
+        border: none;
+        p {
+            padding: 6px 12px;
+            margin: 0;
+            height: fit-content;
+        }
+        &:disabled {
+            background: #a5976b;
+            &:hover {
+                color: #1F3C88;
+                background: #a5976b;
+                cursor: pointer;
+            }
+        }
+        .generating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+        }
+        &:hover {
+            color: #070D59;
+            background: #fdcf45;
+            cursor: pointer;
+        }
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #fdcf45;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    }
+}
+
 .protocol-attachment-page {
     box-sizing: border-box;
     max-width: 100%;
@@ -5,7 +107,8 @@
     overflow-y: auto;
     display: flex;
     flex-direction: row;
-    // justify-content: center;
+    align-items: baseline;
+    justify-content: baseline;
     .send-button {
         display: flex;
         flex-direction: row;
@@ -101,8 +204,9 @@
         .email-form {
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center;
             height: 100%;
+            padding-right: 30px;
             h1 {
                 color: #1F3C88;
                 font-family: inherit;
@@ -112,10 +216,9 @@
             .parameters {
                 display: flex;
                 flex-direction: row;
-                justify-content: flex-start;
+                justify-content: center;
+                align-items: baseline;
                 gap: 40px;
-                align-items: center;
-                // justify-content: space-between;
                 width: 100%;
                 height: 100%;
                 label {
@@ -151,7 +254,6 @@
                 .parameter-inputs {
                     display: flex;
                     flex-direction: column;
-                    justify-content: flex-start;
                     gap: 4px;
                     height: 100%;
                 }
@@ -212,3 +314,6 @@
     }
 }
 
+iframe {
+    height: calc(100vh - 90px);
+}

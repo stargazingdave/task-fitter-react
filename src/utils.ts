@@ -208,7 +208,13 @@ export const subjectToProtocolArray = async (
 // for example: `projects/<someProjectId>`
 export const createProtocol = async (
     project: DocumentData, 
-    contacts: DocumentData[]
+    protocolHeader: string,
+    contacts: DocumentData[],
+    companyLogo: HTMLImageElement,
+    companyName: string,
+    withLogo: boolean,
+    withCompanyName: boolean,
+    nameOfWriter: string
     ): Promise<jsPDF> => {
     const currentDate = new Date();
     const pdfTitle = 'פרוטוקול ' + currentDate.toLocaleDateString("he-IL");
@@ -227,10 +233,32 @@ export const createProtocol = async (
     const headers = ['משימה', 'דדליין', 'אחראיים', 'סטטוס'];
 
     // Set initial position for the table
-    let yPosition = 20;
+    let yPosition = 30;
 
     // Set text direction to right-to-left
     pdf.setR2L(true);
+
+    // Write the logo and company name
+    if (companyLogo && withLogo) {
+        pdf.addImage(companyLogo, 'JPEG', pdf.internal.pageSize.width - 15, 5, 10, 10 * (companyLogo.height / companyLogo.width));
+    }
+    debugger
+    if (companyName != '' && withCompanyName) {
+        if (companyName[0] > '0' && companyName[0] < 'z') {
+            pdf.setR2L(false);
+        }
+        pdf.text(companyName, pdf.internal.pageSize.width - 40, 10);
+        pdf.setR2L(true);
+    }
+        
+    
+
+    // Write the protocol header
+    const headerWidth = pdf.internal.pageSize.width / 2
+    const headerText = pdf.splitTextToSize(protocolHeader, headerWidth);
+    const headerHeight = headerText.length * 5; // Adjust the multiplier based on font size
+    pdf.text(protocolHeader, headerWidth, yPosition, { align: 'center', maxWidth: pdf.internal.pageSize.width - 30 });
+    yPosition += headerHeight;
 
     // Define cells' width and margin
     const subjectWidth = 35;
@@ -370,6 +398,7 @@ export const createProtocol = async (
         })
         yPosition += 5;
     }));
+    pdf.text('רשם: ' + nameOfWriter, 10, yPosition + 10)
 
     // Save the PDF
     // pdf.save('table-document-rtl-with-margins.pdf');
