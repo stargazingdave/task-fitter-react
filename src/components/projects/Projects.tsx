@@ -3,7 +3,7 @@ import { BsFillBuildingsFill } from 'react-icons/bs';
 import './Projects.scss';
 import { EditProjectForm } from './EditProjectForm';
 import { CgAdd } from "react-icons/cg";
-import { DocumentData, collection, or, orderBy, query, where } from 'firebase/firestore';
+import { DocumentData, collection, deleteDoc, doc, or, orderBy, query, where } from 'firebase/firestore';
 import { useFirestoreCollectionData} from 'reactfire';
 import { CreateProjectForm } from './CreateProjectForm';
 import Popup from 'reactjs-popup';
@@ -16,6 +16,8 @@ import { deleteProject } from '../../utils';
 import { store } from '../../store';
 import { pushProject, selectCompanies, selectProjectStack, selectProjects, setProjectStack } from '../../redux/projectsSlice';
 import { CreateCompanyForm } from './CreateCompanyForm';
+import { ConfirmationBox } from '../general/ConfirmationBox';
+import { EditCompanyForm } from './EditCompanyForm';
 
 type ProjectsProps = {
     editProject: DocumentData;
@@ -32,7 +34,9 @@ export const Projects = (props: ProjectsProps) =>  {
     const [createProjectFlag, setCreateProjectFlag] = useState(false);
     const [createCompanyFlag, setCreateCompanyFlag] = useState(false);
     const [projectDeletePopup, setProjectDeletePopup] = useState('');
+    const [companyDeletePopup, setCompanyDeletePopup] = useState('');
     const [selectedCompany, setSelectedCompany] = useState({} as DocumentData);
+    const [editCompany, setEditCompany] = useState({} as DocumentData);
     debugger
     
     return <div className='main-container'>
@@ -63,13 +67,28 @@ export const Projects = (props: ProjectsProps) =>  {
                 </button>
                 {
                     companies?.map((company) => 
-                    <button 
+                    <div 
                         className={'company' + (selectedCompany.id === company.id ? ' selected' : '')}
-                        onClick={() => setSelectedCompany(company)}
                         >
                         <img src={company.logo} width={30} />
-                        <h1>{company.company_name}</h1>
-                    </button>)
+                        <h1 onClick={() => setSelectedCompany(company)}>
+                            {company.company_name}
+                        </h1>
+                        <div className='buttons'>
+                            <button
+                                className='edit'
+                                onClick={() => setEditCompany(company)}
+                                >
+                                <BiEditAlt />
+                            </button>
+                            <button
+                                className='delete'
+                                onClick={() => setCompanyDeletePopup(company.id)}
+                                >
+                                    <MdDeleteForever />
+                            </button>
+                        </div>
+                    </div>)
                 }
             </div>
         </div>
@@ -149,7 +168,29 @@ export const Projects = (props: ProjectsProps) =>  {
         </Popup>
         <Popup 
             contentStyle={{width: "300px"}}
-            open={projectDeletePopup != ''}
+            open={companyDeletePopup !== ''}
+            modal >
+                <ConfirmationBox 
+                    onCancel={() => setCompanyDeletePopup('')}
+                    onConfirm={() => {
+                        deleteDoc(doc(db, 'companies', companyDeletePopup));
+                        setCompanyDeletePopup('');
+                    }}
+                    message='להמשך מחיקת החברה יש ללחוץ על אישור'
+                />
+        </Popup>
+        <Popup 
+            contentStyle={{width: "300px"}}
+            open={!!editCompany?.id}
+            modal >
+                <EditCompanyForm 
+                    company={editCompany}
+                    onCompanyEdit={() => setEditCompany({})}
+                />
+        </Popup>
+        <Popup 
+            contentStyle={{width: "300px"}}
+            open={projectDeletePopup !== ''}
             modal >
                 <div className='delete-project-confirmation-box'>
                     <p>פעולה זו תמחק את הפרויקט לתמיד <b>ללא אפשרות שחזור התוכן שלו</b>. להמשיך במחיקה?</p>

@@ -15,7 +15,10 @@
     height: calc(100vh - 60px);
     position: relative;
     .projects-header {
-        font-size: 26px;
+        box-sizing: border-box;
+        box-shadow: -1px 1px 8px 0.5px #1F3C88;
+        border-bottom: 1px solid #070D59;
+        font-size: 24px;
         font-weight: 450;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: #ffffff;
@@ -23,7 +26,7 @@
         padding: 0;
         margin: 0;
         width: 100%;
-        height: 60px;
+        height: 40px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -41,9 +44,11 @@
         justify-content: flex-start;
         padding-right: 20px;
         font-size: 16px;
+        transition: 0.3s;
         &:hover {
-            background: #5893D4;
+            color: #070D59;
             cursor: pointer;
+            font-size: 20px;
         }
         &:disabled {
             background: #9b9b9b;
@@ -54,7 +59,7 @@
         gap: 25px;
         padding: 20px;
         flex-wrap: wrap;
-        height: calc(100% - 150px);
+        height: calc(100% - 130px);
         overflow-y: auto;
         h1 {
             margin: 0px;
@@ -242,17 +247,20 @@
 }
 
 .companies-container {
+    box-sizing: border-box;
     align-items: flex-start;
     justify-content: flex-start;
     background: #5893D4;
     padding: 0;
-    padding-right: 20px;
     width: 260px;
     height: calc(100vh - 60px);
     overflow-y: auto;
-    direction: ltr;
     .companies-header {
-        font-size: 26px;
+        box-sizing: border-box;
+        box-shadow: 1px 1px 8px 0.5px #1F3C88;
+        border-bottom: 1px solid #070D59;
+        // border-left: 1px solid #ffffff;
+        font-size: 24px;
         font-weight: 450;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         color: #ffffff;
@@ -260,12 +268,11 @@
         padding: 0;
         margin: 0;
         width: 100%;
-        height: 60px;
+        height: 40px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        direction: rtl;
     }
     .create-company-button {
         background: none;
@@ -278,22 +285,27 @@
         align-items: center;
         justify-content: flex-start;
         font-size: 16px;
-        direction: rtl;
+        transition: 0.3s;
         &:hover {
-            background: #5893D4;
+            color: #070D59;
             cursor: pointer;
+            font-size: 20px;
         }
         &:disabled {
             background: #9b9b9b;
         }
     }
     .companies {
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         width: 100%;
         direction: rtl;
-        button {
+        height: calc(100vh - 150px);
+        overflow-y: auto;
+        direction: ltr;
+        .all-projects-button {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -304,14 +316,82 @@
             background: none;
             width: 100%;
             color: #070D59;
+            direction: rtl;
+            border-bottom: 1px solid #ffffff77;
+            transition: 0.3s;
             h1 {
                 font-size: 18px;
                 font-weight: normal;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 text-wrap: nowrap;
+                direction: rtl;
+                transition: 0.3s;
+            }
+            &:hover {
+                background: #ffffff77;
+                h1 {
+                    font-size: 20px;
+                }
             }
             &.selected {
                 background: #ffffff;
+                h1 {
+                    font-size: 20px;
+                }
+            }
+        }
+        .company {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            margin: 0;
+            padding: 4px 10px;
+            background: none;
+            width: 100%;
+            color: #070D59;
+            direction: rtl;
+            border-bottom: 1px solid #ffffff77;
+            position: relative;
+            transition: 0.3s;
+            h1 {
+                font-size: 18px;
+                font-weight: normal;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                text-wrap: nowrap;
+                direction: rtl;
+                transition: 0.3s;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            &:hover {
+                background: #ffffff77;
+                h1 {
+                    font-size: 20px;
+                }
+                .buttons {
+                    opacity: 1;
+                    transition: 0.3s;
+                }
+            }
+            &.selected {
+                background: #ffffff;
+                h1 {
+                    font-size: 20px;
+                }
+            }
+            .buttons {
+                position: absolute;
+                left: 4px;
+                background: none;
+                opacity: 0;
+                transition: 0.3s;
+                button {
+                    background: none;
+                }
             }
         }
     }
