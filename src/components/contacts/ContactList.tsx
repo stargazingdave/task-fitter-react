@@ -38,19 +38,11 @@ export const ContactList = (props: ContactListProps) => {
             <h1>אנשי קשר</h1>
                 <div className="create-contact">
                     {
-                        createContactFlag
-                        ? <div className="create-contact-form">
-                            <CreateContactForm 
-                                contactsCollection={contactsCollection} 
-                                createContactFlag={createContactFlag} 
-                                onContactCreate={(createContactFlag) => {setCreateContactFlag(!createContactFlag)}}
-                                email=''
-                                />
-                            </div>
-                        : <button 
+                        !createContactFlag &&
+                        <button 
                             className='new-contact-button' 
                             title='יצירת איש קשר חדש'
-                            onClick={() => setCreateContactFlag(!createContactFlag)}
+                            onClick={() => setCreateContactFlag(true)}
                             >
                             <BiUserPlus size={25} />
                         </button>
@@ -144,5 +136,16 @@ export const ContactList = (props: ContactListProps) => {
                         onCancel={() => setContactDeletePopup({})} />
                 </Popup>
             }
+            <Popup
+                open={createContactFlag} 
+                closeOnDocumentClick={false}
+                >
+                <CreateContactForm 
+                    contactsCollection={contactsCollection} 
+                    createContactFlag={createContactFlag} 
+                    onContactCreate={() => setCreateContactFlag(false)}
+                    email=''
+                />
+            </Popup>
         </div>
 }
