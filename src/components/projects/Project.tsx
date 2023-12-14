@@ -17,7 +17,8 @@ import { selectIsAdmin } from "../../redux/userSlice";
 import { ProjectParticipantsManager } from "./ProjectParticipantsManager";
 import { selectUnknownContactsRedux, setUnknownContacts as setUnknownContactsRedux } from "../../redux/contactsSlice";
 import { CreateContactForm } from "../contacts/CreateContactForm";
-import { FaRegWindowClose } from "react-icons/fa";
+import { FaRegWindowClose, FaTasks } from "react-icons/fa";
+import { InternalTasks } from "./InternalTasks";
 
 type ProjectProps = {
     editProject: DocumentData;
@@ -35,6 +36,7 @@ export const Project = (props: ProjectProps) => {
     const dispatch = useAppDispatch();
     const [participantsManagerOpen, setParticipantsManagerOpen] = useState(false);
     const [permissionsManagerOpen, setPermissionsManagerOpen] = useState(false);
+    const [internalTasksOpen, setInternalTasksOpen] = useState(false);
     const [createContact, setCreateContact] = useState('');
     const [unknownContactsPopupEnabled, setUnknownContactsPopupEnabled] = useState(true);
     const [unknownContacts, setUnknownContacts] = useState([] as string[]);
@@ -140,6 +142,14 @@ export const Project = (props: ProjectProps) => {
                             href={"/protocol/" + projectStack[0].id}>
                                 פרוטוקול
                         </a>
+                        <button
+                            className="internal-tasks-button" 
+                            onClick={() => setInternalTasksOpen(true)}
+                            title='פתיחת המשימות הפנימיות למעקב אחר התקדמות הפרויקט.'
+                            >
+                            <FaTasks />
+                            <p>משימות למעקב</p>
+                        </button>
                     </div>
             </div>
             <div className="content">
@@ -168,6 +178,17 @@ export const Project = (props: ProjectProps) => {
                 project={projectStack[0]} 
                 projectReference={doc(parentCollection, projectStack[0].id)}
                 setOpen={setPermissionsManagerOpen}
+            />
+        </Popup>
+        <Popup 
+            open={internalTasksOpen}
+            closeOnDocumentClick={false}
+            contentStyle={{zIndex: 800}}
+            overlayStyle={{zIndex: 800}}
+            >
+            <InternalTasks 
+                project={projectStack[0]} 
+                closeFunction={() => setInternalTasksOpen(false)}
             />
         </Popup>
         <Popup

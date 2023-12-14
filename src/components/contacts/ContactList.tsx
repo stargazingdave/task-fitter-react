@@ -1,4 +1,4 @@
-import { DocumentData, collection, deleteDoc, doc, orderBy, query, where } from 'firebase/firestore';
+import { DocumentData, deleteDoc, doc } from 'firebase/firestore';
 import { useState } from 'react';
 import { CreateContactForm } from './CreateContactForm';
 import './ContactList.scss';
@@ -11,9 +11,8 @@ import { FaTasks } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md'
 import { BiEditAlt, BiUserPlus } from 'react-icons/bi';
 import { Contact } from './Contact';
-import { useAppDispatch, useAppSelector } from '../../reduxHooks';
-import { selectSignedIn, selectUser } from '../../redux/userSlice';
-import { initContacts, selectContacts, selectContactsCollection } from '../../redux/contactsSlice';
+import { useAppSelector } from '../../reduxHooks';
+import { selectContacts, selectContactsCollection } from '../../redux/contactsSlice';
 import { selectDb } from '../../redux/databaseSlice';
 
 

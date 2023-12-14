@@ -18,7 +18,7 @@ const animatedComponents = makeAnimated();
 type CreateTaskFormProps = {
     tasksCollection: CollectionReference;
     createTaskSelected: boolean;
-    onTaskCreate: (onTaskCreate: boolean) => void;
+    onTaskCreate: () => void;
     onCancel: () => void;
     projectId: string;
     topProjectId: string;
@@ -48,7 +48,7 @@ const addTask = async (props: CreateTaskFormProps,
         .then (docRef => {
             uploadImage(docRef.id, image, props.tasksCollection);
         })
-        props.onTaskCreate(props.createTaskSelected);
+        props.onTaskCreate();
 }
 
 

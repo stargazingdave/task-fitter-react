@@ -149,6 +149,7 @@
                     font-size: 14px;
                     font-family: inherit;
                     margin: 8px;
+                    transition: 0.3s;
                     &:disabled {
                         background: plum;
                         &:hover {
@@ -164,6 +165,7 @@
                         color: #070D59;
                         background: palevioletred;
                         cursor: pointer;
+                        font-size: 16px;
                     }
                 }
                 .shared-emails-button {
@@ -183,6 +185,7 @@
                     font-size: 14px;
                     font-family: inherit;
                     margin: 8px;
+                    transition: 0.3s;
                     &:disabled {
                         background: #5c8c64;
                         &:hover {
@@ -198,6 +201,7 @@
                         color: #070D59;
                         background: #1bff56;
                         cursor: pointer;
+                        font-size: 16px;
                     }
                 }
                 .protocol-link {
@@ -213,10 +217,40 @@
                     font-size: 14px;
                     font-family: inherit;
                     margin: 8px;
+                    transition: 0.3s;
                     &:hover {
                         color: #070D59;
                         background: #fdcf45;
                         cursor: pointer;
+                        font-size: 16px;
+                    }
+                }
+                .internal-tasks-button {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 4px;
+                    width: fit-content;
+                    height: 32px;
+                    padding: 6px 10px;
+                    border-radius: 4px;
+                    text-decoration: none;
+                    color: #1F3C88;
+                    background: #A0E9FF;
+                    font-weight: bold;
+                    font-size: 14px;
+                    font-family: inherit;
+                    margin: 8px;
+                    transition: 0.3s;
+                    p {
+                        margin: 0;
+                    }
+                    &:hover {
+                        color: #070D59;
+                        background: #00A9FF;
+                        cursor: pointer;
+                        font-size: 16px;
                     }
                 }
             }

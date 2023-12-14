@@ -35,7 +35,11 @@ const UserPanel = () => {
                     >
                     <BiSolidInfoCircle size={24}/>
                 </button>
-                <h1>Task Fitter</h1>
+                <h1
+                    onClick={() => window.open("https://task-fitter.com/", '_self')}
+                    >
+                    Task Fitter
+                </h1>
             </div>
             <div className='user-info'>
                 <div title="Sign Out">
