@@ -97,7 +97,7 @@ export const InternalTasks = (props: InternalTasksProps) => {
             className='close-button'
             onClick={() => props.closeFunction()}>
                 <FaRegWindowClose size={30} />
-            </button>
+        </button>
         <div className='header'>
             <h1>{props.project.project_name} - משימות למעקב</h1>
             {

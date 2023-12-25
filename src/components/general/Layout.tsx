@@ -77,7 +77,7 @@ const UserPanel = () => {
 const SignInForm = () => {
     const dispatch = useAppDispatch();
     const auth = useAuth();
-    
+    const [appInfoOpen, setAppInfoOpen] = useState(false);
 
     return (
         <div className='login-panel'>
@@ -90,6 +90,22 @@ const SignInForm = () => {
                 >
                 כניסה לחשבון
             </button>
+            <br/>
+            <button
+                className='app-info-button'
+                onClick={() => setAppInfoOpen(true)}
+                >
+                    מה זה Task Fitter?
+            </button>
+            <Popup 
+                open={appInfoOpen}
+                closeOnDocumentClick={false}
+                >
+                <DeveloperInfo 
+                    open={appInfoOpen}
+                    setOpen={setAppInfoOpen}
+                />
+            </Popup>
         </div>
     );
 };

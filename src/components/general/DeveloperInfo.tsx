@@ -56,5 +56,9 @@ export const DeveloperInfo = (props: DeveloperInfoProps) => {
             </p>
         </div>
         <h3>davidportal91@gmail.com</h3>
+        <div style={{display: "flex", width: "560px", height: "300px", maxHeight: "300px"}}>
+            <iframe width="560" height="100" src="https://www.youtube.com/embed/7h732qLxtAk?si=hHTuLzuoCRFV08Xl" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        </div>
+        <br/>
     </div>)
 }

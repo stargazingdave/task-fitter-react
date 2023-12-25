@@ -206,37 +206,38 @@
             }
         }
     }
-}
-
-.create-task-form {
-    box-sizing: border-box;
-    width: fit-content;
-    padding: 20px;
-    margin: 10px;
-    gap: 10px;
-    .task-title {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start;
+    .create-task-form {
+        box-sizing: border-box;
+        width: fit-content;
+        padding: 20px;
+        margin: 10px;
         gap: 10px;
-    }
-    .task-deadline {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start;
-        gap: 10px;
-        .datepicker-calendar {
-            z-index: 9999;
+        .task-title {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .task-deadline {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 10px;
+            .datepicker-calendar {
+                z-index: 9999;
+            }
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
         }
     }
-    .buttons {
-        display: flex;
-        justify-content: space-around;
-        margin-top: 10px;
-    }
 }
+
+
 
 // .react-datepicker-popper {
 //     z-index: 999;

@@ -134,6 +134,26 @@
             cursor: pointer;
         }
     }
+    .app-info-button {
+        font-family: inherit;
+        font-weight: bold;
+        background: palegreen;
+        border: none;
+        color: #1F3C88;
+        padding: 10px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 18px;
+        margin: 4px;
+        border-radius: 3px;
+        width: fit-content;
+        &:hover {
+            background: green;
+            color: #ffffff;
+            cursor: pointer;
+        }
+    }
 }
 
 .display-name {

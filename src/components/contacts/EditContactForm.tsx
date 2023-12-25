@@ -1,3 +1,4 @@
+import './EditContactForm.scss'
 import { User } from "firebase/auth";
 import { CollectionReference, DocumentData, Firestore, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { useState } from "react";

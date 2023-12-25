@@ -67,8 +67,9 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
     return (
         <>
             <div className="edit-task-form">
+                <h1>עריכת משימה</h1>
                 <div className="text-box">
-                    <label htmlFor="task-input" >משימה: </label>
+                    <label>משימה: </label>
                     <textarea className="task-input" 
                                 style={{background: "white",
                                         width: "85%",

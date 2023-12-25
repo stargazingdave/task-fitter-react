@@ -1,35 +1,41 @@
 .create-task-form {
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin: 0;
     padding: 10px;
     background: white;
-    width: 90%;
+    width: calc(100% - 22px);
     border-radius: 4px;
     .text-box {
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
     }
     .deadline_collaborators_image {
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-around;
     }
     .set-deadline {
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
         width: fit-content;
         gap: 3px;
     }
     .collaborators-container {
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
         width: fit-content;
         .collaborators-selection {
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
@@ -37,10 +43,12 @@
         }
     }
     .collaborators {
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         gap: 6px;
         h1 {
+            box-sizing: border-box;
             font-family: inherit;
             font-size: 14px;
             font-weight: normal;
@@ -49,6 +57,7 @@
             }
         }
         .contact {
+            box-sizing: border-box;
             background: none;
             border: none;
             width: fit-content;
@@ -63,6 +72,7 @@
         }
     }
     .image-upload {
+        box-sizing: border-box;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -78,6 +88,7 @@
         height: fit-content;
         width: fit-content;
         h1 {
+            box-sizing: border-box;
             text-align: center;
             font-size: 14px;
             color: #1F3C88;

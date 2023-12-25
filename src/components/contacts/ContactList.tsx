@@ -30,6 +30,7 @@ export const ContactList = (props: ContactListProps) => {
     
     const [editContact, setEditContact] = useState({} as DocumentData);
     const [openContact, setOpenContact] = useState({} as DocumentData);
+    const [contactTasks, setContactTasks] = useState({} as DocumentData);
     const [createContactFlag, setCreateContactFlag] = useState(false);
     const [contactDeletePopup, setContactDeletePopup] = useState({} as DocumentData);
 
@@ -67,38 +68,27 @@ export const ContactList = (props: ContactListProps) => {
                             </h1>
                         </div>
                         <div className='buttons'>
-                        <button title='עריכת איש קשר' data-testid={'edit-button' + contact.id} className='edit-button' onClick={() => {
-                                setEditContact(contact);
-                            }}>
-                                <BiEditAlt size={20} />
-                        </button>
-                        <button 
-                            title='מחיקת איש קשר'
-                            data-testid={'delete-button' + contact.id}
-                            className='delete-button' 
-                            onClick={() => {
-                                setContactDeletePopup(contact);
-                            }}>
-                                <MdDeleteForever size={20} />
-                        </button>
-                        <Popup 
-                            trigger={
-                                <button title='רשימת משימות של איש הקשר' className='tasks-button'>
-                                    <FaTasks  size={20} />
-                                </button>
-                            } 
-                            modal
-                            contentStyle={{
-                                width: "800px",
-                                height: "300px",
-                                overflow: "auto",
-                                display: "flex",
-                                position: "relative",
-                                justifyContent: "flex-start"
-                            }}
-                            >
-                            <ContactTasks contact={contact} />
-                        </Popup>
+                            <button title='עריכת איש קשר' data-testid={'edit-button' + contact.id} className='edit-button' onClick={() => {
+                                    setEditContact(contact);
+                                }}>
+                                    <BiEditAlt size={20} />
+                            </button>
+                            <button 
+                                title='מחיקת איש קשר'
+                                data-testid={'delete-button' + contact.id}
+                                className='delete-button' 
+                                onClick={() => {
+                                    setContactDeletePopup(contact);
+                                }}>
+                                    <MdDeleteForever size={20} />
+                            </button>
+                            <button 
+                                title='רשימת משימות של איש הקשר' 
+                                className='tasks-button'
+                                onClick={() => setContactTasks(contact)}
+                                >
+                                <FaTasks  size={20} />
+                            </button>
                         </div>
                         {
                             editContact?.id == contact.id && 
@@ -146,6 +136,26 @@ export const ContactList = (props: ContactListProps) => {
                     onContactCreate={() => setCreateContactFlag(false)}
                     email=''
                 />
+            </Popup>
+            <Popup 
+                open={!!contactTasks?.id} 
+                modal
+                // contentStyle={{
+                //     width: "800px",
+                //     height: "300px",
+                //     overflow: "auto",
+                //     display: "flex",
+                //     position: "relative",
+                //     justifyContent: "flex-start"
+                // }}
+                closeOnDocumentClick={false}
+                >
+                {
+                    !!contactTasks?.id &&
+                    <ContactTasks 
+                    contact={contactTasks} 
+                    closeFunction={() => setContactTasks({})} />
+                }
             </Popup>
         </div>
 }

@@ -1,0 +1,17 @@
+.edit-contact-form {
+    .buttons {
+        button {
+            width: fit-content;
+            height: fit-content;
+            padding: 4px 8px;
+            margin: 6px;
+            background: #CEDDEF;
+            border-radius: 4px;
+            &:hover {
+                cursor: pointer;
+                background: #5893D4;
+                color: #ffffff;
+            }
+        }
+    }
+}

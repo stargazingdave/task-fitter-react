@@ -5,10 +5,12 @@ import { useFirestoreCollectionData } from "reactfire";
 import './ContactTasks.scss'
 import { useAppSelector } from "../../reduxHooks";
 import { selectProjects } from "../../redux/projectsSlice";
+import { FaRegWindowClose } from "react-icons/fa";
 
 
 type ContactTasksProps = {
     contact: DocumentData;
+    closeFunction: () => void;
 }
 
 
@@ -24,11 +26,11 @@ export const ContactTasks = (props: ContactTasksProps) => {
     const [loading, setLoading] = useState(true);
 
     projects.forEach((project) => projectIds.push(project.id));
-
+debugger
     const tasksCollection = collectionGroup(db, 'tasks');
     const tasksQuery = query(tasksCollection, 
         where("top_project_id", 'in', projectIds),
-        where("collaborators", 'array-contains', props.contact.email),
+        where("collaborators", 'array-contains', props.contact?.email),
         orderBy('deadline', isAscending ? 'asc' : 'desc'));
 
     const { status: tasksStatus, data: tasks } = useFirestoreCollectionData(tasksQuery, { idField: 'id',});
@@ -69,6 +71,11 @@ export const ContactTasks = (props: ContactTasksProps) => {
     }
 
     return <div className="contact-tasks">
+        <button 
+            className='close-button'
+            onClick={() => props.closeFunction()}>
+                <FaRegWindowClose size={30} />
+        </button>
         <h1 className="title">המשימות של {props.contact.name}</h1>
         <div className="contact-tasks-container">
             {

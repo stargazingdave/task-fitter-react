@@ -104,6 +104,14 @@ export const Projects = (props: ProjectsProps) =>  {
             </button>
             <div className="projects">
                 {
+                    projects?.length === 0 &&
+                    <div className='no-access-message'>
+                        <p>אין לחשבון שלך גישה ליצירת פרויקטים.</p>
+                        <p>לפרטים ניתן לפנות במייל:</p>
+                        <p>davidportal91@gmail.com</p>
+                    </div>
+                }
+                {
                     projects?.filter((project) => selectedCompany.id ? project.company_id === selectedCompany.id : project)?.map(project => (
                         <div className="project-tile" key={project.id}>
                             {

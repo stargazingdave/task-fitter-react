@@ -58,8 +58,6 @@ export const Project = (props: ProjectProps) => {
         }
     }
 
-    console.log("Unknown: ", unknownContactsRedux)
-    
 
     return <div className="project">
         <div className="navigation-bar">
